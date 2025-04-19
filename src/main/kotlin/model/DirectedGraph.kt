@@ -1,6 +1,6 @@
 package model
 
-class UndirectedGraph<E, V>() : Graph<E, V> {
+class DirectedGraph<E, V>() : Graph<E, V> {
     private val _vertices = hashMapOf<V, DirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
 
@@ -10,12 +10,12 @@ class UndirectedGraph<E, V>() : Graph<E, V> {
     override val edges: Collection<Edge<E, V>>
         get() = _edges.values
 
-    val edgesByVertex = hashMapOf< V, MutableSet< DirectedEdge<E, V> > >()
+    private val edgesByVertex = hashMapOf< V, MutableMap< V, DirectedEdge<E, V> > >()
 
     override fun addVertex(value: V) {
         if (findVertex(value) != null) return
         _vertices.put(value, DirectedVertex(value))
-        edgesByVertex.putIfAbsent(value, mutableSetOf())
+        edgesByVertex.putIfAbsent(value, mutableMapOf())
     }
 
     override fun addEdge(firstVertex: V, secondVertex: V, element: E){
@@ -26,17 +26,18 @@ class UndirectedGraph<E, V>() : Graph<E, V> {
         if (findEdge(firstVertex, secondVertex) != null) return
         val newEdge = DirectedEdge(element, first to second)
         _edges.put(firstVertex to secondVertex, newEdge)
-        edgesByVertex[firstVertex]?.add(newEdge)
+        edgesByVertex[firstVertex]?.put(secondVertex, newEdge)
     }
 
-    override fun deleteVertex(value: V){
+
+     override fun deleteVertex(value: V){
         val edgesToRemove = edgesByVertex[value] ?: return
         for (edge in edgesToRemove){
-            val firstVertex = edge.vertexes.first
-            val secondVertex = edge.vertexes.second
-            _edges.remove(firstVertex.value to secondVertex.value)
-            _edges.remove(secondVertex.value to firstVertex.value)
-            edgesByVertex[secondVertex.value]?.remove(edge) // change
+            val firstVertex = edge.value.vertexes.first
+            val secondVertex = edge.value.vertexes.second
+            _edges.remove(value to secondVertex.value)
+            _edges.remove(secondVertex.value to value)
+            edgesByVertex[secondVertex.value]?.remove(value)
         }
         edgesByVertex.remove(value)
         _vertices.remove(value)
@@ -47,7 +48,7 @@ class UndirectedGraph<E, V>() : Graph<E, V> {
         val firstValue = edge.vertexes.first.value
         val secondValue = edge.vertexes.second.value
         _edges.remove(firstValue to secondValue)
-        edgesByVertex[firstValue]?.remove(edge)
+        edgesByVertex[firstValue]?.remove(secondValue)
     }
 
     fun findVertex(value: V): DirectedVertex<V>?{
