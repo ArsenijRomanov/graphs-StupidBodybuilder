@@ -1,6 +1,6 @@
 package model
 
-class DirectedGraph<E, V>() : Graph<E, V> {
+class DirectedGraph<V, E>() : Graph<E, V> {
     private val _vertices = hashMapOf<V, DirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
 
@@ -11,6 +11,17 @@ class DirectedGraph<E, V>() : Graph<E, V> {
         get() = _edges.values
 
     private val edgesByVertex = hashMapOf< V, MutableMap< V, DirectedEdge<E, V> > >()
+
+    fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>>{
+        val edges = edgesByVertex[vertex] ?: return emptyList()
+        return edges.map { it.value }
+    }
+
+    fun getNeighborVertices(vertex: V): Collection<V>{
+        return getEdgesByVertex(vertex).map {
+            it.vertexes.second.value
+        }
+    }
 
     override fun addVertex(value: V) {
         if (findVertex(value) != null) return
@@ -31,14 +42,18 @@ class DirectedGraph<E, V>() : Graph<E, V> {
 
 
      override fun deleteVertex(value: V){
-        val edgesToRemove = edgesByVertex[value] ?: return
-        for (edge in edgesToRemove){
-            val firstVertex = edge.value.vertexes.first
-            val secondVertex = edge.value.vertexes.second
-            _edges.remove(value to secondVertex.value)
-            _edges.remove(secondVertex.value to value)
-            edgesByVertex[secondVertex.value]?.remove(value)
-        }
+         val edgesToRemove = edgesByVertex[value] ?: return
+         edgesToRemove.forEach { (to, _) ->
+             _edges.remove(value to to)
+         }
+
+         for ((from, edges) in edgesByVertex) {
+             if (edges.containsKey(value)) {
+                 _edges.remove(from to value)
+                 edges.remove(value)
+             }
+         }
+
         edgesByVertex.remove(value)
         _vertices.remove(value)
     }
@@ -57,6 +72,21 @@ class DirectedGraph<E, V>() : Graph<E, V> {
 
     fun findEdge(firstVertex: V, secondVertex: V): DirectedEdge<E, V>?{
         return _edges[firstVertex to secondVertex]
+    }
+
+    fun getFromDegree(vertex: V): Int{
+        val edges = edgesByVertex[vertex] ?: return 0
+        return edges.size
+    }
+
+    fun getInDegree(vertex: V): Int{
+        findVertex(vertex) ?: return 0
+        var cnt = 0
+        for ((_, edges) in edgesByVertex){
+            if (edges.containsKey(vertex))
+                ++cnt
+        }
+        return cnt
     }
 
     class DirectedVertex<V>(override val value: V) : Vertex<V>
