@@ -95,4 +95,61 @@ class DirectedGraph<V, E>() : Graph<E, V> {
         override var element: E,
         override val vertexes: Pair<DirectedVertex<V>, DirectedVertex<V>>
     ) : Edge<E, V>
+
+    fun transposedGraph(): DirectedGraph<V, E>{
+        val tg = DirectedGraph<V, E>()
+        for (i in vertices)
+            tg.addVertex(i.value)
+        for (i in edges)
+            tg.addEdge(i.vertexes.second.value,
+                i.vertexes.first.value, i.element)
+        return tg
+    }
+
+    private fun dfs1(vertex: V, used: HashMap<V, Boolean>, order: ArrayList<V>){
+        used[vertex] = true
+        for ((to, outgoingEdge) in edgesByVertex[vertex] ?: emptyMap()){
+            if (!(used[to] ?: true))
+                dfs1(to, used, order)
+        }
+        order.add(vertex)
+    }
+
+    private fun dfs2(vertex: V, tg: DirectedGraph<V, E>, used: HashMap<V, Boolean>, component: ArrayList<V>){
+        used[vertex] = true
+        component.add(vertex)
+        for ((to, outgoingEdge) in tg.edgesByVertex[vertex] ?: emptyMap<V, Vertex<V>>()){
+            if (!(used[to] ?: true))
+                dfs2(to, tg, used, component)
+        }
+    }
+
+    fun SCC(): List<List<V>>{
+        val used = hashMapOf<V, Boolean>().apply {
+            vertices.forEach { put(it.value, false) }
+        }
+
+        val order = ArrayList<V>()
+        for (i in vertices){
+            if (!(used[i.value] ?: true))
+                dfs1(i.value, used, order)
+        }
+
+
+        val scc = ArrayList< List<V> >()
+        used.keys.forEach { key ->
+            used[key] = false
+        }
+        val tg = transposedGraph()
+        for (i in order.asReversed()){
+            if (!(used[i] ?: true)){
+                val component = ArrayList<V>()
+                dfs2(i, tg, used, component)
+                scc.add(component)
+            }
+        }
+
+        return scc
+    }
+
 }
