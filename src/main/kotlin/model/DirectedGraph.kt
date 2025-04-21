@@ -1,6 +1,6 @@
 package model
 
-class DirectedGraph<V, E>() : Graph<E, V> {
+class DirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
     private val _vertices = hashMapOf<V, DirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
 
@@ -148,8 +148,6 @@ class DirectedGraph<V, E>() : Graph<E, V> {
                 scc.add(component)
             }
         }
-
         return scc
     }
-
 }

@@ -1,6 +1,6 @@
 package model
 
-class UndirectedGraph<V, E>() : Graph<E, V> {
+class UndirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
     private val _vertices = hashMapOf<V, UndirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, UndirectedEdge<E, V>>()
 
