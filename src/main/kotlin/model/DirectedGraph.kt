@@ -148,6 +148,8 @@ class DirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
                 scc.add(component)
             }
         }
+
         return scc
     }
 }
+

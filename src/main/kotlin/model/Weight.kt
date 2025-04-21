@@ -7,5 +7,8 @@ interface Weight<T> : Comparable<T> {
     operator fun div(other: T): T
 
     fun zero(): T
+    fun infinity(): T
     fun isNegative(): Boolean
+    fun min(first: T, second: T): T
+    fun max(first: T, second: T): T
 }

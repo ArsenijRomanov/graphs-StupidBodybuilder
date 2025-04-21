@@ -9,7 +9,13 @@ data class IntWeight(val value: Int): Weight<IntWeight>{
     override fun compareTo(other: IntWeight): Int = value.compareTo(other.value)
 
     override fun zero() = IntWeight(0)
+    override fun infinity() = IntWeight(Int.MAX_VALUE)
     override fun isNegative() = (value < 0)
+    override fun min(first: IntWeight, second: IntWeight) =
+        if (first < second) first else second
+
+    override fun max(first: IntWeight, second: IntWeight) =
+        if (first > second) first else second
 }
 
 data class LongWeight(val value: Long): Weight<LongWeight>{
@@ -21,7 +27,13 @@ data class LongWeight(val value: Long): Weight<LongWeight>{
     override fun compareTo(other: LongWeight): Int = value.compareTo(other.value)
 
     override fun zero() = LongWeight(0)
+    override fun infinity() = LongWeight(Long.MAX_VALUE)
     override fun isNegative() = (value < 0)
+    override fun min(first: LongWeight, second: LongWeight) =
+        if (first < second) first else second
+
+    override fun max(first: LongWeight, second: LongWeight) =
+        if (first > second) first else second
 }
 
 data class FloatWeight(val value: Float) : Weight<FloatWeight> {
@@ -33,7 +45,13 @@ data class FloatWeight(val value: Float) : Weight<FloatWeight> {
     override fun compareTo(other: FloatWeight): Int = value.compareTo(other.value)
 
     override fun zero() = FloatWeight(0f)
+    override fun infinity() = FloatWeight(Float.POSITIVE_INFINITY)
     override fun isNegative() = value < 0
+    override fun min(first: FloatWeight, second: FloatWeight) =
+        if (first < second) first else second
+
+    override fun max(first: FloatWeight, second: FloatWeight) =
+        if (first > second) first else second
 }
 
 data class DoubleWeight(val value: Double) : Weight<DoubleWeight> {
@@ -45,5 +63,11 @@ data class DoubleWeight(val value: Double) : Weight<DoubleWeight> {
     override fun compareTo(other: DoubleWeight): Int = value.compareTo(other.value)
 
     override fun zero() = DoubleWeight(0.0)
+    override fun infinity() = DoubleWeight(Double.POSITIVE_INFINITY)
     override fun isNegative() = value < 0
+    override fun min(first: DoubleWeight, second: DoubleWeight) =
+        if (first < second) first else second
+
+    override fun max(first: DoubleWeight, second: DoubleWeight) =
+        if (first > second) first else second
 }
