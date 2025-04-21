@@ -26,6 +26,7 @@ import kotlin.random.Random
 import androidx.compose.ui.unit.IntOffset  // Добавьте этот импорт
 import androidx.compose.ui.zIndex
 import model.DirectedGraph
+import model.IntWeight
 import model.UndirectedGraph
 import model.Vertex
 import kotlin.math.roundToInt
