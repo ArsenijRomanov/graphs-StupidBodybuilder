@@ -2,7 +2,7 @@ package model
 
 import space.kscience.kmath.operations.Ring
 
-class UndirectedGraph<V, E>(
+class UndirectedGraph<V, E: Comparable<E>>(
     private val ring: Ring<E>
 ) : Graph<V, E> {
     private val _vertices = hashMapOf<V, UndirectedVertex<V>>()
@@ -16,7 +16,7 @@ class UndirectedGraph<V, E>(
 
     val edgesByVertex = hashMapOf< V, MutableSet< UndirectedEdge<E, V> > >()
 
-    fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>>{
+    override fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>>{
         return edgesByVertex[vertex] ?: emptySet()
     }
 
