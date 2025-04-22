@@ -7,6 +7,7 @@ plugins {
 }
 
 repositories {
+    maven("https://repo.kotlin.link")
     mavenCentral()
     google()
 }
@@ -17,7 +18,7 @@ dependencies {
     // (in a separate module for demo project and in testMain).
     // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
-    implementation("space.kscience:kmath-core:0.3.1")
+    api("space.kscience:kmath-core:0.4.2")
 
     // Include the Test API
     testImplementation(compose.desktop.uiTestJUnit4)

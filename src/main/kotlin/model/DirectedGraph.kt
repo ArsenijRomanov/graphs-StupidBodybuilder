@@ -3,6 +3,9 @@ package model
 import space.kscience.kmath.operations.IntRing
 import space.kscience.kmath.operations.Ring
 
+import space.kscience.kmath.operations.invoke
+
+
 class DirectedGraph<V, E>(
     private val ring: Ring<E>
 ) : Graph<V, E> {
@@ -157,11 +160,12 @@ class DirectedGraph<V, E>(
         return scc
     }
 
-    fun allWeights(): E{
-        var cnt = ring.zero
-        for (i in edges)
-            cnt = ring.add(cnt, i.element)
-        return cnt
+    fun allWeights(): E = ring {
+        var sum = zero
+        for (edge in edges) {
+            sum += edge.element
+        }
+        sum
     }
 }
 
