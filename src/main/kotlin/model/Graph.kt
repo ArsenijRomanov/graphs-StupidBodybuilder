@@ -1,6 +1,6 @@
 package model
 
-interface Graph<V, E: Weight<E>> {
+interface Graph<V, E> {
     val vertices: Collection<Vertex<V>>
     val edges: Collection<Edge<E, V>>
 

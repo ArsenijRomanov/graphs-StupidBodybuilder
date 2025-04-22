@@ -1,6 +1,11 @@
 package model
 
-class DirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
+import space.kscience.kmath.operations.IntRing
+import space.kscience.kmath.operations.Ring
+
+class DirectedGraph<V, E>(
+    private val ring: Ring<E>
+) : Graph<V, E> {
     private val _vertices = hashMapOf<V, DirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
 
@@ -97,7 +102,7 @@ class DirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
     ) : Edge<E, V>
 
     fun transposedGraph(): DirectedGraph<V, E>{
-        val tg = DirectedGraph<V, E>()
+        val tg = DirectedGraph<V, E>(ring)
         for (i in vertices)
             tg.addVertex(i.value)
         for (i in edges)
@@ -150,6 +155,13 @@ class DirectedGraph<V, E: Weight<E>>() : Graph<V, E> {
         }
 
         return scc
+    }
+
+    fun allWeights(): E{
+        var cnt = ring.zero
+        for (i in edges)
+            cnt = ring.add(cnt, i.element)
+        return cnt
     }
 }
 
