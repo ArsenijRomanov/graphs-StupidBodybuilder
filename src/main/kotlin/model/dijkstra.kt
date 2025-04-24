@@ -1,6 +1,5 @@
 package model
 
-import androidx.compose.runtime.internal.illegalDecoyCallException
 import space.kscience.kmath.operations.Ring
 import space.kscience.kmath.operations.invoke
 
@@ -77,7 +76,7 @@ fun <V, E : Comparable<E>> dijkstra(
     val vertices = graph.vertices
     val edges = graph.edges
     val distances = mutableMapOf<V, Distance<E>>()
-    for (i in vertices) distances[i.value] = infinity()
+    for (i in vertices) distances[i] = infinity()
     distances[start] = Distance.Finite(zero)
 
     if (checkGraphForNegativeWeight(graph)) {
@@ -96,8 +95,8 @@ fun <V, E : Comparable<E>> dijkstra(
 
         val edges = graph.getEdgesByVertex(minValue.first)
         for (edge in edges) {
-            val firstVertex = edge.vertexes.first.value
-            val secondVertex = edge.vertexes.second.value
+            val firstVertex = edge.vertices.first.value
+            val secondVertex = edge.vertices.second.value
             val weight = edge.element
             val current = distances.getValue(secondVertex)
             val from = distances.getValue(minValue.first).getOrNull()

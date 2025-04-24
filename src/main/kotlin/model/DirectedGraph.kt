@@ -13,8 +13,8 @@ class DirectedGraph<V, E : Comparable<E>>(
     private val _vertices = hashMapOf<V, DirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
 
-    override val vertices: Collection<Vertex<V>>
-        get() = _vertices.values
+    override val vertices: Collection<V>
+        get() = _vertices.keys
 
     override val edges: Collection<Edge<E, V>>
         get() = _edges.values
@@ -28,7 +28,7 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     fun getNeighborVertices(vertex: V): Collection<V> {
         return getEdgesByVertex(vertex).map {
-            it.vertexes.second.value
+            it.vertices.second.value
         }
     }
 
@@ -69,8 +69,8 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     override fun deleteEdge(firstVertex: V, secondVertex: V) {
         val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertexes.first.value
-        val secondValue = edge.vertexes.second.value
+        val firstValue = edge.vertices.first.value
+        val secondValue = edge.vertices.second.value
         _edges.remove(firstValue to secondValue)
         edgesByVertex[firstValue]?.remove(secondValue)
     }
@@ -102,17 +102,17 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     class DirectedEdge<E, V>(
         override var element: E,
-        override val vertexes: Pair<DirectedVertex<V>, DirectedVertex<V>>
+        override val vertices: Pair<DirectedVertex<V>, DirectedVertex<V>>
     ) : Edge<E, V>
 
     fun transposedGraph(): DirectedGraph<V, E> {
         val tg = DirectedGraph<V, E>(ring)
         for (i in vertices)
-            tg.addVertex(i.value)
+            tg.addVertex(i)
         for (i in edges)
             tg.addEdge(
-                i.vertexes.second.value,
-                i.vertexes.first.value, i.element
+                i.vertices.second.value,
+                i.vertices.first.value, i.element
             )
         return tg
     }
@@ -137,13 +137,13 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     fun SCC(): List<List<V>> {
         val used = hashMapOf<V, Boolean>().apply {
-            vertices.forEach { put(it.value, false) }
+            vertices.forEach { put(it, false) }
         }
 
         val order = ArrayList<V>()
         for (i in vertices) {
-            if (!(used[i.value] ?: true))
-                dfs1(i.value, used, order)
+            if (!(used[i] ?: true))
+                dfs1(i, used, order)
         }
 
 

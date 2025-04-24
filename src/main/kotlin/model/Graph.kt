@@ -5,7 +5,7 @@ import space.kscience.kmath.operations.Ring
 
 interface Graph<V, E: Comparable<E>> {
     val ring: Ring<E>
-    val vertices: Collection<Vertex<V>>
+    val vertices: Collection<V>
     val edges: Collection<Edge<E, V>>
 
     fun addVertex(value: V)

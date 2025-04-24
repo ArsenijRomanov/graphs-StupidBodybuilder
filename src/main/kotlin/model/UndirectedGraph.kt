@@ -8,8 +8,8 @@ class UndirectedGraph<V, E: Comparable<E>>(
     private val _vertices = hashMapOf<V, UndirectedVertex<V>>()
     private val _edges = hashMapOf<Pair<V, V>, UndirectedEdge<E, V>>()
 
-    override val vertices: Collection<Vertex<V>>
-        get() = _vertices.values
+    override val vertices: Collection<V>
+        get() = _vertices.keys
 
     override val edges: Collection<Edge<E, V>>
         get() = _edges.values
@@ -22,8 +22,8 @@ class UndirectedGraph<V, E: Comparable<E>>(
 
     fun getNeighborVertices(vertex: V): Collection<V>{
         return getEdgesByVertex(vertex).map {
-            val v1 = it.vertexes.first.value
-            val v2 = it.vertexes.second.value
+            val v1 = it.vertices.first.value
+            val v2 = it.vertices.second.value
             if (v1 == vertex) v2 else v1
         }
     }
@@ -50,8 +50,8 @@ class UndirectedGraph<V, E: Comparable<E>>(
     override fun deleteVertex(value: V){
         val edgesToRemove = edgesByVertex[value] ?: return
         for (edge in edgesToRemove){
-            val firstVertex = edge.vertexes.first
-            val secondVertex = edge.vertexes.second
+            val firstVertex = edge.vertices.first
+            val secondVertex = edge.vertices.second
             _edges.remove(firstVertex.value to secondVertex.value)
             if (firstVertex.value == value)
                 edgesByVertex[secondVertex.value]?.remove(edge)
@@ -64,8 +64,8 @@ class UndirectedGraph<V, E: Comparable<E>>(
 
     override fun deleteEdge(firstVertex: V, secondVertex: V){
         val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertexes.first.value
-        val secondValue = edge.vertexes.second.value
+        val firstValue = edge.vertices.first.value
+        val secondValue = edge.vertices.second.value
         _edges.remove(firstValue to secondValue)
         edgesByVertex[firstValue]?.remove(edge)
         edgesByVertex[secondValue]?.remove(edge)
@@ -88,6 +88,6 @@ class UndirectedGraph<V, E: Comparable<E>>(
 
     class UndirectedEdge<E, V>(
         override var element: E,
-        override val vertexes: Pair<UndirectedVertex<V>, UndirectedVertex<V>>
+        override val vertices: Pair<UndirectedVertex<V>, UndirectedVertex<V>>
     ) : Edge<E, V>
 }

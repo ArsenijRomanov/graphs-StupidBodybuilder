@@ -2,5 +2,5 @@ package model
 
 interface Edge<E, V> {
     var element: E
-    val vertexes: Pair<Vertex<V>, Vertex<V>>
+    val vertices: Pair<Vertex<V>, Vertex<V>>
 }
