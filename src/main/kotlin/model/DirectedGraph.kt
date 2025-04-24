@@ -75,7 +75,7 @@ class DirectedGraph<V, E : Comparable<E>>(
         edgesByVertex[firstValue]?.remove(secondValue)
     }
 
-    fun findVertex(value: V): DirectedVertex<V>? {
+    override fun findVertex(value: V): DirectedVertex<V>? {
         return _vertices[value]
     }
 

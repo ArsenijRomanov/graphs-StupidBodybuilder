@@ -1,5 +1,6 @@
 package model
 
+import model.DirectedGraph.DirectedVertex
 import space.kscience.kmath.operations.Ring
 
 interface Graph<V, E: Comparable<E>> {
@@ -12,4 +13,5 @@ interface Graph<V, E: Comparable<E>> {
     fun deleteVertex(value: V)
     fun deleteEdge(firstVertex: V, secondVertex: V)
     fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>>
+    fun findVertex(value: V): Vertex<V>?
 }
