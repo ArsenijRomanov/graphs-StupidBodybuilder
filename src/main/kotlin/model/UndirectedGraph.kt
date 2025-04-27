@@ -2,7 +2,7 @@ package model
 
 import space.kscience.kmath.operations.Ring
 
-class UndirectedGraph<V, E: Comparable<E>>(
+class UndirectedGraph<V, E : Comparable<E>>(
     override val ring: Ring<E>
 ) : Graph<V, E> {
     private val _vertices = hashMapOf<V, UndirectedVertex<V>>()
@@ -14,16 +14,16 @@ class UndirectedGraph<V, E: Comparable<E>>(
     override val edges: Collection<Edge<E, V>>
         get() = _edges.values
 
-    val edgesByVertex = hashMapOf< V, MutableSet< UndirectedEdge<E, V> > >()
+    val edgesByVertex = hashMapOf<V, MutableSet<UndirectedEdge<E, V>>>()
 
-    override fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>>{
+    override fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>> {
         return edgesByVertex[vertex] ?: emptySet()
     }
 
-    fun getNeighborVertices(vertex: V): Collection<V>{
+    fun getNeighborVertices(vertex: V): Collection<V> {
         return getEdgesByVertex(vertex).map {
-            val v1 = it.vertices.first.value
-            val v2 = it.vertices.second.value
+            val v1 = it.vertices.first
+            val v2 = it.vertices.second
             if (v1 == vertex) v2 else v1
         }
     }
@@ -34,52 +34,50 @@ class UndirectedGraph<V, E: Comparable<E>>(
         edgesByVertex.putIfAbsent(value, mutableSetOf())
     }
 
-    override fun addEdge(firstVertex: V, secondVertex: V, element: E){
+    override fun addEdge(firstVertex: V, secondVertex: V, element: E) {
         addVertex(firstVertex)
         addVertex(secondVertex)
-        val first = findVertex(firstVertex) ?: return
-        val second = findVertex(secondVertex) ?: return
         if (findEdge(firstVertex, secondVertex) != null) return
-        val newEdge = UndirectedEdge(element, first to second)
+        val newEdge = UndirectedEdge(element, firstVertex to secondVertex)
         _edges.put(firstVertex to secondVertex, newEdge)
         edgesByVertex[firstVertex]?.add(newEdge)
         edgesByVertex[secondVertex]?.add(newEdge)
     }
 
 
-    override fun deleteVertex(value: V){
+    override fun deleteVertex(value: V) {
         val edgesToRemove = edgesByVertex[value] ?: return
-        for (edge in edgesToRemove){
+        for (edge in edgesToRemove) {
             val firstVertex = edge.vertices.first
             val secondVertex = edge.vertices.second
-            _edges.remove(firstVertex.value to secondVertex.value)
-            if (firstVertex.value == value)
-                edgesByVertex[secondVertex.value]?.remove(edge)
+            _edges.remove(firstVertex to secondVertex)
+            if (firstVertex == value)
+                edgesByVertex[secondVertex]?.remove(edge)
             else
-                edgesByVertex[firstVertex.value]?.remove(edge)
+                edgesByVertex[firstVertex]?.remove(edge)
         }
         edgesByVertex.remove(value)
         _vertices.remove(value)
     }
 
-    override fun deleteEdge(firstVertex: V, secondVertex: V){
+    override fun deleteEdge(firstVertex: V, secondVertex: V) {
         val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertices.first.value
-        val secondValue = edge.vertices.second.value
+        val firstValue = edge.vertices.first
+        val secondValue = edge.vertices.second
         _edges.remove(firstValue to secondValue)
         edgesByVertex[firstValue]?.remove(edge)
         edgesByVertex[secondValue]?.remove(edge)
     }
 
-    override fun findVertex(value: V): UndirectedVertex<V>?{
+    override fun findVertex(value: V): UndirectedVertex<V>? {
         return _vertices[value]
     }
 
-    fun findEdge(firstVertex: V, secondVertex: V): UndirectedEdge<E, V>?{
+    fun findEdge(firstVertex: V, secondVertex: V): UndirectedEdge<E, V>? {
         return _edges[firstVertex to secondVertex] ?: _edges[secondVertex to firstVertex]
     }
 
-    fun getVertexDegree(vertex: V): Int{
+    fun getVertexDegree(vertex: V): Int {
         val edges = edgesByVertex[vertex] ?: return 0
         return edges.size
     }
@@ -88,6 +86,6 @@ class UndirectedGraph<V, E: Comparable<E>>(
 
     class UndirectedEdge<E, V>(
         override var element: E,
-        override val vertices: Pair<UndirectedVertex<V>, UndirectedVertex<V>>
+        override val vertices: Pair<V, V>
     ) : Edge<E, V>
 }

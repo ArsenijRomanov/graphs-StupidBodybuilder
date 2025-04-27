@@ -1,10 +1,7 @@
 package model
 
-import space.kscience.kmath.operations.IntRing
 import space.kscience.kmath.operations.Ring
-
 import space.kscience.kmath.operations.invoke
-
 
 class DirectedGraph<V, E : Comparable<E>>(
     override val ring: Ring<E>
@@ -28,7 +25,7 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     fun getNeighborVertices(vertex: V): Collection<V> {
         return getEdgesByVertex(vertex).map {
-            it.vertices.second.value
+            it.vertices.second
         }
     }
 
@@ -41,10 +38,8 @@ class DirectedGraph<V, E : Comparable<E>>(
     override fun addEdge(firstVertex: V, secondVertex: V, element: E) {
         addVertex(firstVertex)
         addVertex(secondVertex)
-        val first = findVertex(firstVertex) ?: return
-        val second = findVertex(secondVertex) ?: return
         if (findEdge(firstVertex, secondVertex) != null) return
-        val newEdge = DirectedEdge(element, first to second)
+        val newEdge = DirectedEdge(element, firstVertex to secondVertex)
         _edges.put(firstVertex to secondVertex, newEdge)
         edgesByVertex[firstVertex]?.put(secondVertex, newEdge)
     }
@@ -69,8 +64,8 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     override fun deleteEdge(firstVertex: V, secondVertex: V) {
         val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertices.first.value
-        val secondValue = edge.vertices.second.value
+        val firstValue = edge.vertices.first
+        val secondValue = edge.vertices.second
         _edges.remove(firstValue to secondValue)
         edgesByVertex[firstValue]?.remove(secondValue)
     }
@@ -102,7 +97,7 @@ class DirectedGraph<V, E : Comparable<E>>(
 
     class DirectedEdge<E, V>(
         override var element: E,
-        override val vertices: Pair<DirectedVertex<V>, DirectedVertex<V>>
+        override val vertices: Pair<V, V>
     ) : Edge<E, V>
 
     fun transposedGraph(): DirectedGraph<V, E> {
@@ -111,15 +106,15 @@ class DirectedGraph<V, E : Comparable<E>>(
             tg.addVertex(i)
         for (i in edges)
             tg.addEdge(
-                i.vertices.second.value,
-                i.vertices.first.value, i.element
+                i.vertices.second,
+                i.vertices.first, i.element
             )
         return tg
     }
 
     private fun dfs1(vertex: V, used: HashMap<V, Boolean>, order: ArrayList<V>) {
         used[vertex] = true
-        for ((to, outgoingEdge) in edgesByVertex[vertex] ?: emptyMap()) {
+        for ((to, _) in edgesByVertex[vertex] ?: emptyMap()) {
             if (!(used[to] ?: true))
                 dfs1(to, used, order)
         }
@@ -129,7 +124,7 @@ class DirectedGraph<V, E : Comparable<E>>(
     private fun dfs2(vertex: V, tg: DirectedGraph<V, E>, used: HashMap<V, Boolean>, component: ArrayList<V>) {
         used[vertex] = true
         component.add(vertex)
-        for ((to, outgoingEdge) in tg.edgesByVertex[vertex] ?: emptyMap<V, Vertex<V>>()) {
+        for ((to, _) in tg.edgesByVertex[vertex] ?: emptyMap<V, Vertex<V>>()) {
             if (!(used[to] ?: true))
                 dfs2(to, tg, used, component)
         }

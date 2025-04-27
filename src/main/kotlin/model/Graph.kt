@@ -1,9 +1,8 @@
 package model
 
-import model.DirectedGraph.DirectedVertex
 import space.kscience.kmath.operations.Ring
 
-interface Graph<V, E: Comparable<E>> {
+interface Graph<V, E : Comparable<E>> {
     val ring: Ring<E>
     val vertices: Collection<V>
     val edges: Collection<Edge<E, V>>

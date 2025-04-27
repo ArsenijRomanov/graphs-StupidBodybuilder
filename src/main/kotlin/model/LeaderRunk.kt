@@ -22,7 +22,7 @@ fun <V, E : Comparable<E>> leaderRank(graph: Graph<V, E>): Map<V, Double> {
         for ((curVertex, rank) in ranks) {
             val share: Double = rank / ((vertexDegree[curVertex] ?: 0) + 1)
             for (edge in edgesByVertex[curVertex] ?: emptyList()) {
-                val to = edge.vertices.second.value
+                val to = edge.vertices.second
                 newRanks[to] = (newRanks[to] ?: 0.0) + share
             }
             virtualVertexRank += share

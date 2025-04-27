@@ -95,8 +95,8 @@ fun <V, E : Comparable<E>> dijkstra(
 
         val edges = graph.getEdgesByVertex(minValue.first)
         for (edge in edges) {
-            val firstVertex = edge.vertices.first.value
-            val secondVertex = edge.vertices.second.value
+            val firstVertex = edge.vertices.first
+            val secondVertex = edge.vertices.second
             val weight = edge.element
             val current = distances.getValue(secondVertex)
             val from = distances.getValue(minValue.first).getOrNull()
