@@ -1,5 +1,5 @@
 package model
 
-interface Vertex<V> {
-    val value: V
+interface Vertex {
+    val value: Long
 }

@@ -1,0 +1,4 @@
+[90m/home/ars/graphs-StupidBodybuilder/src/test/kotlin/[0mMainTest.kt[90m:[0m1[90m:1:[0m File 'MainTest.kt' should not be empty [90m(standard:no-empty-file)[0m
+
+Summary error count (descending) by rule:
+  standard:no-empty-file: 1

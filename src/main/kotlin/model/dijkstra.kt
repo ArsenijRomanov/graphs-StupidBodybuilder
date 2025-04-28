@@ -1,134 +1,77 @@
 package model
 
-import space.kscience.kmath.operations.Ring
-import space.kscience.kmath.operations.invoke
+fun vertexWithMinDistance(
+    distances: Map<Long, Long>,
+    used: Set<Long>,
+): Long? {
+    var minVertex: Long? = null
+    var minDistance = Long.MAX_VALUE
 
-sealed class Distance<E : Comparable<E>> : Comparable<Distance<E>> {
-    data class Finite<E : Comparable<E>>(val value: E) : Distance<E>()
-    object Infinity : Distance<Nothing>()
-
-    companion object {
-        @Suppress("UNCHECKED_CAST")
-        fun <E : Comparable<E>> infinity(): Distance<E> = Infinity as Distance<E>
-
-        fun <E : Comparable<E>> of(value: E?): Distance<E> = if (value == null) infinity() else Finite(value)
+    for ((vertex, distance) in distances) {
+        if (!used.contains(vertex) && distance < minDistance) {
+            minDistance = distance
+            minVertex = vertex
+        }
     }
 
-    override fun compareTo(other: Distance<E>): Int = when {
-        this is Infinity && other is Infinity -> 0
-        this is Infinity -> 1
-        other is Infinity -> -1
-        this is Finite && other is Finite -> this.value.compareTo(other.value)
-        else -> error("Unreachable")
-    }
+    return minVertex
+}
 
-    fun getOrNull(): E? {
-        if (this is Finite) return this.value
+fun checkGraphForNegativeWeight(graph: Graph) = graph.edges.any { it.weight < 0 }
+
+fun dijkstra(
+    graph: Graph,
+    start: Long,
+    end: Long,
+): List<Long>? {
+    if (graph.findVertex(start) == null || graph.findVertex(end) == null) {
         return null
     }
-
-    fun plus(ring: Ring<E>, other: E): Distance<E> = when (this) {
-        is Finite -> Distance.of(ring { value + other })
-        is Infinity -> this
-    }
-}
-
-fun <E : Comparable<E>> infinity(): Distance<E> = Distance.infinity()
-
-fun <E : Comparable<E>> minDistance(first: Distance<E>, second: Distance<E>): Distance<E> {
-    return if (first < second) first else second
-}
-
-fun <V, E : Comparable<E>> minDistanceForDijkstra(
-    distances: Map<V, Distance<E>>, used: MutableMap<V, Boolean>
-): Pair<V, Distance<E>> {
-    var min: Pair<V, Distance<E>>? = null
-    for ((first, second) in distances) {
-        if (min == null || (second < min.second && !(used[first] ?: false))) {
-            min = first to second
-        }
-    }
-    if (min == null) {
-        throw NoSuchElementException("No unused vertex with finite distance found.")
-    }
-    used[min.first] = true
-    return min
-}
-
-fun <V, E : Comparable<E>> checkGraphForNegativeWeight(graph: Graph<V, E>): Boolean {
-    for (i in graph.edges) {
-        if (i.element < graph.ring.zero) return true
-    }
-    return false
-}
-
-
-@Throws(IllegalArgumentException::class, NoSuchElementException::class)
-fun <V, E : Comparable<E>> dijkstra(
-    graph: Graph<V, E>, start: V, end: V
-): List<V>? {
-    if (graph.findVertex(start) == null || graph.findVertex(end) == null) {
-        throw NoSuchElementException("Start or end vertex not found in the graph.")
+    if (checkGraphForNegativeWeight(graph)) {
+        return null
     }
     if (start == end) return listOf(start)
-    val ring = graph.ring
-    val zero = ring.zero
-    val vertices = graph.vertices
-    val edges = graph.edges
-    val distances = mutableMapOf<V, Distance<E>>()
-    for (i in vertices) distances[i] = infinity()
-    distances[start] = Distance.Finite(zero)
 
-    if (checkGraphForNegativeWeight(graph)) {
-        throw IllegalArgumentException("Graph contains negative edge weights. Dijkstra's algorithm cannot be used.")
-    }
+    val adjacencyList = getAdjacencyList(graph)
 
-    val size = graph.vertices.size
-    val used = mutableMapOf<V, Boolean>()
-    val prev = mutableMapOf<V, V>()
+    val infinity = Long.MAX_VALUE
+    val distances = mutableMapOf<Long, Long>()
+    for (i in graph.vertices) distances[i] = infinity
+    distances[start] = 0
+
+    val used = mutableSetOf<Long>()
+    val prev = mutableMapOf<Long, Long>()
     prev[start] = start
 
-    for (i in 0..size - 1) {
-        var stop = false
-        val minValue = minDistanceForDijkstra(distances, used)
-        if (minValue.second == infinity<E>()) return null
+    for (i in 0..graph.vertices.size - 1) {
+        val curVertex = vertexWithMinDistance(distances, used) ?: return emptyList()
+        used.add(curVertex)
+        if (curVertex == end) break
 
-        val edges = graph.getEdgesByVertex(minValue.first)
-        for (edge in edges) {
-            val firstVertex = edge.vertices.first
-            val secondVertex = edge.vertices.second
-            val weight = edge.element
-            val current = distances.getValue(secondVertex)
-            val from = distances.getValue(minValue.first).getOrNull()
+        val neighbours = adjacencyList[curVertex] ?: emptyList()
+        for (neighbour in neighbours) {
+            val weight = graph.findEdge(curVertex, neighbour)?.weight
+            val curDistance = distances[neighbour] ?: infinity
+            val from = distances[curVertex]
 
-            val newDistance = if (from != null) {
-                Distance.of(ring { from + weight })
-            } else {
-                infinity()
-            }
-            if (newDistance < current) {
-                distances[secondVertex] = newDistance
-                prev[secondVertex] = firstVertex
-            }
-            if (secondVertex == end) {
-                stop = true
-                break
+            val newDistance = if (weight == null || from == null) infinity else weight + from
+            if (newDistance < curDistance) {
+                distances[neighbour] = newDistance
+                prev[neighbour] = curVertex
             }
         }
-        if (stop) break
     }
 
-    if (!prev.containsKey(end)) return null
+    if (!prev.containsKey(end)) return emptyList()
 
-    val path = mutableListOf<V>()
-    var cur: V? = end
+    val path = mutableListOf<Long>()
+    var cur: Long? = end
     while (cur != null && cur != start) {
         path.add(cur)
         cur = prev[cur]
     }
-    if (cur == null) return null // если путь не полный
+    if (cur == null) return emptyList()
     path.add(start)
     path.reverse()
     return path
 }
-

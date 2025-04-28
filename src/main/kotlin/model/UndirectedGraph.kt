@@ -1,26 +1,22 @@
 package model
 
-import space.kscience.kmath.operations.Ring
+class UndirectedGraph() : Graph {
+    private val _vertices = hashMapOf<Long, UndirectedVertex>()
+    private val _edges = hashMapOf<Pair<Long, Long>, UndirectedEdge>()
 
-class UndirectedGraph<V, E : Comparable<E>>(
-    override val ring: Ring<E>
-) : Graph<V, E> {
-    private val _vertices = hashMapOf<V, UndirectedVertex<V>>()
-    private val _edges = hashMapOf<Pair<V, V>, UndirectedEdge<E, V>>()
-
-    override val vertices: Collection<V>
+    override val vertices: Collection<Long>
         get() = _vertices.keys
 
-    override val edges: Collection<Edge<E, V>>
+    override val edges: Collection<Edge>
         get() = _edges.values
 
-    val edgesByVertex = hashMapOf<V, MutableSet<UndirectedEdge<E, V>>>()
+    val edgesByVertex = hashMapOf<Long, MutableSet<UndirectedEdge>>()
 
-    override fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>> {
+    fun getEdgesByVertex(vertex: Long): Collection<Edge> {
         return edgesByVertex[vertex] ?: emptySet()
     }
 
-    fun getNeighborVertices(vertex: V): Collection<V> {
+    fun getNeighborVertices(vertex: Long): Collection<Long> {
         return getEdgesByVertex(vertex).map {
             val v1 = it.vertices.first
             val v2 = it.vertices.second
@@ -28,13 +24,17 @@ class UndirectedGraph<V, E : Comparable<E>>(
         }
     }
 
-    override fun addVertex(value: V) {
+    override fun addVertex(value: Long) {
         if (findVertex(value) != null) return
         _vertices.put(value, UndirectedVertex(value))
         edgesByVertex.putIfAbsent(value, mutableSetOf())
     }
 
-    override fun addEdge(firstVertex: V, secondVertex: V, element: E) {
+    override fun addEdge(
+        firstVertex: Long,
+        secondVertex: Long,
+        element: Long,
+    ) {
         addVertex(firstVertex)
         addVertex(secondVertex)
         if (findEdge(firstVertex, secondVertex) != null) return
@@ -44,48 +44,26 @@ class UndirectedGraph<V, E : Comparable<E>>(
         edgesByVertex[secondVertex]?.add(newEdge)
     }
 
-
-    override fun deleteVertex(value: V) {
-        val edgesToRemove = edgesByVertex[value] ?: return
-        for (edge in edgesToRemove) {
-            val firstVertex = edge.vertices.first
-            val secondVertex = edge.vertices.second
-            _edges.remove(firstVertex to secondVertex)
-            if (firstVertex == value)
-                edgesByVertex[secondVertex]?.remove(edge)
-            else
-                edgesByVertex[firstVertex]?.remove(edge)
-        }
-        edgesByVertex.remove(value)
-        _vertices.remove(value)
-    }
-
-    override fun deleteEdge(firstVertex: V, secondVertex: V) {
-        val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertices.first
-        val secondValue = edge.vertices.second
-        _edges.remove(firstValue to secondValue)
-        edgesByVertex[firstValue]?.remove(edge)
-        edgesByVertex[secondValue]?.remove(edge)
-    }
-
-    override fun findVertex(value: V): UndirectedVertex<V>? {
+    override fun findVertex(value: Long): UndirectedVertex? {
         return _vertices[value]
     }
 
-    fun findEdge(firstVertex: V, secondVertex: V): UndirectedEdge<E, V>? {
+    fun findEdge(
+        firstVertex: Long,
+        secondVertex: Long,
+    ): UndirectedEdge? {
         return _edges[firstVertex to secondVertex] ?: _edges[secondVertex to firstVertex]
     }
 
-    fun getVertexDegree(vertex: V): Int {
+    fun getVertexDegree(vertex: Long): Int {
         val edges = edgesByVertex[vertex] ?: return 0
         return edges.size
     }
 
-    class UndirectedVertex<V>(override val value: V) : Vertex<V>
+    class UndirectedVertex(override val value: Long) : Vertex
 
-    class UndirectedEdge<E, V>(
-        override var element: E,
-        override val vertices: Pair<V, V>
-    ) : Edge<E, V>
+    class UndirectedEdge(
+        override var weight: Long,
+        override val vertices: Pair<Long, Long>,
+    ) : Edge
 }

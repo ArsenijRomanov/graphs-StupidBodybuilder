@@ -1,8 +1,7 @@
-import space.kscience.kmath.operations.*
 import model.*
 
-fun main(){
-    val graph = DirectedGraph<Int, Int>(IntRing)
+fun main() {
+    val graph = DirectedGraph()
     graph.addVertex(1)
     graph.addVertex(2)
     graph.addVertex(3)

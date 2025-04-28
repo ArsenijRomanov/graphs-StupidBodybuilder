@@ -1,0 +1,12 @@
+package model
+
+fun getAdjacencyList(graph: Graph): Map<Long, List<Long>> {
+    val adjacencyList: Map<Long, MutableList<Long>> =
+        graph.vertices.associateWith { mutableListOf() }
+    for (i in graph.edges) {
+        val first = i.vertices.first
+        val second = i.vertices.second
+        adjacencyList[first]?.add(second)
+    }
+    return adjacencyList
+}

@@ -1,41 +1,39 @@
 package model
 
-import space.kscience.kmath.operations.Ring
-import space.kscience.kmath.operations.invoke
+class DirectedGraph() : Graph {
+    private val _vertices = hashMapOf<Long, DirectedVertex>()
+    private val _edges = hashMapOf<Pair<Long, Long>, DirectedEdge>()
 
-class DirectedGraph<V, E : Comparable<E>>(
-    override val ring: Ring<E>
-) : Graph<V, E> {
-
-    private val _vertices = hashMapOf<V, DirectedVertex<V>>()
-    private val _edges = hashMapOf<Pair<V, V>, DirectedEdge<E, V>>()
-
-    override val vertices: Collection<V>
+    override val vertices: Collection<Long>
         get() = _vertices.keys
 
-    override val edges: Collection<Edge<E, V>>
+    override val edges: Collection<Edge>
         get() = _edges.values
 
-    private val edgesByVertex = hashMapOf<V, MutableMap<V, DirectedEdge<E, V>>>()
+    private val edgesByVertex = hashMapOf<Long, MutableMap<Long, DirectedEdge>>()
 
-    override fun getEdgesByVertex(vertex: V): Collection<Edge<E, V>> {
+    fun getEdgesByVertex(vertex: Long): Collection<Edge> {
         val edges = edgesByVertex[vertex] ?: return emptyList()
         return edges.map { it.value }
     }
 
-    fun getNeighborVertices(vertex: V): Collection<V> {
+    fun getNeighborVertices(vertex: Long): Collection<Long> {
         return getEdgesByVertex(vertex).map {
             it.vertices.second
         }
     }
 
-    override fun addVertex(value: V) {
+    override fun addVertex(value: Long) {
         if (findVertex(value) != null) return
         _vertices.put(value, DirectedVertex(value))
         edgesByVertex.putIfAbsent(value, mutableMapOf())
     }
 
-    override fun addEdge(firstVertex: V, secondVertex: V, element: E) {
+    override fun addEdge(
+        firstVertex: Long,
+        secondVertex: Long,
+        element: Long,
+    ) {
         addVertex(firstVertex)
         addVertex(secondVertex)
         if (findEdge(firstVertex, secondVertex) != null) return
@@ -44,126 +42,37 @@ class DirectedGraph<V, E : Comparable<E>>(
         edgesByVertex[firstVertex]?.put(secondVertex, newEdge)
     }
 
-
-    override fun deleteVertex(value: V) {
-        val edgesToRemove = edgesByVertex[value] ?: return
-        edgesToRemove.forEach { (to, _) ->
-            _edges.remove(value to to)
-        }
-
-        for ((from, edges) in edgesByVertex) {
-            if (edges.containsKey(value)) {
-                _edges.remove(from to value)
-                edges.remove(value)
-            }
-        }
-
-        edgesByVertex.remove(value)
-        _vertices.remove(value)
-    }
-
-    override fun deleteEdge(firstVertex: V, secondVertex: V) {
-        val edge = findEdge(firstVertex, secondVertex) ?: return
-        val firstValue = edge.vertices.first
-        val secondValue = edge.vertices.second
-        _edges.remove(firstValue to secondValue)
-        edgesByVertex[firstValue]?.remove(secondValue)
-    }
-
-    override fun findVertex(value: V): DirectedVertex<V>? {
+    override fun findVertex(value: Long): DirectedVertex? {
         return _vertices[value]
     }
 
-    fun findEdge(firstVertex: V, secondVertex: V): DirectedEdge<E, V>? {
+    fun findEdge(
+        firstVertex: Long,
+        secondVertex: Long,
+    ): DirectedEdge? {
         return _edges[firstVertex to secondVertex]
     }
 
-    fun getFromDegree(vertex: V): Int {
+    fun getFromDegree(vertex: Long): Int {
         val edges = edgesByVertex[vertex] ?: return 0
         return edges.size
     }
 
-    fun getInDegree(vertex: V): Int {
+    fun getInDegree(vertex: Long): Int {
         findVertex(vertex) ?: return 0
         var cnt = 0
         for ((_, edges) in edgesByVertex) {
-            if (edges.containsKey(vertex))
+            if (edges.containsKey(vertex)) {
                 ++cnt
+            }
         }
         return cnt
     }
 
-    class DirectedVertex<V>(override val value: V) : Vertex<V>
+    class DirectedVertex(override val value: Long) : Vertex
 
-    class DirectedEdge<E, V>(
-        override var element: E,
-        override val vertices: Pair<V, V>
-    ) : Edge<E, V>
-
-    fun transposedGraph(): DirectedGraph<V, E> {
-        val tg = DirectedGraph<V, E>(ring)
-        for (i in vertices)
-            tg.addVertex(i)
-        for (i in edges)
-            tg.addEdge(
-                i.vertices.second,
-                i.vertices.first, i.element
-            )
-        return tg
-    }
-
-    private fun dfs1(vertex: V, used: HashMap<V, Boolean>, order: ArrayList<V>) {
-        used[vertex] = true
-        for ((to, _) in edgesByVertex[vertex] ?: emptyMap()) {
-            if (!(used[to] ?: true))
-                dfs1(to, used, order)
-        }
-        order.add(vertex)
-    }
-
-    private fun dfs2(vertex: V, tg: DirectedGraph<V, E>, used: HashMap<V, Boolean>, component: ArrayList<V>) {
-        used[vertex] = true
-        component.add(vertex)
-        for ((to, _) in tg.edgesByVertex[vertex] ?: emptyMap<V, Vertex<V>>()) {
-            if (!(used[to] ?: true))
-                dfs2(to, tg, used, component)
-        }
-    }
-
-    fun SCC(): List<List<V>> {
-        val used = hashMapOf<V, Boolean>().apply {
-            vertices.forEach { put(it, false) }
-        }
-
-        val order = ArrayList<V>()
-        for (i in vertices) {
-            if (!(used[i] ?: true))
-                dfs1(i, used, order)
-        }
-
-
-        val scc = ArrayList<List<V>>()
-        used.keys.forEach { key ->
-            used[key] = false
-        }
-        val tg = transposedGraph()
-        for (i in order.asReversed()) {
-            if (!(used[i] ?: true)) {
-                val component = ArrayList<V>()
-                dfs2(i, tg, used, component)
-                scc.add(component)
-            }
-        }
-
-        return scc
-    }
-
-    fun allWeights(): E = ring {
-        var sum = zero
-        for (edge in edges) {
-            sum += edge.element
-        }
-        sum
-    }
+    class DirectedEdge(
+        override var weight: Long,
+        override val vertices: Pair<Long, Long>,
+    ) : Edge
 }
-

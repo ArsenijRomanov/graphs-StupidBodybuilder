@@ -2,16 +2,18 @@ package model
 
 import kotlin.math.abs
 
-fun <V, E : Comparable<E>> leaderRank(graph: Graph<V, E>): Map<V, Double> {
+fun leaderRank(graph: Graph): Map<Long, Double> {
+    val adjacencyList = getAdjacencyList(graph)
     val epsilon = 0.0001
     val vertices = graph.vertices
     val verticesSize = vertices.size
     var virtualVertexRank = 0.0
     var ranks = vertices.associateWith { 1.0 }
-    val vertexDegree = vertices.associateWith {
-        graph.getEdgesByVertex(it).size
-    }
-    val edgesByVertex = vertices.associateWith { graph.getEdgesByVertex(it) }
+    val vertexDegree =
+        vertices.associateWith {
+            adjacencyList[it]?.size ?: 0
+        }
+    val neighboursOfVertex = vertices.associateWith { adjacencyList[it] ?: emptyList() }
 
     var maxDiff = 1.0
     while (maxDiff > epsilon) {
@@ -21,9 +23,8 @@ fun <V, E : Comparable<E>> leaderRank(graph: Graph<V, E>): Map<V, Double> {
 
         for ((curVertex, rank) in ranks) {
             val share: Double = rank / ((vertexDegree[curVertex] ?: 0) + 1)
-            for (edge in edgesByVertex[curVertex] ?: emptyList()) {
-                val to = edge.vertices.second
-                newRanks[to] = (newRanks[to] ?: 0.0) + share
+            for (neighbour in neighboursOfVertex[curVertex] ?: emptyList()) {
+                newRanks[neighbour] = (newRanks[neighbour] ?: 0.0) + share
             }
             virtualVertexRank += share
         }
@@ -31,33 +32,12 @@ fun <V, E : Comparable<E>> leaderRank(graph: Graph<V, E>): Map<V, Double> {
         val virtualShare: Double = oldVirtualVertexRank / verticesSize
         for (curVertex in vertices) newRanks[curVertex] = (newRanks[curVertex] ?: 0.0) + virtualShare
 
-        maxDiff = vertices.maxOf { vertex ->
-            abs((ranks[vertex] ?: 0.0) - (newRanks[vertex] ?: 0.0))
-        }
+        maxDiff =
+            vertices.maxOf { vertex ->
+                abs((ranks[vertex] ?: 0.0) - (newRanks[vertex] ?: 0.0))
+            }
         ranks = newRanks
     }
 
     return ranks
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
