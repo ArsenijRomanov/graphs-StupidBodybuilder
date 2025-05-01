@@ -9,12 +9,11 @@ import viewmodel.GraphViewModel
 
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
-fun GraphView(
-    viewModel: GraphViewModel,
-) {
-    Box(modifier = Modifier
-        .fillMaxSize()
-
+fun GraphView(viewModel: GraphViewModel) {
+    Box(
+        modifier =
+            Modifier
+                .fillMaxSize(),
     ) {
         viewModel.vertices.forEach { v ->
             vertexView(v, Modifier)

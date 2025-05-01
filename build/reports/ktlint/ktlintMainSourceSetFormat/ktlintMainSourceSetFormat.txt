@@ -1,116 +1,92 @@
 [90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m1[90m:1:[0m File name 'main.kt' should conform PascalCase [90m(standard:filename)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m1[90m:1:[0m Wildcard import [90m(standard:no-wildcard-imports)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mdijkstra.kt[90m:[0m1[90m:1:[0m File name 'dijkstra.kt' should conform PascalCase [90m(standard:filename)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m1[90m:1:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m1[90m:1:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m1[90m:1:[0m Unexpected indentation (0) (should be 4) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m6[90m:1:[0m Wildcard import [90m(standard:no-wildcard-imports)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m11[90m:26:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m12[90m:5:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m13[90m:9:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m14[90m:13:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m15[90m:17:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m17[90m:4:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m18[90m:8:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m20[90m:11:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m21[90m:12:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m22[90m:16:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m23[90m:20:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m25[90m:3:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m27[90m:6:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m28[90m:14:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m30[90m:5:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m31[90m:8:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m32[90m:11:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m33[90m:15:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m35[90m:18:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m36[90m:19:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m37[90m:19:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m38[90m:20:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m39[90m:22:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m42[90m:1:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m45[90m:3:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m47[90m:5:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m47[90m:9:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m49[90m:4:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m49[90m:32:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m49[90m:57:[0m Unexpected indentation (0) (should be 4) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m51[90m:1:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/[0mmain.kt[90m:[0m53[90m:18:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
 [90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m1[90m:1:[0m File name 'getAdjacencyList.kt' should conform PascalCase [90m(standard:filename)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m10[90m:57:[0m Missing spacing before "{" [90m(standard:curly-spacing)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m10[90m:57:[0m Expected a newline [90m(standard:if-else-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m11[90m:12:[0m Unexpected newline before "{" [90m(standard:curly-spacing)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m11[90m:14:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m14[90m:2:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mGraph.kt[90m:[0m3[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mSCC.kt[90m:[0m45[90m:5:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m11[90m:3:[0m Unexpected indentation (16) (should be 12) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m11[90m:13:[0m Unexpected newline before "{" [90m(standard:curly-spacing)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/model/[0mgetAdjacencyList.kt[90m:[0m12[90m:35:[0m Unexpected indentation (12) (should be 8) [90m(standard:indent)[0m
 [90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m1[90m:1:[0m File name 'edgeView.kt' should conform PascalCase [90m(standard:filename)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m11[90m:1:[0m Unused import [90m(standard:no-unused-imports)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m12[90m:21:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m15[90m:12:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m21[90m:10:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m21[90m:21:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m22[90m:72:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m23[90m:76:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m24[90m:9:[0m Unexpected indentation (16) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m25[90m:12:[0m Unexpected indentation (20) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m26[90m:10:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m26[90m:13:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m27[90m:14:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m29[90m:3:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m29[90m:22:[0m Unexpected indentation (20) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m31[90m:3:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m36[90m:14:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m36[90m:15:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m36[90m:43:[0m Unexpected indentation (20) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m37[90m:47:[0m Unexpected indentation (20) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m39[90m:11:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m39[90m:33:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0medgeView.kt[90m:[0m43[90m:1:[0m Unexpected indentation (16) (should be 12) [90m(standard:indent)[0m
 [90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m1[90m:1:[0m File name 'vertexView.kt' should conform PascalCase [90m(standard:filename)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m1[90m:1:[0m Unexpected indentation (20) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m1[90m:1:[0m Unexpected indentation (20) (should be 16) [90m(standard:indent)[0m
 [90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m5[90m:1:[0m Wildcard import [90m(standard:no-wildcard-imports)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m17[90m:9:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m21[90m:9:[0m Missing newline after "(" [90m(standard:wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m21[90m:20:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m22[90m:1:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m22[90m:22:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m23[90m:30:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m25[90m:18:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m26[90m:25:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m27[90m:17:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m29[90m:7:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m29[90m:20:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m30[90m:26:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m30[90m:44:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m31[90m:32:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m34[90m:3:[0m Unexpected indentation (16) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m36[90m:9:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m36[90m:26:[0m Unexpected indentation (16) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m38[90m:23:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m38[90m:36:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m39[90m:9:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mvertexView.kt[90m:[0m42[90m:1:[0m Unexpected indentation (20) (should be 24) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m1[90m:1:[0m File must end with a newline (\n) [90m(standard:final-newline)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m11[90m:24:[0m Newline expected after opening parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m11[90m:48:[0m Parameter should start on a newline [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m11[90m:72:[0m Parameter should start on a newline [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m12[90m:22:[0m Newline expected before closing parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m12[90m:22:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-declaration-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m43[90m:75:[0m Newline expected after opening parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m44[90m:1:[0m Parameter should start on a newline [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m44[90m:22:[0m Newline expected before closing parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m44[90m:23:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-declaration-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m48[90m:23:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m50[90m:17:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m52[90m:11:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mCircularPlacementStrategy.kt[90m:[0m52[90m:65:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mEdgeViewModel.kt[90m:[0m1[90m:1:[0m File must end with a newline (\n) [90m(standard:final-newline)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m1[90m:1:[0m File must end with a newline (\n) [90m(standard:final-newline)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m8[90m:21:[0m Unexpected spacing before "(" [90m(standard:paren-spacing)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m13[90m:29:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m14[90m:8:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m16[90m:6:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m16[90m:34:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m17[90m:24:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m17[90m:35:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m17[90m:46:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m18[90m:44:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m19[90m:47:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m20[90m:5:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m20[90m:27:[0m Unexpected indentation (12) (should be 16) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m20[90m:72:[0m Unexpected indentation (12) (should be 20) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m24[90m:8:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mGraphViewModel.kt[90m:[0m25[90m:31:[0m Unexpected indentation (4) (should be 8) [90m(standard:indent)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m4[90m:15:[0m Newline expected after opening parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m4[90m:39:[0m Parameter should start on a newline [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m4[90m:63:[0m Parameter should start on a newline [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m5[90m:5:[0m Expected a blank line for this declaration [90m(standard:blank-line-before-declaration)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m5[90m:24:[0m Newline expected before closing parenthesis [90m(standard:function-signature)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mRepresentationStrategy.kt[90m:[0m5[90m:24:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-declaration-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mVertexViewModel.kt[90m:[0m10[90m:22:[0m Unexpected spacing before "(" [90m(standard:paren-spacing)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mVertexViewModel.kt[90m:[0m16[90m:26:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-declaration-site)[0m
-[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/viewmodel/[0mVertexViewModel.kt[90m:[0m17[90m:2:[0m Missing spacing before "{" [90m(standard:curly-spacing)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m1[90m:1:[0m File name 'graphView.kt' should conform PascalCase [90m(standard:filename)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m12[90m:5:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m13[90m:5:[0m No whitespace expected between opening parenthesis and first parameter name [90m(standard:function-signature)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m13[90m:25:[0m Unnecessary trailing comma before ")" [90m(standard:trailing-comma-on-declaration-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m13[90m:26:[0m No whitespace expected between last parameter and closing parenthesis [90m(standard:function-signature)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m15[90m:9:[0m Missing newline after "(" [90m(standard:wrapping)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m15[90m:20:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m15[90m:22:[0m Unexpected indentation (8) (should be 12) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m16[90m:15:[0m Unexpected indentation (8) (should be 16) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m18[90m:8:[0m Unexpected blank line(s) in value argument list [90m(standard:no-blank-line-in-list)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mgraphView.kt[90m:[0m19[90m:2:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m1[90m:1:[0m Unexpected blank line(s) before "}" [90m(standard:no-blank-line-before-rbrace)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m3[90m:1:[0m Imports must be ordered in lexicographic order without any empty lines in-between with "java", "javax", "kotlin" and aliases in the end [90m(standard:import-ordering)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m4[90m:1:[0m Wildcard import [90m(standard:no-wildcard-imports)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m18[90m:5:[0m Function name should start with a lowercase letter (except factory methods) and use camel case [90m(standard:function-naming)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m20[90m:60:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m23[90m:24:[0m A multiline expression should start on a new line [90m(standard:multiline-expression-wrapping)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m24[90m:18:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m24[90m:88:[0m Unnecessary long whitespace [90m(standard:no-multi-spaces)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m25[90m:12:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m26[90m:16:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m26[90m:40:[0m Unnecessary long whitespace [90m(standard:no-multi-spaces)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m27[90m:3:[0m Unexpected indentation (16) (should be 20) [90m(standard:indent)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m27[90m:22:[0m Unnecessary long whitespace [90m(standard:no-multi-spaces)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m27[90m:22:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m27[90m:40:[0m A comment in a 'value_argument_list' is only allowed when placed on a separate line [90m(standard:discouraged-comment-location)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m27[90m:51:[0m A comment in a 'value_argument_list' is only allowed when placed on a separate line [90m(standard:discouraged-comment-location)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m32[90m:51:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m40[90m:48:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m48[90m:31:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
+[90m/home/ars/graphs-StupidBodybuilder/src/main/kotlin/view/[0mMainScreen.kt[90m:[0m56[90m:32:[0m Missing trailing comma before ")" [90m(standard:trailing-comma-on-call-site)[0m
 
 Summary error count (descending) by rule:
-  standard:indent: 46
-  standard:function-signature: 11
-  standard:multiline-expression-wrapping: 10
+  standard:indent: 39
+  standard:trailing-comma-on-call-site: 7
   standard:filename: 5
   standard:function-naming: 4
-  standard:trailing-comma-on-call-site: 4
-  standard:trailing-comma-on-declaration-site: 4
-  standard:curly-spacing: 3
-  standard:final-newline: 3
-  standard:no-unused-imports: 2
-  standard:no-wildcard-imports: 2
-  standard:paren-spacing: 2
-  standard:blank-line-before-declaration: 1
-  standard:if-else-wrapping: 1
+  standard:multiline-expression-wrapping: 4
+  standard:no-multi-spaces: 3
+  standard:no-wildcard-imports: 3
+  standard:discouraged-comment-location: 2
+  standard:function-signature: 2
+  standard:curly-spacing: 1
+  standard:import-ordering: 1
+  standard:no-blank-line-before-rbrace: 1
+  standard:no-blank-line-in-list: 1
+  standard:trailing-comma-on-declaration-site: 1
   standard:wrapping: 1

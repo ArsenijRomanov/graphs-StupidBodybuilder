@@ -6,7 +6,7 @@ import kotlin.test.assertNull
 
 class DijkstraTests {
     @Test
-    fun `find path in simple graph`()  {
+    fun `find path in simple graph`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 1)
@@ -21,7 +21,7 @@ class DijkstraTests {
     }
 
     @Test
-    fun `negative weights`()  {
+    fun `negative weights`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 1)
@@ -32,7 +32,7 @@ class DijkstraTests {
     }
 
     @Test
-    fun `begin is missing`()  {
+    fun `begin is missing`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 1)
@@ -43,7 +43,7 @@ class DijkstraTests {
     }
 
     @Test
-    fun `end is missing`()  {
+    fun `end is missing`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 1)
@@ -54,7 +54,7 @@ class DijkstraTests {
     }
 
     @Test
-    fun `the beginning is equal to the end`()  {
+    fun `the beginning is equal to the end`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 1)

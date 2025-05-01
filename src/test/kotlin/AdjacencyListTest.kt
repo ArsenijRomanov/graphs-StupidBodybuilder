@@ -6,13 +6,13 @@ import kotlin.test.assertEquals
 
 class AdjacencyListTest {
     @Test
-    fun `empty graph`()  {
+    fun `empty graph`() {
         val graph = DirectedGraph()
         assert(getAdjacencyList(graph).isEmpty())
     }
 
     @Test
-    fun `one vertex`()  {
+    fun `one vertex`() {
         val graph = UndirectedGraph()
         graph.addVertex(1)
         val adjacencyList = getAdjacencyList(graph)
@@ -21,7 +21,7 @@ class AdjacencyListTest {
     }
 
     @Test
-    fun `adjacency list for undirected graph`()  {
+    fun `adjacency list for undirected graph`() {
         val graph =
             UndirectedGraph().apply {
                 this.addEdge(1, 2, 0)
@@ -45,7 +45,7 @@ class AdjacencyListTest {
     }
 
     @Test
-    fun `adjacency list for directed graph`()  {
+    fun `adjacency list for directed graph`() {
         val graph =
             DirectedGraph().apply {
                 this.addEdge(1, 2, 0)
@@ -65,7 +65,7 @@ class AdjacencyListTest {
     }
 
     @Test
-    fun `graph without edges`()  {
+    fun `graph without edges`() {
         val graph =
             UndirectedGraph().apply {
                 this.addVertex(1)
