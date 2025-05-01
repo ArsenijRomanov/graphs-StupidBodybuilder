@@ -5,6 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    id("jacoco") // ✅ Плагин покрытия кода
 }
 
 repositories {
@@ -14,23 +15,58 @@ repositories {
 }
 
 dependencies {
-    // Note, if you develop a library, you should use compose.desktop.common.
-    // compose.desktop.currentOs should be used in launcher-sourceSet
-    // (in a separate module for demo project and in testMain).
-    // With compose.desktop.common you will also lose @Preview functionality
     implementation(compose.desktop.currentOs)
-    // Include the Test API
+
+    // Тестовые библиотеки
+    testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
+    testImplementation("io.kotest:kotest-assertions-core:5.5.5")
+    testImplementation("io.kotest:kotest-property:5.5.5")
+    testImplementation(kotlin("test"))
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
+    testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
+    testImplementation("org.junit.jupiter:junit-jupiter-params:5.9.0")
+
+    testImplementation("org.assertj:assertj-core:3.24.2")
+    testImplementation("net.jqwik:jqwik:1.7.2")
+
+    // Для UI-тестов Compose Desktop (если используешь)
     testImplementation(compose.desktop.uiTestJUnit4)
 }
 
 compose.desktop {
     application {
         mainClass = "MainKt"
-
         nativeDistributions {
             targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
             packageName = "KotlinJvmComposeDesktopApplication"
             packageVersion = "1.0.0"
         }
+    }
+}
+
+// Используем JUnit 5
+tasks.test {
+    useJUnitPlatform()
+    finalizedBy(tasks.jacocoTestReport) // Автоматически генерировать отчёт после тестов
+}
+
+// JaCoCo настройка
+jacoco {
+    toolVersion = "0.8.10"
+}
+
+tasks.jacocoTestReport {
+    dependsOn(tasks.test) // Сначала прогнать тесты
+    reports {
+        xml.required.set(true)
+        html.required.set(true)
+    }
+}
+
+tasks.withType<Test> {
+    testLogging {
+        events("passed", "skipped", "failed")
+        showStandardStreams = true
     }
 }

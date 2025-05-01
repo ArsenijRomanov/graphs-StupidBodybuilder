@@ -1,7 +1,5 @@
 package model
 
-import model.DirectedGraph.DirectedEdge
-
 interface Graph {
     val vertices: Collection<Long>
     val edges: Collection<Edge>
@@ -19,5 +17,5 @@ interface Graph {
     fun findEdge(
         firstVertex: Long,
         secondVertex: Long,
-    ): DirectedEdge?
+    ): Edge?
 }

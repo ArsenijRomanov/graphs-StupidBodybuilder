@@ -7,6 +7,10 @@ fun getAdjacencyList(graph: Graph): Map<Long, List<Long>> {
         val first = i.vertices.first
         val second = i.vertices.second
         adjacencyList[first]?.add(second)
+        if (graph is UndirectedGraph && first != second)
+            {
+                adjacencyList[second]?.add(first)
+            }
     }
     return adjacencyList
 }

@@ -10,24 +10,9 @@ class UndirectedGraph() : Graph {
     override val edges: Collection<Edge>
         get() = _edges.values
 
-    val edgesByVertex = hashMapOf<Long, MutableSet<UndirectedEdge>>()
-
-    fun getEdgesByVertex(vertex: Long): Collection<Edge> {
-        return edgesByVertex[vertex] ?: emptySet()
-    }
-
-    fun getNeighborVertices(vertex: Long): Collection<Long> {
-        return getEdgesByVertex(vertex).map {
-            val v1 = it.vertices.first
-            val v2 = it.vertices.second
-            if (v1 == vertex) v2 else v1
-        }
-    }
-
     override fun addVertex(value: Long) {
         if (findVertex(value) != null) return
         _vertices.put(value, UndirectedVertex(value))
-        edgesByVertex.putIfAbsent(value, mutableSetOf())
     }
 
     override fun addEdge(
@@ -40,24 +25,17 @@ class UndirectedGraph() : Graph {
         if (findEdge(firstVertex, secondVertex) != null) return
         val newEdge = UndirectedEdge(element, firstVertex to secondVertex)
         _edges.put(firstVertex to secondVertex, newEdge)
-        edgesByVertex[firstVertex]?.add(newEdge)
-        edgesByVertex[secondVertex]?.add(newEdge)
     }
 
-    override fun findVertex(value: Long): UndirectedVertex? {
+    override fun findVertex(value: Long): Vertex? {
         return _vertices[value]
     }
 
-    fun findEdge(
+    override fun findEdge(
         firstVertex: Long,
         secondVertex: Long,
-    ): UndirectedEdge? {
+    ): Edge? {
         return _edges[firstVertex to secondVertex] ?: _edges[secondVertex to firstVertex]
-    }
-
-    fun getVertexDegree(vertex: Long): Int {
-        val edges = edgesByVertex[vertex] ?: return 0
-        return edges.size
     }
 
     class UndirectedVertex(override val value: Long) : Vertex
