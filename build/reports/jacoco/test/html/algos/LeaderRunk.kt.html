@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>LeaderRunk.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">algos</a> &gt; <span class="el_source">LeaderRunk.kt</span></div><h1>LeaderRunk.kt</h1><pre class="source lang-java linenums">package algos
+
+import model.Graph
+import kotlin.math.abs
+
+fun leaderRank(graph: Graph): Map&lt;Long, Double&gt; {
+<span class="fc bfc" id="L7" title="All 2 branches covered.">    if (graph.isEmpty()) return emptyMap()</span>
+<span class="fc bfc" id="L8" title="All 2 branches covered.">    if (graph.edges.isEmpty()) return graph.vertices.associateWith { 1.0 }</span>
+
+<span class="fc" id="L10">    val adjacencyList = getAdjacencyList(graph)</span>
+<span class="fc" id="L11">    val epsilon = 0.0001</span>
+<span class="fc" id="L12">    val vertices = graph.vertices</span>
+<span class="fc" id="L13">    val verticesSize = vertices.size</span>
+<span class="fc" id="L14">    var virtualVertexRank = 0.0</span>
+<span class="fc" id="L15">    var ranks = vertices.associateWith { 1.0 }.toMutableMap()</span>
+<span class="fc" id="L16">    val vertexDegree =</span>
+<span class="fc" id="L17">        vertices.associateWith {</span>
+<span class="pc bpc" id="L18" title="1 of 2 branches missed.">            adjacencyList[it]?.size ?: 0</span>
+        }
+<span class="pc bpc" id="L20" title="1 of 2 branches missed.">    val neighboursOfVertex = vertices.associateWith { adjacencyList[it] ?: emptyList() }</span>
+
+<span class="fc" id="L22">    var maxDiff = 1.0</span>
+<span class="fc bfc" id="L23" title="All 2 branches covered.">    while (maxDiff &gt; epsilon) {</span>
+<span class="fc" id="L24">        val oldVirtualVertexRank = virtualVertexRank</span>
+<span class="fc" id="L25">        virtualVertexRank = 0.0</span>
+<span class="fc" id="L26">        val newRanks = vertices.associateWith { 0.0 }.toMutableMap()</span>
+
+<span class="fc bfc" id="L28" title="All 2 branches covered.">        for ((curVertex, rank) in ranks) {</span>
+<span class="pc bpc" id="L29" title="1 of 2 branches missed.">            val share: Double = rank / ((vertexDegree[curVertex] ?: 0) + 1)</span>
+<span class="pc bpc" id="L30" title="1 of 4 branches missed.">            for (neighbour in neighboursOfVertex[curVertex] ?: emptyList()) {</span>
+<span class="pc bpc" id="L31" title="1 of 2 branches missed.">                newRanks[neighbour] = (newRanks[neighbour] ?: 0.0) + share</span>
+            }
+<span class="fc" id="L33">            virtualVertexRank += share</span>
+        }
+
+<span class="fc" id="L36">        val virtualShare: Double = oldVirtualVertexRank / verticesSize</span>
+<span class="fc bfc" id="L37" title="All 2 branches covered.">        for (curVertex in vertices)</span>
+<span class="pc bpc" id="L38" title="1 of 2 branches missed.">            newRanks[curVertex] = (newRanks[curVertex] ?: 0.0) + virtualShare</span>
+
+<span class="fc" id="L40">        maxDiff =</span>
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">            vertices.maxOf { vertex -&gt;</span>
+<span class="pc bpc" id="L42" title="4 of 8 branches missed.">                abs((ranks[vertex] ?: 0.0) - (newRanks[vertex] ?: 0.0))</span>
+            }
+<span class="fc" id="L44">        ranks = newRanks</span>
+    }
+
+<span class="fc" id="L47">    val virtualShare: Double = virtualVertexRank / verticesSize</span>
+<span class="fc bfc" id="L48" title="All 2 branches covered.">    for (curVertex in vertices)</span>
+<span class="pc bpc" id="L49" title="1 of 2 branches missed.">        ranks[curVertex] = (ranks[curVertex] ?: 0.0) + virtualShare</span>
+
+<span class="fc" id="L51">    return ranks</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

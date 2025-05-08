@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>dijkstra.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">algos</a> &gt; <span class="el_source">dijkstra.kt</span></div><h1>dijkstra.kt</h1><pre class="source lang-java linenums">package algos
+
+import model.Graph
+
+fun vertexWithMinDistance(
+    distances: Map&lt;Long, Long&gt;,
+    used: Set&lt;Long&gt;,
+): Long? {
+<span class="fc" id="L9">    var minVertex: Long? = null</span>
+<span class="fc" id="L10">    var minDistance = Long.MAX_VALUE</span>
+
+<span class="fc bfc" id="L12" title="All 2 branches covered.">    for ((vertex, distance) in distances) {</span>
+<span class="fc bfc" id="L13" title="All 4 branches covered.">        if (!used.contains(vertex) &amp;&amp; distance &lt; minDistance) {</span>
+<span class="fc" id="L14">            minDistance = distance</span>
+<span class="fc" id="L15">            minVertex = vertex</span>
+        }
+    }
+
+<span class="fc" id="L19">    return minVertex</span>
+}
+
+<span class="fc bfc" id="L22" title="All 2 branches covered.">fun checkGraphForNegativeWeight(graph: Graph) = graph.edges.any { it.weight &lt; 0 }</span>
+
+fun dijkstra(
+    graph: Graph,
+    start: Long,
+    end: Long,
+): List&lt;Long&gt;? {
+<span class="fc bfc" id="L29" title="All 4 branches covered.">    if (graph.findVertex(start) == null || graph.findVertex(end) == null) {</span>
+<span class="fc" id="L30">        return null</span>
+    }
+<span class="fc bfc" id="L32" title="All 2 branches covered.">    if (checkGraphForNegativeWeight(graph)) {</span>
+<span class="fc" id="L33">        return null</span>
+    }
+<span class="fc bfc" id="L35" title="All 2 branches covered.">    if (start == end) return listOf(start)</span>
+
+<span class="fc" id="L37">    val adjacencyList = getAdjacencyList(graph)</span>
+
+<span class="fc" id="L39">    val infinity = Long.MAX_VALUE</span>
+<span class="fc" id="L40">    val distances = mutableMapOf&lt;Long, Long&gt;()</span>
+<span class="fc bfc" id="L41" title="All 2 branches covered.">    for (i in graph.vertices) distances[i] = infinity</span>
+<span class="fc" id="L42">    distances[start] = 0</span>
+
+<span class="fc" id="L44">    val used = mutableSetOf&lt;Long&gt;()</span>
+<span class="fc" id="L45">    val prev = mutableMapOf&lt;Long, Long&gt;()</span>
+<span class="fc" id="L46">    prev[start] = start</span>
+
+<span class="pc bpc" id="L48" title="2 of 4 branches missed.">    for (i in 0..graph.vertices.size - 1) {</span>
+<span class="fc bfc" id="L49" title="All 2 branches covered.">        val curVertex = vertexWithMinDistance(distances, used) ?: return emptyList()</span>
+<span class="fc" id="L50">        used.add(curVertex)</span>
+<span class="fc bfc" id="L51" title="All 2 branches covered.">        if (curVertex == end) break</span>
+
+<span class="pc bpc" id="L53" title="1 of 2 branches missed.">        val neighbours = adjacencyList[curVertex] ?: emptyList()</span>
+<span class="fc bfc" id="L54" title="All 2 branches covered.">        for (neighbour in neighbours) {</span>
+<span class="pc bpc" id="L55" title="1 of 2 branches missed.">            val weight = graph.findEdge(curVertex, neighbour)?.weight</span>
+<span class="pc bpc" id="L56" title="1 of 2 branches missed.">            val curDistance = distances[neighbour] ?: infinity</span>
+<span class="fc" id="L57">            val from = distances[curVertex]</span>
+
+<span class="pc bpc" id="L59" title="2 of 4 branches missed.">            val newDistance = if (weight == null || from == null) infinity else weight + from</span>
+<span class="fc bfc" id="L60" title="All 2 branches covered.">            if (newDistance &lt; curDistance) {</span>
+<span class="fc" id="L61">                distances[neighbour] = newDistance</span>
+<span class="fc" id="L62">                prev[neighbour] = curVertex</span>
+            }
+        }
+    }
+
+<span class="pc bpc" id="L67" title="1 of 2 branches missed.">    if (!prev.containsKey(end)) return emptyList()</span>
+
+<span class="fc" id="L69">    val path = mutableListOf&lt;Long&gt;()</span>
+<span class="fc" id="L70">    var cur: Long? = end</span>
+<span class="pc bpc" id="L71" title="1 of 4 branches missed.">    while (cur != null &amp;&amp; cur != start) {</span>
+<span class="fc" id="L72">        path.add(cur)</span>
+<span class="fc" id="L73">        cur = prev[cur]</span>
+    }
+<span class="pc bpc" id="L75" title="1 of 2 branches missed.">    if (cur == null) return emptyList()</span>
+<span class="fc" id="L76">    path.add(start)</span>
+<span class="fc" id="L77">    path.reverse()</span>
+<span class="fc" id="L78">    return path</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

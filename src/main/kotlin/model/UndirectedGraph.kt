@@ -38,6 +38,12 @@ class UndirectedGraph() : Graph {
         return _edges[firstVertex to secondVertex] ?: _edges[secondVertex to firstVertex]
     }
 
+    override fun size() = _vertices.size
+
+    override fun isEmpty(): Boolean{
+        return _vertices.isEmpty()
+    }
+
     class UndirectedVertex(override val value: Long) : Vertex
 
     class UndirectedEdge(

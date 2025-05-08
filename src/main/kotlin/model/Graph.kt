@@ -18,4 +18,8 @@ interface Graph {
         firstVertex: Long,
         secondVertex: Long,
     ): Edge?
+
+    fun size(): Int
+
+    fun isEmpty(): Boolean
 }

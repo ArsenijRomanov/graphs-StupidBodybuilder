@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="AdjacencyListTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-04-30T17:43:48" hostname="ars-MaiBook-M" time="0.046">
+<testsuite name="AdjacencyListTest" tests="5" skipped="0" failures="0" errors="0" timestamp="2025-05-08T12:15:30" hostname="ars-MaiBook-M" time="0.034">
   <properties/>
-  <testcase name="adjacency list for directed graph()" classname="AdjacencyListTest" time="0.032"/>
+  <testcase name="adjacency list for directed graph()" classname="AdjacencyListTest" time="0.026"/>
   <testcase name="adjacency list for undirected graph()" classname="AdjacencyListTest" time="0.003"/>
-  <testcase name="empty graph()" classname="AdjacencyListTest" time="0.003"/>
-  <testcase name="graph without edges()" classname="AdjacencyListTest" time="0.002"/>
+  <testcase name="empty graph()" classname="AdjacencyListTest" time="0.001"/>
+  <testcase name="graph without edges()" classname="AdjacencyListTest" time="0.0"/>
   <testcase name="one vertex()" classname="AdjacencyListTest" time="0.001"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

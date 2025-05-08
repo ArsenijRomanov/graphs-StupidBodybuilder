@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="UndirectedGraphTest" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-05-08T12:15:30" hostname="ars-MaiBook-M" time="0.015">
+  <properties/>
+  <testcase name="add reverse edge()" classname="UndirectedGraphTest" time="0.0"/>
+  <testcase name="add an existing vertex()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="add loop()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="add existing edge()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="find not existing vertex()" classname="UndirectedGraphTest" time="0.0"/>
+  <testcase name="find edge()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="add vertex test()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="find vertex()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="add edge without vertices()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="find reverse edge()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="find not existing edge()" classname="UndirectedGraphTest" time="0.001"/>
+  <testcase name="add edge with two existing vertex()" classname="UndirectedGraphTest" time="0.001"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

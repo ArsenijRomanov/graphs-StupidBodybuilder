@@ -17,6 +17,8 @@ repositories {
 dependencies {
     implementation(compose.desktop.currentOs)
 
+    implementation("org.xerial:sqlite-jdbc:3.45.1.0")
+
     // Тестовые библиотеки
     testImplementation("io.kotest:kotest-runner-junit5:5.5.5")
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")

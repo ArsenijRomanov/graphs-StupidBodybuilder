@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainScreenForUndirected.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">MainScreenForUndirected.kt</span></div><h1>MainScreenForUndirected.kt</h1><pre class="source lang-java linenums">package view
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.*
+import androidx.compose.material.Button
+import androidx.compose.material.ButtonDefaults
+import androidx.compose.material.Checkbox
+import androidx.compose.material.Surface
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import viewmodel.MainScreenViewModelForUndirectedGraph
+
+@Composable
+<span class="nc bnc" id="L21" title="All 10 branches missed.">fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {</span>
+<span class="nc" id="L22">    LaunchedEffect(Unit) {</span>
+<span class="nc" id="L23">        snapshotFlow { viewModel.graphViewModel.verticesToFindPath }</span>
+<span class="nc" id="L24">            .collect { pathList -&gt;</span>
+<span class="nc bnc" id="L25" title="All 2 branches missed.">                if (pathList.size == 2) {</span>
+<span class="nc" id="L26">                    viewModel.findPathDijkstra(pathList[0], pathList[1])</span>
+<span class="nc" id="L27">                    viewModel.graphViewModel.clearVerticesToFindPath()</span>
+<span class="nc" id="L28">                    viewModel.graphViewModel.findPathState = false</span>
+                }
+<span class="nc" id="L30">            }</span>
+<span class="nc" id="L31">    }</span>
+
+<span class="nc" id="L33">    Row(</span>
+<span class="nc" id="L34">        horizontalArrangement = Arrangement.spacedBy(20.dp),</span>
+    ) {
+<span class="nc" id="L36">        Column(</span>
+            modifier =
+<span class="nc" id="L38">                Modifier</span>
+<span class="nc" id="L39">                    .background(Color(red = 224, green = 224, blue = 224)) // Серый фон</span>
+<span class="nc" id="L40">                    .width(370.dp)</span>
+<span class="nc" id="L41">                    .fillMaxHeight() // Занимает всю высоту родителя</span>
+<span class="nc" id="L42">                    .padding(16.dp), // Добавим немного отступов</span>
+        ) {
+<span class="nc" id="L44">            Row(verticalAlignment = Alignment.CenterVertically) {</span>
+<span class="nc" id="L45">                Checkbox(</span>
+<span class="nc" id="L46">                    checked = viewModel.showVerticesElements,</span>
+<span class="nc" id="L47">                    onCheckedChange = { viewModel.showVerticesElements = it },</span>
+                )
+<span class="nc" id="L49">                Text(</span>
+<span class="nc" id="L50">                    &quot;Show vertices elements&quot;,</span>
+<span class="nc" id="L51">                    fontSize = 28.sp,</span>
+<span class="nc" id="L52">                    modifier = Modifier.padding(4.dp),</span>
+                )
+<span class="nc" id="L54">            }</span>
+
+<span class="nc" id="L56">            Row(verticalAlignment = Alignment.CenterVertically) {</span>
+<span class="nc" id="L57">                Checkbox(</span>
+<span class="nc" id="L58">                    checked = viewModel.showEdgesWeights,</span>
+<span class="nc" id="L59">                    onCheckedChange = { viewModel.showEdgesWeights = it },</span>
+                )
+<span class="nc" id="L61">                Text(</span>
+<span class="nc" id="L62">                    &quot;Show edges weights&quot;,</span>
+<span class="nc" id="L63">                    fontSize = 28.sp,</span>
+<span class="nc" id="L64">                    modifier = Modifier.padding(4.dp),</span>
+                )
+<span class="nc" id="L66">            }</span>
+
+<span class="nc" id="L68">            Button(</span>
+<span class="nc" id="L69">                onClick = viewModel::resetGraphView,</span>
+<span class="nc" id="L70">                enabled = true,</span>
+<span class="nc" id="L71">                modifier = Modifier.padding(top = 8.dp),</span>
+                colors =
+<span class="nc" id="L73">                    ButtonDefaults.buttonColors(</span>
+<span class="nc" id="L74">                        backgroundColor = Color(0xFF1976D2), // тот же цвет, что и обычный для Dijkstra</span>
+<span class="nc" id="L75">                        contentColor = Color.White,</span>
+                    ),
+<span class="nc" id="L77">            ) {</span>
+<span class="nc bnc" id="L78" title="All 8 branches missed.">                Text(&quot;Reset default settings&quot;)</span>
+<span class="nc" id="L79">            }</span>
+
+<span class="nc" id="L81">            Button(</span>
+<span class="nc" id="L82">                onClick = viewModel::setVerticesColor,</span>
+<span class="nc" id="L83">                enabled = true,</span>
+<span class="nc" id="L84">                modifier = Modifier.padding(top = 8.dp),</span>
+                colors =
+<span class="nc" id="L86">                    ButtonDefaults.buttonColors(</span>
+<span class="nc" id="L87">                        backgroundColor = Color(0xFF1976D2), // тот же цвет, что и обычный для Dijkstra</span>
+<span class="nc" id="L88">                        contentColor = Color.White,</span>
+                    ),
+<span class="nc" id="L90">            ) {</span>
+<span class="nc bnc" id="L91" title="All 8 branches missed.">                Text(&quot;Set colors&quot;)</span>
+<span class="nc" id="L92">            }</span>
+
+<span class="nc" id="L94">            Button(</span>
+<span class="nc" id="L95">                onClick = viewModel::getLeaders,</span>
+<span class="nc" id="L96">                enabled = true,</span>
+<span class="nc" id="L97">                modifier = Modifier.padding(top = 8.dp),</span>
+                colors =
+<span class="nc" id="L99">                    ButtonDefaults.buttonColors(</span>
+<span class="nc" id="L100">                        backgroundColor = Color(0xFF1976D2), // тот же цвет, что и обычный для Dijkstra</span>
+<span class="nc" id="L101">                        contentColor = Color.White,</span>
+                    ),
+<span class="nc" id="L103">            ) {</span>
+<span class="nc bnc" id="L104" title="All 8 branches missed.">                Text(&quot;get leaders&quot;)</span>
+<span class="nc" id="L105">            }</span>
+
+<span class="nc bnc" id="L107" title="All 2 branches missed.">            if (viewModel.checkForNegativeWeights()) {</span>
+<span class="nc" id="L108">                Button(</span>
+<span class="nc" id="L109">                    onClick = {</span>
+<span class="nc" id="L110">                        viewModel.graphViewModel.clearVerticesToFindPath()</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">                        viewModel.graphViewModel.findPathState = !viewModel.graphViewModel.findPathState</span>
+<span class="nc" id="L112">                    },</span>
+<span class="nc" id="L113">                    enabled = true,</span>
+<span class="nc" id="L114">                    modifier = Modifier.padding(top = 8.dp),</span>
+                    colors =
+<span class="nc" id="L116">                        ButtonDefaults.buttonColors(</span>
+                            backgroundColor =
+<span class="nc bnc" id="L118" title="All 2 branches missed.">                                if (viewModel.graphViewModel.findPathState) {</span>
+<span class="nc" id="L119">                                    Color(0xFF1565C0) // активный цвет</span>
+                                } else {
+<span class="nc" id="L121">                                    Color(0xFF1976D2)</span>
+                                },
+                            // обычный цвет
+<span class="nc" id="L124">                            contentColor = Color.White,</span>
+                        ),
+<span class="nc" id="L126">                ) {</span>
+<span class="nc bnc" id="L127" title="All 8 branches missed.">                    Text(&quot;Dijkstra&quot;)</span>
+<span class="nc" id="L128">                }</span>
+            }
+<span class="nc" id="L130">        }</span>
+
+<span class="nc" id="L132">        Surface(</span>
+<span class="nc" id="L133">            modifier = Modifier.weight(1f),</span>
+<span class="nc" id="L134">        ) {</span>
+<span class="nc bnc" id="L135" title="All 8 branches missed.">            undirectedGraphView(viewModel.graphViewModel)</span>
+<span class="nc" id="L136">        }</span>
+<span class="nc" id="L137">    }</span>
+<span class="nc bnc" id="L138" title="All 2 branches missed.">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

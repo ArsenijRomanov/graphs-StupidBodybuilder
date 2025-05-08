@@ -11,9 +11,10 @@ class VertexViewModel(
     x: Dp = 0.dp,
     y: Dp = 0.dp,
     color: Color,
+    val graphViewModel: GraphViewModel,
     private val v: Long,
     private val _valueVisible: State<Boolean>,
-    val radius: Dp = 25.dp,
+    radius: Dp,
 ) {
     private var _x = mutableStateOf(x)
     var x: Dp
@@ -33,6 +34,12 @@ class VertexViewModel(
         set(value) {
             _color.value = value
         }
+    private var _radius = mutableStateOf(radius)
+    var radius: Dp
+        get() = _radius.value
+        set(value) {
+            _radius.value = value
+        }
 
     val value
         get() = v
@@ -43,5 +50,11 @@ class VertexViewModel(
     fun onDrag(offset: Offset) {
         _x.value += offset.x.dp
         _y.value += offset.y.dp
+    }
+
+    fun onClick()  {
+        if (graphViewModel.findPathState) {
+            graphViewModel.addVertexToFindPath(this.v)
+        }
     }
 }

@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>loopView.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">loopView.kt</span></div><h1>loopView.kt</h1><pre class="source lang-java linenums">package view
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.drawscope.Stroke
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.zIndex
+import viewmodel.EdgeViewModel
+
+@Composable
+fun loopEdgeView(
+    viewModel: EdgeViewModel,
+<span class="nc bnc" id="L20" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
+<span class="nc bnc" id="L21" title="All 18 branches missed.">) {</span>
+<span class="nc" id="L22">    val density = LocalDensity.current</span>
+<span class="nc" id="L23">    val radiusPx = with(density) { viewModel.firstVertex.radius.toPx() }</span>
+
+<span class="nc" id="L25">    val center =</span>
+<span class="nc" id="L26">        Offset(</span>
+<span class="nc" id="L27">            x = with(density) { viewModel.firstVertex.x.toPx() },</span>
+<span class="nc" id="L28">            y = with(density) { viewModel.firstVertex.y.toPx() + radiusPx },</span>
+        )
+
+<span class="nc" id="L31">    val loopRadius = radiusPx</span>
+
+<span class="nc" id="L33">    Canvas(</span>
+        modifier =
+<span class="nc" id="L35">            modifier</span>
+<span class="nc" id="L36">                .fillMaxSize()</span>
+<span class="nc" id="L37">                .zIndex(-2f),</span>
+<span class="nc" id="L38">    ) {</span>
+<span class="nc" id="L39">        drawCircle(</span>
+<span class="nc" id="L40">            color = Color.Black,</span>
+<span class="nc" id="L41">            radius = loopRadius,</span>
+<span class="nc" id="L42">            center = center,</span>
+<span class="nc" id="L43">            style = Stroke(width = viewModel.width),</span>
+        )
+<span class="nc" id="L45">    }</span>
+
+<span class="nc bnc" id="L47" title="All 2 branches missed.">    if (viewModel.weightVisible) {</span>
+<span class="nc" id="L48">        val labelY = center.y - loopRadius - 20f</span>
+<span class="nc bnc" id="L49" title="All 2 branches missed.">        Text(</span>
+            modifier =
+<span class="nc" id="L51">                Modifier</span>
+<span class="nc" id="L52">                    .zIndex(1f)</span>
+<span class="nc" id="L53">                    .offset(</span>
+<span class="nc" id="L54">                        x = with(density) { center.x.toDp() },</span>
+<span class="nc" id="L55">                        y = with(density) { labelY.toDp() },</span>
+                    ),
+<span class="nc" id="L57">            text = viewModel.weight,</span>
+<span class="nc" id="L58">            fontSize = 14.sp,</span>
+<span class="nc" id="L59">            color = Color.Black,</span>
+        )
+    }
+<span class="nc bnc" id="L62" title="All 2 branches missed.">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

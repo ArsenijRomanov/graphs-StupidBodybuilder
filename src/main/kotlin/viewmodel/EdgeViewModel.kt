@@ -7,6 +7,7 @@ import model.Edge
 
 class EdgeViewModel(
     color: Color,
+    width: Float,
     val firstVertex: VertexViewModel,
     val secondVertex: VertexViewModel,
     private val e: Edge,
@@ -17,6 +18,13 @@ class EdgeViewModel(
         get() = _color.value
         set(value) {
             _color.value = value
+        }
+
+    private var _width = mutableStateOf(width)
+    var width: Float
+        get() = _width.value
+        set(value) {
+            _width.value = value
         }
 
     val weight

@@ -38,6 +38,12 @@ class DirectedGraph() : Graph {
         return _edges[firstVertex to secondVertex]
     }
 
+    override fun size() = _vertices.size
+
+    override fun isEmpty(): Boolean{
+        return _vertices.isEmpty()
+    }
+
     class DirectedVertex(override val value: Long) : Vertex
 
     class DirectedEdge(

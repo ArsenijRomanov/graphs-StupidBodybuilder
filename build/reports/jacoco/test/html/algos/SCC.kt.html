@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SCC.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">algos</a> &gt; <span class="el_source">SCC.kt</span></div><h1>SCC.kt</h1><pre class="source lang-java linenums">package algos
+
+import model.DirectedGraph
+
+// adjacency list for transposed graph
+private fun transposedGraph(graph: DirectedGraph): Map&lt;Long, List&lt;Long&gt;&gt; {
+<span class="fc" id="L7">    val tg: Map&lt;Long, MutableList&lt;Long&gt;&gt; =</span>
+<span class="fc" id="L8">        graph.vertices.associateWith { mutableListOf() }</span>
+<span class="fc bfc" id="L9" title="All 2 branches covered.">    for (i in graph.edges) {</span>
+<span class="fc" id="L10">        val first = i.vertices.first</span>
+<span class="fc" id="L11">        val second = i.vertices.second</span>
+<span class="pc bpc" id="L12" title="1 of 2 branches missed.">        tg[second]?.add(first)</span>
+    }
+<span class="fc" id="L14">    return tg</span>
+}
+
+private fun dfs1(
+    vertex: Long,
+    adjacencyList: Map&lt;Long, List&lt;Long&gt;&gt;,
+    used: HashMap&lt;Long, Boolean&gt;,
+    order: ArrayList&lt;Long&gt;,
+) {
+<span class="fc" id="L23">    used[vertex] = true</span>
+<span class="pc bpc" id="L24" title="1 of 4 branches missed.">    for (to in adjacencyList[vertex] ?: emptyList()) {</span>
+<span class="pc bpc" id="L25" title="1 of 4 branches missed.">        if (!(used[to] ?: true)) {</span>
+<span class="fc" id="L26">            dfs1(to, adjacencyList, used, order)</span>
+        }
+    }
+<span class="fc" id="L29">    order.add(vertex)</span>
+<span class="fc" id="L30">}</span>
+
+private fun dfs2(
+    vertex: Long,
+    tg: Map&lt;Long, List&lt;Long&gt;&gt;,
+    used: HashMap&lt;Long, Boolean&gt;,
+    component: ArrayList&lt;Long&gt;,
+) {
+<span class="fc" id="L38">    used[vertex] = true</span>
+<span class="fc" id="L39">    component.add(vertex)</span>
+<span class="pc bpc" id="L40" title="1 of 4 branches missed.">    for (to in tg[vertex] ?: emptyList()) {</span>
+<span class="pc bpc" id="L41" title="1 of 4 branches missed.">        if (!(used[to] ?: true)) {</span>
+<span class="fc" id="L42">            dfs2(to, tg, used, component)</span>
+        }
+    }
+<span class="fc" id="L45">}</span>
+
+fun SCC(graph: DirectedGraph): List&lt;List&lt;Long&gt;&gt; {
+<span class="fc" id="L48">    val adjacencyList = getAdjacencyList(graph)</span>
+<span class="fc" id="L49">    val used =</span>
+<span class="fc" id="L50">        hashMapOf&lt;Long, Boolean&gt;().apply {</span>
+<span class="fc" id="L51">            graph.vertices.forEach { put(it, false) }</span>
+<span class="fc" id="L52">        }</span>
+
+<span class="fc" id="L54">    val order = ArrayList&lt;Long&gt;()</span>
+<span class="fc bfc" id="L55" title="All 2 branches covered.">    for (i in graph.vertices) {</span>
+<span class="pc bpc" id="L56" title="1 of 4 branches missed.">        if (!(used[i] ?: true)) {</span>
+<span class="fc" id="L57">            dfs1(i, adjacencyList, used, order)</span>
+        }
+    }
+
+<span class="fc" id="L61">    val scc = ArrayList&lt;List&lt;Long&gt;&gt;()</span>
+<span class="fc" id="L62">    used.keys.forEach { key -&gt;</span>
+<span class="fc" id="L63">        used[key] = false</span>
+<span class="fc" id="L64">    }</span>
+<span class="fc" id="L65">    val tg = transposedGraph(graph)</span>
+<span class="fc bfc" id="L66" title="All 2 branches covered.">    for (i in order.asReversed()) {</span>
+<span class="pc bpc" id="L67" title="1 of 4 branches missed.">        if (!(used[i] ?: true)) {</span>
+<span class="fc" id="L68">            val component = ArrayList&lt;Long&gt;()</span>
+<span class="fc" id="L69">            dfs2(i, tg, used, component)</span>
+<span class="fc" id="L70">            scc.add(component)</span>
+        }
+    }
+
+<span class="fc" id="L74">    return scc</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

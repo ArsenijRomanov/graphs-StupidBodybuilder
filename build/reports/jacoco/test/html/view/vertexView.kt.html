@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>vertexView.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">vertexView.kt</span></div><h1>vertexView.kt</h1><pre class="source lang-java linenums">package view
+
+import androidx.compose.foundation.background
+import androidx.compose.foundation.gestures.detectDragGestures
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.zIndex
+import viewmodel.VertexViewModel
+
+@Composable
+fun vertexView(
+    viewModel: VertexViewModel,
+<span class="nc bnc" id="L20" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
+<span class="nc bnc" id="L21" title="All 18 branches missed.">) {</span>
+<span class="nc" id="L22">    Box(</span>
+        modifier =
+<span class="nc" id="L24">            modifier</span>
+<span class="nc" id="L25">                .size(viewModel.radius * 2, viewModel.radius * 2)</span>
+<span class="nc" id="L26">                .offset(viewModel.x, viewModel.y)</span>
+<span class="nc" id="L27">                .zIndex(-1f)</span>
+<span class="nc" id="L28">                .background(</span>
+<span class="nc" id="L29">                    color = viewModel.color,</span>
+<span class="nc" id="L30">                    shape = CircleShape,</span>
+                )
+<span class="nc" id="L32">                .pointerInput(viewModel) {</span>
+<span class="nc" id="L33">                    detectTapGestures(</span>
+                        onTap = {
+<span class="nc" id="L35">                            viewModel.onClick()</span>
+<span class="nc" id="L36">                        },</span>
+                    )
+<span class="nc" id="L38">                }</span>
+<span class="nc" id="L39">                .pointerInput(viewModel) {</span>
+<span class="nc" id="L40">                    detectDragGestures { change, dragAmount -&gt;</span>
+<span class="nc" id="L41">                        change.consume()</span>
+<span class="nc" id="L42">                        viewModel.onDrag(dragAmount)</span>
+<span class="nc" id="L43">                    }</span>
+<span class="nc" id="L44">                },</span>
+    ) {
+<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (viewModel.valueVisible) {</span>
+<span class="nc" id="L47">            Text(</span>
+                modifier =
+<span class="nc" id="L49">                    Modifier</span>
+<span class="nc" id="L50">                        .align(Alignment.Center)</span>
+<span class="nc" id="L51">                        .offset(0.dp, -viewModel.radius - 10.dp),</span>
+<span class="nc" id="L52">                text = viewModel.value.toString(),</span>
+            )
+        }
+<span class="nc" id="L55">    }</span>
+<span class="nc bnc" id="L56" title="All 2 branches missed.">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

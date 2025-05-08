@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>GraphViewModel.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">viewmodel</a> &gt; <span class="el_source">GraphViewModel.kt</span></div><h1>GraphViewModel.kt</h1><pre class="source lang-java linenums">package viewmodel
+
+import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import model.Graph
+
+<span class="nc" id="L11">class GraphViewModel(</span>
+<span class="nc" id="L12">    private val graph: Graph,</span>
+    showVerticesElements: State&lt;Boolean&gt;,
+    showEdgesWeights: State&lt;Boolean&gt;,
+<span class="nc" id="L15">    val defaultVertexRadius: Dp = 25.dp,</span>
+<span class="nc" id="L16">) {</span>
+<span class="nc" id="L17">    private var _findPathState = mutableStateOf(false)</span>
+    var findPathState: Boolean
+<span class="nc" id="L19">        get() = _findPathState.value</span>
+        set(value) {
+<span class="nc" id="L21">            _findPathState.value = value</span>
+<span class="nc" id="L22">        }</span>
+
+<span class="nc" id="L24">    private val _verticesToFindPath = mutableStateListOf&lt;Long&gt;()</span>
+    val verticesToFindPath: List&lt;Long&gt;
+<span class="nc" id="L26">        get() = _verticesToFindPath.toList()</span>
+
+<span class="nc" id="L28">    fun addVertexToFindPath(vertex: Long) = _verticesToFindPath.add(vertex)</span>
+
+<span class="nc" id="L30">    fun clearVerticesToFindPath() = _verticesToFindPath.clear()</span>
+
+    private val _vertices =
+<span class="nc" id="L33">        graph.vertices.associateWith { v -&gt;</span>
+<span class="nc" id="L34">            VertexViewModel(</span>
+<span class="nc" id="L35">                0.dp,</span>
+<span class="nc" id="L36">                0.dp,</span>
+<span class="nc" id="L37">                Color.Gray,</span>
+<span class="nc" id="L38">                this,</span>
+<span class="nc" id="L39">                v,</span>
+<span class="nc" id="L40">                showVerticesElements,</span>
+<span class="nc" id="L41">                defaultVertexRadius,</span>
+<span class="nc" id="L42">            )</span>
+        }
+
+    private val _edges =
+<span class="nc" id="L46">        graph.edges.associateWith { e -&gt;</span>
+<span class="nc" id="L47">            val fst =</span>
+<span class="nc bnc" id="L48" title="All 2 branches missed.">                _vertices[e.vertices.first]</span>
+<span class="nc" id="L49">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.first} not found&quot;)</span>
+<span class="nc" id="L50">            val snd =</span>
+<span class="nc bnc" id="L51" title="All 2 branches missed.">                _vertices[e.vertices.second]</span>
+<span class="nc" id="L52">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.second} not found&quot;)</span>
+<span class="nc" id="L53">            EdgeViewModel(</span>
+<span class="nc" id="L54">                Color.Black,</span>
+<span class="nc" id="L55">                1f,</span>
+<span class="nc" id="L56">                fst,</span>
+<span class="nc" id="L57">                snd,</span>
+<span class="nc" id="L58">                e,</span>
+<span class="nc" id="L59">                showEdgesWeights,</span>
+<span class="nc" id="L60">            )</span>
+        }
+
+    val vertices: Collection&lt;VertexViewModel&gt;
+<span class="nc" id="L64">        get() = _vertices.values</span>
+
+    val edges: Collection&lt;EdgeViewModel&gt;
+<span class="nc" id="L67">        get() = _edges.values</span>
+
+    fun setVertexColor(
+        v: Long,
+        color: Color,
+    )  {
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        _vertices[v]?.color = color</span>
+<span class="nc" id="L74">    }</span>
+
+    fun setVertexSize(
+        v: Long,
+        radius: Dp,
+<span class="nc bnc" id="L79" title="All 2 branches missed.">    ) = _vertices[v]?.radius = radius</span>
+
+    fun setEdgeColor(
+        firstVertex: Long,
+        secondVertex: Long,
+        color: Color,
+    )  {
+<span class="nc" id="L86">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">        _edges[edge]?.color = color</span>
+<span class="nc" id="L88">    }</span>
+
+    fun setEdgeWidth(
+        firstVertex: Long,
+        secondVertex: Long,
+        width: Float,
+    )  {
+<span class="nc" id="L95">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
+<span class="nc bnc" id="L96" title="All 2 branches missed.">        _edges[edge]?.width = width</span>
+<span class="nc" id="L97">    }</span>
+
+    fun reset() {
+<span class="nc" id="L100">        this.vertices.forEach { v -&gt;</span>
+<span class="nc" id="L101">            v.color = Color.Gray</span>
+<span class="nc" id="L102">            v.radius = defaultVertexRadius</span>
+<span class="nc" id="L103">        }</span>
+<span class="nc" id="L104">        this.edges.forEach { e -&gt;</span>
+<span class="nc" id="L105">            e.color = Color.Black</span>
+<span class="nc" id="L106">            e.width = 1f</span>
+<span class="nc" id="L107">        }</span>
+<span class="nc" id="L108">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

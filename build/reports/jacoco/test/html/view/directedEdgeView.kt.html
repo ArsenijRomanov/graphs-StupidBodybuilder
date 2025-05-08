@@ -1,0 +1,104 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>directedEdgeView.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">directedEdgeView.kt</span></div><h1>directedEdgeView.kt</h1><pre class="source lang-java linenums">package view
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.platform.LocalDensity
+import viewmodel.EdgeViewModel
+import kotlin.math.atan2
+import kotlin.math.cos
+import kotlin.math.sin
+import kotlin.math.sqrt
+
+@Composable
+fun directedEdgeView(
+    viewModel: EdgeViewModel,
+<span class="nc bnc" id="L20" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
+<span class="nc bnc" id="L21" title="All 18 branches missed.">) {</span>
+<span class="nc" id="L22">    Canvas(modifier = modifier.fillMaxSize()) {</span>
+<span class="nc" id="L23">        val start =</span>
+<span class="nc" id="L24">            Offset(</span>
+<span class="nc" id="L25">                viewModel.firstVertex.x.toPx() + viewModel.firstVertex.radius.toPx(),</span>
+<span class="nc" id="L26">                viewModel.firstVertex.y.toPx() + viewModel.firstVertex.radius.toPx(),</span>
+            )
+<span class="nc" id="L28">        val end =</span>
+<span class="nc" id="L29">            Offset(</span>
+<span class="nc" id="L30">                viewModel.secondVertex.x.toPx() + viewModel.secondVertex.radius.toPx(),</span>
+<span class="nc" id="L31">                viewModel.secondVertex.y.toPx() + viewModel.secondVertex.radius.toPx(),</span>
+            )
+
+<span class="nc" id="L34">        drawLine(</span>
+<span class="nc" id="L35">            start = start,</span>
+<span class="nc" id="L36">            end = end,</span>
+<span class="nc" id="L37">            color = viewModel.color,</span>
+<span class="nc" id="L38">            strokeWidth = viewModel.width,</span>
+        )
+
+<span class="nc" id="L41">        val angle = atan2(end.y - start.y, end.x - start.x)</span>
+<span class="nc" id="L42">        val arrowLength = 15f</span>
+<span class="nc" id="L43">        val arrowAngle = Math.toRadians(30.0).toFloat()</span>
+
+<span class="nc" id="L45">        val arrowPoint1 =</span>
+<span class="nc" id="L46">            Offset(</span>
+<span class="nc" id="L47">                x = end.x - arrowLength * cos(angle - arrowAngle),</span>
+<span class="nc" id="L48">                y = end.y - arrowLength * sin(angle - arrowAngle),</span>
+            )
+<span class="nc" id="L50">        val arrowPoint2 =</span>
+<span class="nc" id="L51">            Offset(</span>
+<span class="nc" id="L52">                x = end.x - arrowLength * cos(angle + arrowAngle),</span>
+<span class="nc" id="L53">                y = end.y - arrowLength * sin(angle + arrowAngle),</span>
+            )
+
+<span class="nc" id="L56">        drawLine(</span>
+<span class="nc" id="L57">            color = viewModel.color,</span>
+<span class="nc" id="L58">            start = end,</span>
+<span class="nc" id="L59">            end = arrowPoint1,</span>
+<span class="nc" id="L60">            strokeWidth = viewModel.width,</span>
+        )
+
+<span class="nc" id="L63">        drawLine(</span>
+<span class="nc" id="L64">            color = viewModel.color,</span>
+<span class="nc" id="L65">            start = end,</span>
+<span class="nc" id="L66">            end = arrowPoint2,</span>
+<span class="nc" id="L67">            strokeWidth = viewModel.width,</span>
+        )
+<span class="nc" id="L69">    }</span>
+
+<span class="nc bnc" id="L71" title="All 2 branches missed.">    if (viewModel.weightVisible) {</span>
+<span class="nc" id="L72">        val density = LocalDensity.current</span>
+<span class="nc bnc" id="L73" title="All 2 branches missed.">        with(density) {</span>
+<span class="nc" id="L74">            val x1 = viewModel.firstVertex.x.toPx() + viewModel.firstVertex.radius.toPx()</span>
+<span class="nc" id="L75">            val y1 = viewModel.firstVertex.y.toPx() + viewModel.firstVertex.radius.toPx()</span>
+<span class="nc" id="L76">            val x2 = viewModel.secondVertex.x.toPx() + viewModel.secondVertex.radius.toPx()</span>
+<span class="nc" id="L77">            val y2 = viewModel.secondVertex.y.toPx() + viewModel.secondVertex.radius.toPx()</span>
+
+<span class="nc" id="L79">            val midX = (x1 + x2) / 2</span>
+<span class="nc" id="L80">            val midY = (y1 + y2) / 2</span>
+
+<span class="nc" id="L82">            val dx = x2 - x1</span>
+<span class="nc" id="L83">            val dy = y2 - y1</span>
+<span class="nc" id="L84">            val length = sqrt(dx * dx + dy * dy)</span>
+<span class="nc" id="L85">            val offsetAmount = 20f</span>
+
+<span class="nc" id="L87">            val offsetX = -dy / length * offsetAmount</span>
+<span class="nc" id="L88">            val offsetY = dx / length * offsetAmount</span>
+
+<span class="nc" id="L90">            val finalX = midX + offsetX</span>
+<span class="nc" id="L91">            val finalY = midY + offsetY</span>
+
+<span class="nc" id="L93">            Text(</span>
+                modifier =
+<span class="nc" id="L95">                    Modifier.offset(</span>
+<span class="nc" id="L96">                        x = finalX.toDp(),</span>
+<span class="nc" id="L97">                        y = finalY.toDp(),</span>
+                    ),
+<span class="nc" id="L99">                text = viewModel.weight,</span>
+            )
+<span class="nc" id="L101">        }</span>
+    }
+<span class="nc bnc" id="L103" title="All 2 branches missed.">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

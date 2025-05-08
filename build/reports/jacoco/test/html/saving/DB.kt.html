@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>DB.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">saving</a> &gt; <span class="el_source">DB.kt</span></div><h1>DB.kt</h1><pre class="source lang-java linenums">package saving
+
+import model.DirectedGraph
+import model.Graph
+import model.UndirectedGraph
+import java.io.Closeable
+import java.sql.Connection
+import kotlin.use
+
+<span class="fc" id="L10">class GraphRepository(private val connection: Connection) : Closeable {</span>
+<span class="fc" id="L11">    init {</span>
+<span class="pc" id="L12">        connection.createStatement().use { stmt -&gt;</span>
+<span class="fc" id="L13">            stmt.execute(</span>
+                &quot;&quot;&quot;
+                CREATE TABLE IF NOT EXISTS Graphs (
+                graphID INTEGER PRIMARY KEY AUTOINCREMENT,
+                Name TEXT UNIQUE,
+                isDirected BOOLEAN
+                );
+<span class="fc" id="L20">                &quot;&quot;&quot;.trimIndent(),</span>
+            )
+
+<span class="fc" id="L23">            stmt.execute(</span>
+                &quot;&quot;&quot;
+                CREATE TABLE IF NOT EXISTS Vertices (
+                elementID INTEGER PRIMARY KEY AUTOINCREMENT,
+                graphID INTEGER,
+                value INTEGER,
+                UNIQUE (graphID, value),
+                FOREIGN KEY (graphID) REFERENCES Graphs (graphID)
+                ON DELETE CASCADE ON UPDATE CASCADE
+                );
+<span class="fc" id="L33">                &quot;&quot;&quot;.trimIndent(),</span>
+            )
+
+<span class="fc" id="L36">            stmt.execute(</span>
+                &quot;&quot;&quot;
+                    CREATE TABLE IF NOT EXISTS Edges (
+                    edgeID INTEGER PRIMARY KEY AUTOINCREMENT,
+                    graphID INTEGER,
+                    firstVertex INTEGER,
+                    secondVertex INTEGER,
+                    weight INTEGER,
+                    FOREIGN KEY (graphID) REFERENCES Graphs (graphID)
+                    ON DELETE CASCADE ON UPDATE CASCADE,
+                    FOREIGN KEY (firstVertex) REFERENCES Vertices (elementID)
+                    ON DELETE CASCADE ON UPDATE CASCADE,
+                    FOREIGN KEY (secondVertex) REFERENCES Vertices (elementID)
+                    ON DELETE CASCADE ON UPDATE CASCADE
+                );
+<span class="fc" id="L51">                &quot;&quot;&quot;.trimIndent(),</span>
+            )
+
+<span class="fc" id="L54">            stmt.execute(</span>
+<span class="fc" id="L55">                &quot;CREATE INDEX IF NOT EXISTS idx_vertices_graphID ON Vertices(graphID);&quot;,</span>
+            )
+
+<span class="fc" id="L58">            stmt.execute(</span>
+<span class="fc" id="L59">                &quot;CREATE INDEX IF NOT EXISTS idx_edges_graphID ON Edges(graphID);&quot;,</span>
+<span class="fc" id="L60">            )</span>
+        }
+<span class="fc" id="L62">    }</span>
+
+    fun addGraph(
+        graph: Graph,
+        name: String,
+    ) {
+<span class="fc bfc" id="L68" title="All 2 branches covered.">        if (graphExists(name))</span>
+<span class="fc" id="L69">            throw IllegalStateException(&quot;graph with name $name already exists&quot;)</span>
+
+
+<span class="fc" id="L72">        val sqlGraphs = &quot;INSERT INTO Graphs (Name, isDirected) VALUES (?, ?)&quot;</span>
+<span class="pc" id="L73">        connection.prepareStatement(sqlGraphs).use { pstmt -&gt;</span>
+<span class="fc" id="L74">            pstmt.setString(1, name)</span>
+<span class="fc" id="L75">            pstmt.setBoolean(2, graph is DirectedGraph)</span>
+<span class="fc" id="L76">            pstmt.executeUpdate()</span>
+        }
+
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">        val graphID = getGraphID(name) ?: return</span>
+<span class="fc" id="L80">        addVertices(graph, graphID)</span>
+<span class="fc" id="L81">        addEdges(graph, graphID)</span>
+<span class="fc" id="L82">    }</span>
+
+    fun loadDirectedGraph(name: String): DirectedGraph {
+<span class="fc" id="L85">        val graph = loadGraph(name)</span>
+<span class="fc bfc" id="L86" title="All 4 branches covered.">        return graph as? DirectedGraph</span>
+<span class="fc" id="L87">            ?: throw IllegalStateException(&quot;Graph $name is not a DirectedGraph&quot;)</span>
+    }
+
+    fun loadUndirectedGraph(name: String): UndirectedGraph {
+<span class="fc" id="L91">        val graph = loadGraph(name)</span>
+<span class="fc bfc" id="L92" title="All 4 branches covered.">        return graph as? UndirectedGraph</span>
+<span class="fc" id="L93">            ?: throw IllegalStateException(&quot;Graph $name is not a UndirectedGraph&quot;)</span>
+    }
+
+    fun deleteGraph(name: String) {
+<span class="fc" id="L97">        val sql = &quot;DELETE FROM Graphs WHERE Name = ?&quot;</span>
+<span class="pc" id="L98">        connection.prepareStatement(sql).use { pstmt -&gt;</span>
+<span class="fc" id="L99">            pstmt.setString(1, name)</span>
+<span class="fc" id="L100">            pstmt.executeUpdate()</span>
+        }
+<span class="fc" id="L102">    }</span>
+
+    fun upsertGraph(
+        graph: Graph,
+        name: String,
+    ) {
+<span class="fc bfc" id="L108" title="All 2 branches covered.">        if (graphExists(name)) {</span>
+<span class="fc" id="L109">            deleteGraph(name)</span>
+        }
+<span class="fc" id="L111">        addGraph(graph, name)</span>
+<span class="fc" id="L112">    }</span>
+
+    fun listGraphNames(): List&lt;String&gt; {
+<span class="fc" id="L115">        val names = mutableListOf&lt;String&gt;()</span>
+<span class="fc" id="L116">        val sql = &quot;SELECT Name FROM Graphs&quot;</span>
+<span class="pc" id="L117">        connection.createStatement().use { stmt -&gt;</span>
+<span class="fc" id="L118">            val rs = stmt.executeQuery(sql)</span>
+<span class="fc bfc" id="L119" title="All 2 branches covered.">            while (rs.next()) {</span>
+<span class="fc" id="L120">                names.add(rs.getString(&quot;Name&quot;))</span>
+            }
+<span class="fc" id="L122">        }</span>
+<span class="fc" id="L123">        return names</span>
+    }
+
+    fun graphExists(name: String): Boolean {
+<span class="fc" id="L127">        val sql = &quot;SELECT 1 FROM Graphs WHERE Name = ? LIMIT 1&quot;</span>
+<span class="fc" id="L128">        connection.prepareStatement(sql).use { pstmt -&gt;</span>
+<span class="fc" id="L129">            pstmt.setString(1, name)</span>
+<span class="fc" id="L130">            val resultSet = pstmt.executeQuery()</span>
+<span class="pc" id="L131">            return resultSet.next()</span>
+        }
+    }
+
+    private fun getGraphID(name: String): Int? {
+<span class="fc" id="L136">        val sqlGetGraphID = &quot;SELECT graphID FROM Graphs WHERE Name = ?&quot;</span>
+<span class="pc" id="L137">        connection.prepareStatement(sqlGetGraphID).use { pstmt -&gt;</span>
+<span class="fc" id="L138">            pstmt.setString(1, name)</span>
+<span class="fc" id="L139">            val result = pstmt.executeQuery()</span>
+<span class="pc bpc" id="L140" title="1 of 2 branches missed.">            if (result.next()) {</span>
+<span class="fc" id="L141">                return result.getInt(&quot;graphID&quot;)</span>
+            }
+<span class="nc" id="L143">        }</span>
+<span class="nc" id="L144">        return null</span>
+    }
+
+    private fun addVertices(
+        graph: Graph,
+        graphID: Int,
+    ) {
+<span class="fc" id="L151">        val sqlInsertVertex =</span>
+            &quot;&quot;&quot;
+            INSERT INTO Vertices (graphId, value) VALUES (?, ?)
+<span class="fc" id="L154">            &quot;&quot;&quot;.trimIndent()</span>
+<span class="pc" id="L155">        connection.prepareStatement(sqlInsertVertex).use { pstmt -&gt;</span>
+<span class="fc bfc" id="L156" title="All 2 branches covered.">            for (vertex in graph.vertices) {</span>
+<span class="fc" id="L157">                pstmt.setInt(1, graphID)</span>
+<span class="fc" id="L158">                pstmt.setLong(2, vertex)</span>
+<span class="fc" id="L159">                pstmt.executeUpdate()</span>
+            }
+<span class="fc" id="L161">        }</span>
+<span class="fc" id="L162">    }</span>
+
+    private fun addEdges(
+        graph: Graph,
+        graphID: Int,
+    ) {
+<span class="fc" id="L168">        val vertexToID = getVertices(graphID)</span>
+
+<span class="fc" id="L170">        val sqlInsertEdge =</span>
+            &quot;&quot;&quot;
+            INSERT INTO Edges (graphId, firstVertex, secondVertex, weight) VALUES (?, ?, ?, ?)
+<span class="fc" id="L173">            &quot;&quot;&quot;.trimIndent()</span>
+<span class="pc" id="L174">        connection.prepareStatement(sqlInsertEdge).use { pstmt -&gt;</span>
+<span class="fc bfc" id="L175" title="All 2 branches covered.">            for (edge in graph.edges) {</span>
+<span class="fc" id="L176">                pstmt.setInt(1, graphID)</span>
+<span class="fc" id="L177">                pstmt.setLong(</span>
+<span class="fc" id="L178">                    2,</span>
+<span class="pc bpc" id="L179" title="1 of 2 branches missed.">                    vertexToID[edge.vertices.first]</span>
+<span class="nc" id="L180">                        ?: throw NoSuchElementException(&quot;Vertex ${edge.vertices.first} not found in DB&quot;),</span>
+                )
+<span class="fc" id="L182">                pstmt.setLong(</span>
+<span class="fc" id="L183">                    3,</span>
+<span class="pc bpc" id="L184" title="1 of 2 branches missed.">                    vertexToID[edge.vertices.second]</span>
+<span class="nc" id="L185">                        ?: throw NoSuchElementException(&quot;Vertex ${edge.vertices.first} not found in DB&quot;),</span>
+                )
+<span class="fc" id="L187">                pstmt.setLong(4, edge.weight)</span>
+<span class="fc" id="L188">                pstmt.executeUpdate()</span>
+            }
+<span class="fc" id="L190">        }</span>
+<span class="fc" id="L191">    }</span>
+
+    private fun getVertices(graphID: Int): Map&lt;Long, Long&gt; {
+<span class="fc" id="L194">        val vertexToID = mutableMapOf&lt;Long, Long&gt;()</span>
+
+<span class="fc" id="L196">        val sqlGetVertexToID = &quot;SELECT elementID, value FROM Vertices WHERE graphID = ?&quot;</span>
+<span class="pc" id="L197">        connection.prepareStatement(sqlGetVertexToID).use { pstmt -&gt;</span>
+<span class="fc" id="L198">            pstmt.setInt(1, graphID)</span>
+<span class="fc" id="L199">            val result = pstmt.executeQuery()</span>
+<span class="fc bfc" id="L200" title="All 2 branches covered.">            while (result.next()) {</span>
+<span class="fc" id="L201">                val value = result.getLong(&quot;value&quot;)</span>
+<span class="fc" id="L202">                val elementID = result.getLong(&quot;elementID&quot;)</span>
+<span class="fc" id="L203">                vertexToID[value] = elementID</span>
+            }
+<span class="fc" id="L205">        }</span>
+<span class="fc" id="L206">        return vertexToID</span>
+    }
+
+    private fun getEdges(
+        graph: Graph,
+        graphID: Int,
+        vertexToID: Map&lt;Long, Long&gt;,
+    ) {
+<span class="fc" id="L214">        val idToVertex = mutableMapOf&lt;Long, Long&gt;()</span>
+<span class="fc" id="L215">        vertexToID.forEach { v, id -&gt; idToVertex[id] = v }</span>
+
+<span class="fc" id="L217">        val sqlGetEdges = &quot;SELECT firstVertex, secondVertex, weight FROM Edges WHERE graphID = ?&quot;</span>
+<span class="pc" id="L218">        connection.prepareStatement(sqlGetEdges).use { pstmt -&gt;</span>
+<span class="fc" id="L219">            pstmt.setInt(1, graphID)</span>
+<span class="fc" id="L220">            val result = pstmt.executeQuery()</span>
+<span class="fc bfc" id="L221" title="All 2 branches covered.">            while (result.next()) {</span>
+<span class="fc" id="L222">                val firstVertexID = result.getLong(&quot;firstVertex&quot;)</span>
+<span class="fc" id="L223">                val secondVertexID = result.getLong(&quot;secondVertex&quot;)</span>
+<span class="fc" id="L224">                val firstVertex =</span>
+<span class="pc bpc" id="L225" title="1 of 2 branches missed.">                    idToVertex[firstVertexID]</span>
+<span class="nc" id="L226">                        ?: throw NoSuchElementException(&quot;Vertex with ID $firstVertexID not found in DB&quot;)</span>
+<span class="fc" id="L227">                val secondVertex =</span>
+<span class="pc bpc" id="L228" title="1 of 2 branches missed.">                    idToVertex[secondVertexID]</span>
+<span class="nc" id="L229">                        ?: throw NoSuchElementException(&quot;Vertex with ID $secondVertexID not found in DB&quot;)</span>
+<span class="fc" id="L230">                val weight = result.getLong(&quot;weight&quot;)</span>
+<span class="fc" id="L231">                graph.addEdge(firstVertex, secondVertex, weight)</span>
+            }
+<span class="fc" id="L233">        }</span>
+<span class="fc" id="L234">    }</span>
+
+    private fun loadGraph(name: String): Graph {
+<span class="pc bpc" id="L237" title="1 of 2 branches missed.">        if (!graphExists(name)) {</span>
+<span class="nc" id="L238">            throw NoSuchElementException(&quot;Graph with id '$name' not found&quot;)</span>
+        }
+
+<span class="pc bpc" id="L241" title="1 of 2 branches missed.">        val graphID = getGraphID(name) ?: throw IllegalStateException()</span>
+
+<span class="fc bfc" id="L243" title="All 2 branches covered.">        val graph = if (queryIsDirected(name)) DirectedGraph() else UndirectedGraph()</span>
+
+<span class="fc" id="L245">        val vertexToID = getVertices(graphID)</span>
+<span class="fc" id="L246">        vertexToID.forEach { v, _ -&gt; graph.addVertex(v) }</span>
+
+<span class="fc" id="L248">        getEdges(graph, graphID, vertexToID)</span>
+
+<span class="fc" id="L250">        return graph</span>
+    }
+
+    private fun queryIsDirected(name: String): Boolean {
+<span class="pc bpc" id="L254" title="1 of 2 branches missed.">        if (!graphExists(name)) {</span>
+<span class="nc" id="L255">            throw NoSuchElementException(&quot;Graph with name '$name' not found&quot;)</span>
+        }
+
+<span class="fc" id="L258">        var isDirected = true</span>
+<span class="fc" id="L259">        val sqlGetGraphType = &quot;SELECT isDirected FROM Graphs WHERE Name = ?&quot;</span>
+
+<span class="pc" id="L261">        connection.prepareStatement(sqlGetGraphType).use { pstmt -&gt;</span>
+<span class="fc" id="L262">            pstmt.setString(1, name)</span>
+<span class="fc" id="L263">            val result = pstmt.executeQuery()</span>
+<span class="pc bpc" id="L264" title="1 of 2 branches missed.">            if (result.next()) {</span>
+<span class="fc" id="L265">                isDirected = result.getBoolean(&quot;isDirected&quot;)</span>
+            }
+<span class="fc" id="L267">        }</span>
+
+<span class="fc" id="L269">        return isDirected</span>
+    }
+
+    override fun close() {
+<span class="fc" id="L273">        connection.close()</span>
+<span class="fc" id="L274">    }</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

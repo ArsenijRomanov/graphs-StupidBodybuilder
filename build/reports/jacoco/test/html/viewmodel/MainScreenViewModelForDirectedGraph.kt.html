@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>MainScreenViewModelForDirectedGraph.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">viewmodel</a> &gt; <span class="el_source">MainScreenViewModelForDirectedGraph.kt</span></div><h1>MainScreenViewModelForDirectedGraph.kt</h1><pre class="source lang-java linenums">package viewmodel
+
+import algos.SCC
+import algos.checkGraphForNegativeWeight
+import algos.dijkstra
+import algos.leaderRank
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.ui.graphics.Color
+import model.DirectedGraph
+
+<span class="nc" id="L11">class MainScreenViewModelForDirectedGraph(</span>
+<span class="nc" id="L12">    private val graph: DirectedGraph,</span>
+<span class="nc" id="L13">    private val representationStrategy: RepresentationStrategy,</span>
+) {
+<span class="nc" id="L15">    private var _showVerticesElements = mutableStateOf(false)</span>
+    var showVerticesElements: Boolean
+<span class="nc" id="L17">        get() = _showVerticesElements.value</span>
+        set(value) {
+<span class="nc" id="L19">            _showVerticesElements.value = value</span>
+<span class="nc" id="L20">        }</span>
+
+<span class="nc" id="L22">    private var _showEdgesWeights = mutableStateOf(false)</span>
+    var showEdgesWeights: Boolean
+<span class="nc" id="L24">        get() = _showEdgesWeights.value</span>
+        set(value) {
+<span class="nc" id="L26">            _showEdgesWeights.value = value</span>
+<span class="nc" id="L27">        }</span>
+
+<span class="nc" id="L29">    val graphViewModel =</span>
+<span class="nc" id="L30">        GraphViewModel(</span>
+<span class="nc" id="L31">            graph,</span>
+<span class="nc" id="L32">            _showVerticesElements,</span>
+<span class="nc" id="L33">            _showEdgesWeights,</span>
+        )
+
+<span class="nc" id="L36">    init {</span>
+<span class="nc" id="L37">        representationStrategy.place(</span>
+<span class="nc" id="L38">            800.0,</span>
+<span class="nc" id="L39">            600.0,</span>
+<span class="nc" id="L40">            graphViewModel.vertices,</span>
+        )
+<span class="nc" id="L42">    }</span>
+
+<span class="nc bnc" id="L44" title="All 2 branches missed.">    fun checkForNegativeWeights(): Boolean = !checkGraphForNegativeWeight(graph)</span>
+
+    fun resetGraphView() {
+<span class="nc" id="L47">        representationStrategy.place(</span>
+<span class="nc" id="L48">            800.0,</span>
+<span class="nc" id="L49">            600.0,</span>
+<span class="nc" id="L50">            graphViewModel.vertices,</span>
+        )
+<span class="nc" id="L52">        graphViewModel.reset()</span>
+<span class="nc" id="L53">    }</span>
+
+    fun setVerticesColor() {
+<span class="nc" id="L56">        representationStrategy.highlight(graphViewModel.vertices)</span>
+<span class="nc" id="L57">    }</span>
+
+    fun findPathDijkstra(
+        firstVertex: Long,
+        secondVertex: Long,
+    )  {
+<span class="nc bnc" id="L63" title="All 2 branches missed.">        val path = dijkstra(graph, firstVertex, secondVertex) ?: return</span>
+<span class="nc bnc" id="L64" title="All 4 branches missed.">        for (i in 0..path.size - 2) {</span>
+<span class="nc" id="L65">            graphViewModel.setEdgeColor(</span>
+<span class="nc" id="L66">                path[i],</span>
+<span class="nc" id="L67">                path[i + 1],</span>
+<span class="nc" id="L68">                Color(0xFF1E88E5),</span>
+            )
+
+<span class="nc" id="L71">            graphViewModel.setEdgeWidth(</span>
+<span class="nc" id="L72">                path[i],</span>
+<span class="nc" id="L73">                path[i + 1],</span>
+<span class="nc" id="L74">                3f,</span>
+            )
+        }
+<span class="nc" id="L77">    }</span>
+
+    fun findStronglyConnectedComponents() {
+<span class="nc" id="L80">        val scc = SCC(graph)</span>
+<span class="nc" id="L81">        val cnt = scc.size</span>
+<span class="nc" id="L82">        val colors = generateDistinctColors(cnt)</span>
+<span class="nc bnc" id="L83" title="All 4 branches missed.">        for (i in 0..cnt - 1) {</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">            for (v in scc[i])</span>
+<span class="nc" id="L85">                graphViewModel.setVertexColor(v, colors[i])</span>
+        }
+<span class="nc" id="L87">    }</span>
+
+    fun getLeaders() {
+<span class="nc" id="L90">        val verticesRanks = leaderRank(graph)</span>
+<span class="nc bnc" id="L91" title="All 2 branches missed.">        val first = maxBelow(verticesRanks, Double.POSITIVE_INFINITY) ?: return</span>
+<span class="nc" id="L92">        graphViewModel.setVertexSize(first.first, graphViewModel.defaultVertexRadius * 2)</span>
+
+<span class="nc bnc" id="L94" title="All 2 branches missed.">        val second = maxBelow(verticesRanks, first.second) ?: return</span>
+<span class="nc" id="L95">        graphViewModel.setVertexSize(second.first, graphViewModel.defaultVertexRadius * 1.5f)</span>
+
+<span class="nc bnc" id="L97" title="All 2 branches missed.">        val third = maxBelow(verticesRanks, second.second) ?: return</span>
+<span class="nc" id="L98">        graphViewModel.setVertexSize(third.first, graphViewModel.defaultVertexRadius * 1.25f)</span>
+<span class="nc" id="L99">    }</span>
+
+    private fun maxBelow(
+        map: Map&lt;Long, Double&gt;,
+        threshold: Double,
+    ): Pair&lt;Long, Double&gt;?  {
+<span class="nc" id="L105">        var vertexToRank: Pair&lt;Long, Double&gt;? = null</span>
+<span class="nc bnc" id="L106" title="All 2 branches missed.">        for ((vertex, rank) in map) {</span>
+<span class="nc bnc" id="L107" title="All 6 branches missed.">            if (rank &lt; threshold &amp;&amp; (vertexToRank == null || vertexToRank.second &lt; rank)) {</span>
+<span class="nc" id="L108">                vertexToRank = vertex to rank</span>
+            }
+        }
+
+<span class="nc" id="L112">        return vertexToRank</span>
+    }
+
+    private fun generateDistinctColors(n: Int): List&lt;Color&gt; {
+<span class="nc bnc" id="L116" title="All 2 branches missed.">        return List(n) { i -&gt;</span>
+<span class="nc" id="L117">            val hue = (i * 360f / n) % 360f</span>
+<span class="nc" id="L118">            val color = Color.hsl(hue, 0.6f, 0.5f)</span>
+<span class="nc" id="L119">            color</span>
+        }
+    }
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>undirectedEdgeView.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">undirectedEdgeView.kt</span></div><h1>undirectedEdgeView.kt</h1><pre class="source lang-java linenums">package view
+
+import androidx.compose.foundation.Canvas
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.offset
+import androidx.compose.material.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import viewmodel.EdgeViewModel
+
+@Composable
+fun undirectedEdgeView(
+    viewModel: EdgeViewModel,
+<span class="nc bnc" id="L15" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
+<span class="nc bnc" id="L16" title="All 18 branches missed.">) {</span>
+<span class="nc" id="L17">    Canvas(modifier = modifier.fillMaxSize()) {</span>
+<span class="nc" id="L18">        drawLine(</span>
+            start =
+<span class="nc" id="L20">                Offset(</span>
+<span class="nc" id="L21">                    viewModel.firstVertex.x.toPx() + viewModel.firstVertex.radius.toPx(),</span>
+<span class="nc" id="L22">                    viewModel.firstVertex.y.toPx() + viewModel.firstVertex.radius.toPx(),</span>
+                ),
+            end =
+<span class="nc" id="L25">                Offset(</span>
+<span class="nc" id="L26">                    viewModel.secondVertex.x.toPx() + viewModel.secondVertex.radius.toPx(),</span>
+<span class="nc" id="L27">                    viewModel.secondVertex.y.toPx() + viewModel.secondVertex.radius.toPx(),</span>
+                ),
+<span class="nc" id="L29">            color = viewModel.color,</span>
+<span class="nc" id="L30">            strokeWidth = viewModel.width,</span>
+        )
+<span class="nc" id="L32">    }</span>
+<span class="nc bnc" id="L33" title="All 2 branches missed.">    if (viewModel.weightVisible) {</span>
+<span class="nc bnc" id="L34" title="All 2 branches missed.">        Text(</span>
+            modifier =
+<span class="nc" id="L36">                Modifier</span>
+<span class="nc" id="L37">                    .offset(</span>
+<span class="nc" id="L38">                        viewModel.firstVertex.x + (viewModel.secondVertex.x - viewModel.firstVertex.x) / 2,</span>
+<span class="nc" id="L39">                        viewModel.firstVertex.y + (viewModel.secondVertex.y - viewModel.firstVertex.y) / 2,</span>
+                    ),
+<span class="nc" id="L41">            text = viewModel.weight,</span>
+        )
+    }
+<span class="nc bnc" id="L44" title="All 2 branches missed.">}</span>
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

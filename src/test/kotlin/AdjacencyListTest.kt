@@ -1,8 +1,8 @@
 import model.DirectedGraph
 import model.UndirectedGraph
-import model.getAdjacencyList
 import org.junit.jupiter.api.Test
 import kotlin.test.assertEquals
+import algos.getAdjacencyList
 
 class AdjacencyListTest {
     @Test

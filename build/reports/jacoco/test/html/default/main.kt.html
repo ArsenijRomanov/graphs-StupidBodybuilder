@@ -1,23 +1,185 @@
-<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">import model.*
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>main.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">main.kt</span></div><h1>main.kt</h1><pre class="source lang-java linenums">import androidx.compose.desktop.ui.tooling.preview.Preview
+import androidx.compose.material.MaterialTheme
+import androidx.compose.runtime.Composable
+import androidx.compose.ui.window.Window
+import androidx.compose.ui.window.application
+import model.*
+import view.MainScreenForDirected
+import view.MainScreenForUndirected
+import viewmodel.CircularPlacementStrategy
+import viewmodel.MainScreenViewModelForDirectedGraph
+import viewmodel.MainScreenViewModelForUndirectedGraph
 
-fun main() {
-<span class="nc" id="L4">    val graph = DirectedGraph()</span>
-<span class="nc" id="L5">    graph.addVertex(1)</span>
-<span class="nc" id="L6">    graph.addVertex(2)</span>
-<span class="nc" id="L7">    graph.addVertex(3)</span>
-<span class="nc" id="L8">    graph.addVertex(4)</span>
-<span class="nc" id="L9">    graph.addVertex(5)</span>
-<span class="nc" id="L10">    graph.addVertex(6)</span>
+<span class="nc" id="L13">val sampleGraph: Graph =</span>
+<span class="nc" id="L14">    DirectedGraph().apply {</span>
+<span class="nc" id="L15">        addVertex(1)</span>
+<span class="nc" id="L16">        addVertex(2)</span>
+<span class="nc" id="L17">        addVertex(3)</span>
+<span class="nc" id="L18">        addVertex(4)</span>
+<span class="nc" id="L19">        addVertex(5)</span>
+<span class="nc" id="L20">        addVertex(6)</span>
+<span class="nc" id="L21">        addVertex(7)</span>
 
-<span class="nc" id="L12">    graph.addEdge(1, 2, 0)</span>
-<span class="nc" id="L13">    graph.addEdge(6, 1, 0)</span>
-<span class="nc" id="L14">    graph.addEdge(5, 6, 0)</span>
-<span class="nc" id="L15">    graph.addEdge(4, 5, 0)</span>
-<span class="nc" id="L16">    graph.addEdge(3, 4, 0)</span>
-<span class="nc" id="L17">    graph.addEdge(3, 1, 0)</span>
-<span class="nc" id="L18">    graph.addEdge(4, 1, 0)</span>
-<span class="nc" id="L19">    graph.addEdge(5, 1, 0)</span>
+<span class="nc" id="L23">        addEdge(1, 2, 1)</span>
+<span class="nc" id="L24">        addEdge(1, 3, 2)</span>
+<span class="nc" id="L25">        addEdge(1, 4, 3)</span>
+<span class="nc" id="L26">        addEdge(1, 5, 4)</span>
+<span class="nc" id="L27">        addEdge(1, 6, 5)</span>
+<span class="nc" id="L28">        addEdge(1, 7, 6)</span>
 
-<span class="nc" id="L21">    val rank = leaderRank(graph)</span>
-<span class="nc" id="L22">}</span>
+<span class="nc" id="L30">        addVertex(8)</span>
+<span class="nc" id="L31">        addVertex(9)</span>
+<span class="nc" id="L32">        addVertex(10)</span>
+<span class="nc" id="L33">        addVertex(11)</span>
+<span class="nc" id="L34">        addVertex(12)</span>
+<span class="nc" id="L35">        addVertex(13)</span>
+<span class="nc" id="L36">        addVertex(14)</span>
+
+<span class="nc" id="L38">        addEdge(8, 9, 7)</span>
+<span class="nc" id="L39">        addEdge(8, 10, 8)</span>
+<span class="nc" id="L40">        addEdge(8, 11, 9)</span>
+<span class="nc" id="L41">        addEdge(8, 12, 10)</span>
+<span class="nc" id="L42">        addEdge(8, 13, 11)</span>
+<span class="nc" id="L43">        addEdge(8, 14, 12)</span>
+
+<span class="nc" id="L45">        addEdge(1, 8, 0)</span>
+<span class="nc" id="L46">    }</span>
+
+<span class="nc" id="L48">val secondSampleGraph =</span>
+<span class="nc" id="L49">    DirectedGraph().apply {</span>
+<span class="nc" id="L50">        addEdge(1, 2, 5)</span>
+<span class="nc" id="L51">        addEdge(2, 1, 10)</span>
+<span class="nc" id="L52">    }</span>
+
+<span class="nc" id="L54">val thirdSampleGraph =</span>
+<span class="nc" id="L55">    UndirectedGraph().apply {</span>
+<span class="nc" id="L56">        addVertex(1)</span>
+<span class="nc" id="L57">        addVertex(2)</span>
+<span class="nc" id="L58">        addVertex(3)</span>
+<span class="nc" id="L59">        addVertex(4)</span>
+<span class="nc" id="L60">        addVertex(5)</span>
+<span class="nc" id="L61">        addVertex(6)</span>
+<span class="nc" id="L62">        addVertex(7)</span>
+
+<span class="nc" id="L64">        addEdge(1, 2, 1)</span>
+<span class="nc" id="L65">        addEdge(1, 3, 2)</span>
+<span class="nc" id="L66">        addEdge(1, 4, 3)</span>
+<span class="nc" id="L67">        addEdge(1, 5, 4)</span>
+<span class="nc" id="L68">        addEdge(1, 6, 5)</span>
+<span class="nc" id="L69">        addEdge(1, 7, 6)</span>
+
+<span class="nc" id="L71">        addVertex(8)</span>
+<span class="nc" id="L72">        addVertex(9)</span>
+<span class="nc" id="L73">        addVertex(10)</span>
+<span class="nc" id="L74">        addVertex(11)</span>
+<span class="nc" id="L75">        addVertex(12)</span>
+<span class="nc" id="L76">        addVertex(13)</span>
+<span class="nc" id="L77">        addVertex(14)</span>
+
+<span class="nc" id="L79">        addEdge(8, 9, 7)</span>
+<span class="nc" id="L80">        addEdge(8, 10, 8)</span>
+<span class="nc" id="L81">        addEdge(8, 11, 9)</span>
+<span class="nc" id="L82">        addEdge(8, 12, 10)</span>
+<span class="nc" id="L83">        addEdge(8, 13, 11)</span>
+<span class="nc" id="L84">        addEdge(8, 14, 12)</span>
+
+<span class="nc" id="L86">        addEdge(1, 8, 0)</span>
+
+<span class="nc" id="L88">        addEdge(1, 1, 0)</span>
+<span class="nc" id="L89">        addEdge(2, 2, 0)</span>
+<span class="nc" id="L90">        addEdge(3, 3, 0)</span>
+<span class="nc" id="L91">        addEdge(4, 4, 0)</span>
+<span class="nc" id="L92">        addEdge(5, 5, 0)</span>
+<span class="nc" id="L93">        addEdge(6, 6, 0)</span>
+<span class="nc" id="L94">        addEdge(7, 7, 0)</span>
+<span class="nc" id="L95">    }</span>
+
+<span class="nc" id="L97">val fourthSampleGraph =</span>
+<span class="nc" id="L98">    DirectedGraph().apply {</span>
+<span class="nc" id="L99">        addEdge(1, 2, 0)</span>
+<span class="nc" id="L100">        addEdge(2, 3, 0)</span>
+<span class="nc" id="L101">        addEdge(3, 4, 0)</span>
+<span class="nc" id="L102">        addEdge(4, 1, 0)</span>
+
+<span class="nc" id="L104">        addEdge(5, 6, 0)</span>
+<span class="nc" id="L105">        addEdge(6, 7, 0)</span>
+<span class="nc" id="L106">        addEdge(7, 8, 0)</span>
+<span class="nc" id="L107">        addEdge(8, 5, 0)</span>
+
+<span class="nc" id="L109">        addEdge(8, 3, 0)</span>
+<span class="nc" id="L110">    }</span>
+
+<span class="nc" id="L112">val fifthSampleGraph =</span>
+<span class="nc" id="L113">    DirectedGraph().apply {</span>
+<span class="nc" id="L114">        addEdge(2, 1, 0)</span>
+<span class="nc" id="L115">        addEdge(3, 1, 0)</span>
+<span class="nc" id="L116">        addEdge(4, 1, 0)</span>
+<span class="nc" id="L117">        addEdge(5, 1, 0)</span>
+<span class="nc" id="L118">        addEdge(6, 1, 0)</span>
+<span class="nc" id="L119">    }</span>
+
+<span class="nc" id="L121">val sixthSampleGraph =</span>
+<span class="nc" id="L122">    UndirectedGraph().apply {</span>
+<span class="nc" id="L123">        addEdge(1, 2, 1)</span>
+<span class="nc" id="L124">        addEdge(2, 3, 2)</span>
+<span class="nc" id="L125">        addEdge(1, 3, 10)</span>
+<span class="nc" id="L126">    }</span>
+
+<span class="nc" id="L128">val seventhSampleGraph =</span>
+<span class="nc" id="L129">    UndirectedGraph().apply {</span>
+<span class="nc" id="L130">        addEdge(1, 2, 1)</span>
+<span class="nc" id="L131">        addEdge(2, 3, 1)</span>
+<span class="nc" id="L132">        addEdge(2, 4, 1)</span>
+<span class="nc" id="L133">        addEdge(2, 5, 1)</span>
+<span class="nc" id="L134">        addEdge(5, 6, 1)</span>
+<span class="nc" id="L135">        addEdge(5, 7, 1)</span>
+
+<span class="nc" id="L137">        addEdge(8, 9, 1)</span>
+<span class="nc" id="L138">        addEdge(9, 10, 1)</span>
+<span class="nc" id="L139">        addEdge(9, 11, 1)</span>
+<span class="nc" id="L140">        addEdge(9, 12, 1)</span>
+<span class="nc" id="L141">        addEdge(12, 13, 1)</span>
+<span class="nc" id="L142">        addEdge(12, 14, 1)</span>
+
+<span class="nc" id="L144">        addEdge(12, 5, 1)</span>
+<span class="nc" id="L145">    }</span>
+
+<span class="nc" id="L147">val star =</span>
+<span class="nc" id="L148">    UndirectedGraph().apply {</span>
+<span class="nc" id="L149">        addEdge(1, 3, 1)</span>
+<span class="nc" id="L150">        addEdge(1, 4, 1)</span>
+<span class="nc" id="L151">        addEdge(2, 5, 1)</span>
+<span class="nc" id="L152">        addEdge(2, 4, 2)</span>
+<span class="nc" id="L153">        addEdge(3, 5, 10)</span>
+<span class="nc" id="L154">    }</span>
+
+@Composable
+@Preview
+<span class="nc bnc" id="L158" title="All 12 branches missed.">fun App(graph: Graph) {</span>
+<span class="nc bnc" id="L159" title="All 2 branches missed.">    MaterialTheme {</span>
+<span class="nc bnc" id="L160" title="All 8 branches missed.">        if (graph is DirectedGraph) {</span>
+<span class="nc" id="L161">            MainScreenForDirected(</span>
+<span class="nc" id="L162">                MainScreenViewModelForDirectedGraph(</span>
+<span class="nc" id="L163">                    graph,</span>
+<span class="nc" id="L164">                    CircularPlacementStrategy(),</span>
+                ),
+            )
+        }
+<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (graph is UndirectedGraph) {</span>
+<span class="nc bnc" id="L169" title="All 2 branches missed.">            MainScreenForUndirected(</span>
+<span class="nc" id="L170">                    MainScreenViewModelForUndirectedGraph(</span>
+<span class="nc" id="L171">                    graph,</span>
+<span class="nc" id="L172">                    CircularPlacementStrategy(),</span>
+                ),
+            )
+<span class="nc" id="L175">        }</span>
+<span class="nc" id="L176">    }</span>
+<span class="nc bnc" id="L177" title="All 2 branches missed.">}</span>
+
+fun main() =
+<span class="nc" id="L180">    application {</span>
+<span class="nc bnc" id="L181" title="All 10 branches missed.">        Window(onCloseRequest = ::exitApplication) {</span>
+<span class="nc bnc" id="L182" title="All 8 branches missed.">            App(star)</span>
+<span class="nc" id="L183">        }</span>
+<span class="nc" id="L184">    }</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

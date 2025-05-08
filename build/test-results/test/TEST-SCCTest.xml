@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="SCCTest" tests="10" skipped="0" failures="0" errors="0" timestamp="2025-05-08T12:15:30" hostname="ars-MaiBook-M" time="0.025">
+  <properties/>
+  <testcase name="empty graph returns no components()" classname="SCCTest" time="0.003"/>
+  <testcase name="two separate cycles()" classname="SCCTest" time="0.001"/>
+  <testcase name="two connected cycles in two scc()" classname="SCCTest" time="0.001"/>
+  <testcase name="three vertices in chain()" classname="SCCTest" time="0.001"/>
+  <testcase name="three vertices in cycle()" classname="SCCTest" time="0.001"/>
+  <testcase name="long chain with N SCCs()" classname="SCCTest" time="0.011"/>
+  <testcase name="two vertices in cycle()" classname="SCCTest" time="0.0"/>
+  <testcase name="single vertex is one SCC()" classname="SCCTest" time="0.001"/>
+  <testcase name="graph with cycle and isolated node()" classname="SCCTest" time="0.001"/>
+  <testcase name="disconnected vertices form separate SCCs()" classname="SCCTest" time="0.0"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>
