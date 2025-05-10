@@ -12,7 +12,8 @@ class GraphViewModel(
     private val graph: Graph,
     showVerticesElements: State<Boolean>,
     showEdgesWeights: State<Boolean>,
-    val defaultVertexRadius: Dp = 25.dp,
+    val defaultVertexRadius: Dp,
+    val defaultEdgesWidth: Float,
 ) {
     private var _findPathState = mutableStateOf(false)
     var findPathState: Boolean
@@ -41,6 +42,8 @@ class GraphViewModel(
                 defaultVertexRadius,
             )
         }
+    val vertices: Collection<VertexViewModel>
+        get() = _vertices.values
 
     private val _edges =
         graph.edges.associateWith { e ->
@@ -52,17 +55,13 @@ class GraphViewModel(
                     ?: throw IllegalStateException("VertexView for ${e.vertices.second} not found")
             EdgeViewModel(
                 Color.Black,
-                1f,
+                defaultEdgesWidth,
                 fst,
                 snd,
                 e,
                 showEdgesWeights,
             )
         }
-
-    val vertices: Collection<VertexViewModel>
-        get() = _vertices.values
-
     val edges: Collection<EdgeViewModel>
         get() = _edges.values
 
@@ -103,7 +102,7 @@ class GraphViewModel(
         }
         this.edges.forEach { e ->
             e.color = Color.Black
-            e.width = 1f
+            e.width = defaultEdgesWidth
         }
     }
 }

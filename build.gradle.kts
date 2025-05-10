@@ -24,6 +24,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core:5.5.5")
     testImplementation("io.kotest:kotest-property:5.5.5")
     testImplementation(kotlin("test"))
+    testImplementation("io.mockk:mockk:1.13.8")
 
     testImplementation("org.junit.jupiter:junit-jupiter-api:5.9.0")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:5.9.0")
@@ -34,6 +35,20 @@ dependencies {
 
     // Для UI-тестов Compose Desktop (если используешь)
     testImplementation(compose.desktop.uiTestJUnit4)
+
+    implementation(compose.foundation)
+    implementation(compose.ui)
+}
+
+kotlin {
+    sourceSets {
+        all {
+            languageSettings {
+                optIn("androidx.compose.ui.ExperimentalComposeUiApi")
+                optIn("androidx.compose.foundation.ExperimentalFoundationApi")
+            }
+        }
+    }
 }
 
 compose.desktop {

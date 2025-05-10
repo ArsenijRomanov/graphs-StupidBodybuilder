@@ -31,6 +31,8 @@ class MainScreenViewModelForDirectedGraph(
             graph,
             _showVerticesElements,
             _showEdgesWeights,
+            representationStrategy.defaultVertexRadius,
+            representationStrategy.defaultEdgesWidth
         )
 
     init {
@@ -41,7 +43,7 @@ class MainScreenViewModelForDirectedGraph(
         )
     }
 
-    fun checkForNegativeWeights(): Boolean = !checkGraphForNegativeWeight(graph)
+    fun checkForNegativeWeights(): Boolean = checkGraphForNegativeWeight(graph)
 
     fun resetGraphView() {
         representationStrategy.place(
@@ -52,8 +54,12 @@ class MainScreenViewModelForDirectedGraph(
         graphViewModel.reset()
     }
 
-    fun setVerticesColor() {
-        representationStrategy.highlight(graphViewModel.vertices)
+    fun defaultVertices() {
+        representationStrategy.resetVertices(graphViewModel.vertices)
+    }
+
+    fun defaultEdges(){
+        representationStrategy.resetEdges(graphViewModel.edges)
     }
 
     fun findPathDijkstra(
@@ -71,7 +77,7 @@ class MainScreenViewModelForDirectedGraph(
             graphViewModel.setEdgeWidth(
                 path[i],
                 path[i + 1],
-                3f,
+                graphViewModel.defaultEdgesWidth * 3,
             )
         }
     }
@@ -86,7 +92,7 @@ class MainScreenViewModelForDirectedGraph(
         }
     }
 
-    fun getLeaders() {
+    fun highlightKeyVertices() {
         val verticesRanks = leaderRank(graph)
         val first = maxBelow(verticesRanks, Double.POSITIVE_INFINITY) ?: return
         graphViewModel.setVertexSize(first.first, graphViewModel.defaultVertexRadius * 2)

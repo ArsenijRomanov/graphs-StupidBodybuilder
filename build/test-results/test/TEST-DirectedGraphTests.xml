@@ -1,17 +1,17 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DirectedGraphTests" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-05-08T12:15:30" hostname="ars-MaiBook-M" time="0.014">
+<testsuite name="DirectedGraphTests" tests="12" skipped="0" failures="0" errors="0" timestamp="2025-05-09T08:30:43" hostname="ars-MaiBook-M" time="0.017">
   <properties/>
   <testcase name="add reverse edge()" classname="DirectedGraphTests" time="0.001"/>
-  <testcase name="add an existing vertex()" classname="DirectedGraphTests" time="0.0"/>
-  <testcase name="add loop()" classname="DirectedGraphTests" time="0.0"/>
-  <testcase name="add existing edge()" classname="DirectedGraphTests" time="0.001"/>
+  <testcase name="add an existing vertex()" classname="DirectedGraphTests" time="0.001"/>
+  <testcase name="add loop()" classname="DirectedGraphTests" time="0.001"/>
+  <testcase name="add existing edge()" classname="DirectedGraphTests" time="0.0"/>
   <testcase name="find not existing vertex()" classname="DirectedGraphTests" time="0.001"/>
   <testcase name="find edge()" classname="DirectedGraphTests" time="0.001"/>
   <testcase name="add vertex test()" classname="DirectedGraphTests" time="0.001"/>
   <testcase name="find vertex()" classname="DirectedGraphTests" time="0.0"/>
   <testcase name="add edge without vertices()" classname="DirectedGraphTests" time="0.001"/>
-  <testcase name="find reverse edge()" classname="DirectedGraphTests" time="0.001"/>
-  <testcase name="find not existing edge()" classname="DirectedGraphTests" time="0.0"/>
+  <testcase name="find reverse edge()" classname="DirectedGraphTests" time="0.0"/>
+  <testcase name="find not existing edge()" classname="DirectedGraphTests" time="0.001"/>
   <testcase name="add edge with two existing vertex()" classname="DirectedGraphTests" time="0.0"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>

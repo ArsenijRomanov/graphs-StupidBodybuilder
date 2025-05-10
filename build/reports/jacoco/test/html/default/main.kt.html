@@ -153,33 +153,89 @@ import viewmodel.MainScreenViewModelForUndirectedGraph
 <span class="nc" id="L153">        addEdge(3, 5, 10)</span>
 <span class="nc" id="L154">    }</span>
 
+<span class="nc" id="L156">val people =</span>
+<span class="nc" id="L157">    DirectedGraph().apply {</span>
+        //man
+<span class="nc" id="L159">        addEdge(1, 2, 0)</span>
+<span class="nc" id="L160">        addEdge(2, 4, 0)</span>
+<span class="nc" id="L161">        addEdge(2, 6, 0)</span>
+<span class="nc" id="L162">        addEdge(2, 3, 0)</span>
+<span class="nc" id="L163">        addEdge(4, 5, 0)</span>
+<span class="nc" id="L164">        addEdge(6, 7, 0)</span>
+<span class="nc" id="L165">        addEdge(3, 8, 0)</span>
+<span class="nc" id="L166">        addEdge(3, 9, 0)</span>
+<span class="nc" id="L167">        addEdge(8, 10, 0)</span>
+<span class="nc" id="L168">        addEdge(9, 11, 0)</span>
+
+<span class="nc" id="L170">        addEdge(2, 1, 0)</span>
+<span class="nc" id="L171">        addEdge(4, 2, 0)</span>
+<span class="nc" id="L172">        addEdge(6, 2, 0)</span>
+<span class="nc" id="L173">        addEdge(3, 2, 0)</span>
+<span class="nc" id="L174">        addEdge(5, 4, 0)</span>
+<span class="nc" id="L175">        addEdge(7, 6, 0)</span>
+<span class="nc" id="L176">        addEdge(8, 3, 0)</span>
+<span class="nc" id="L177">        addEdge(9, 3, 0)</span>
+<span class="nc" id="L178">        addEdge(10, 8, 0)</span>
+<span class="nc" id="L179">        addEdge(11, 9, 0)</span>
+
+        //woman
+<span class="nc" id="L182">        addEdge(1 + 11, 2 + 11, 0)</span>
+<span class="nc" id="L183">        addEdge(2 + 11, 4 + 11, 0)</span>
+<span class="nc" id="L184">        addEdge(2 + 11, 6 + 11, 0)</span>
+<span class="nc" id="L185">        addEdge(2 + 11, 3 + 11, 0)</span>
+<span class="nc" id="L186">        addEdge(4 + 11, 5 + 11, 0)</span>
+<span class="nc" id="L187">        addEdge(6 + 11, 7 + 11, 0)</span>
+<span class="nc" id="L188">        addEdge(3 + 11, 8 + 11, 0)</span>
+<span class="nc" id="L189">        addEdge(3 + 11, 9 + 11, 0)</span>
+<span class="nc" id="L190">        addEdge(8 + 11, 10 + 11, 0)</span>
+<span class="nc" id="L191">        addEdge(9 + 11, 11 + 11, 0)</span>
+
+<span class="nc" id="L193">        addEdge(2 + 11, 1 + 11, 0)</span>
+<span class="nc" id="L194">        addEdge(4 + 11, 2 + 11, 0)</span>
+<span class="nc" id="L195">        addEdge(6 + 11, 2 + 11, 0)</span>
+<span class="nc" id="L196">        addEdge(3 + 11, 2 + 11, 0)</span>
+<span class="nc" id="L197">        addEdge(5 + 11, 4 + 11, 0)</span>
+<span class="nc" id="L198">        addEdge(7 + 11, 6 + 11, 0)</span>
+<span class="nc" id="L199">        addEdge(8 + 11, 3 + 11, 0)</span>
+<span class="nc" id="L200">        addEdge(9 + 11, 3 + 11, 0)</span>
+<span class="nc" id="L201">        addEdge(10 + 11, 8 + 11, 0)</span>
+<span class="nc" id="L202">        addEdge(11 + 11, 9 + 11, 0)</span>
+
+        //amam
+<span class="nc" id="L205">        addEdge(3, 3 + 11, 0)</span>
+
+        //tits
+<span class="nc" id="L208">        addEdge(30, 40, 0)</span>
+<span class="nc" id="L209">        addEdge(40, 30, 0)</span>
+<span class="nc" id="L210">    }</span>
+
 @Composable
 @Preview
-<span class="nc bnc" id="L158" title="All 12 branches missed.">fun App(graph: Graph) {</span>
-<span class="nc bnc" id="L159" title="All 2 branches missed.">    MaterialTheme {</span>
-<span class="nc bnc" id="L160" title="All 8 branches missed.">        if (graph is DirectedGraph) {</span>
-<span class="nc" id="L161">            MainScreenForDirected(</span>
-<span class="nc" id="L162">                MainScreenViewModelForDirectedGraph(</span>
-<span class="nc" id="L163">                    graph,</span>
-<span class="nc" id="L164">                    CircularPlacementStrategy(),</span>
+<span class="nc bnc" id="L214" title="All 12 branches missed.">fun App(graph: Graph) {</span>
+<span class="nc bnc" id="L215" title="All 2 branches missed.">    MaterialTheme {</span>
+<span class="nc bnc" id="L216" title="All 8 branches missed.">        if (graph is DirectedGraph) {</span>
+<span class="nc" id="L217">            MainScreenForDirected(</span>
+<span class="nc" id="L218">                MainScreenViewModelForDirectedGraph(</span>
+<span class="nc" id="L219">                    graph,</span>
+<span class="nc" id="L220">                    CircularPlacementStrategy(),</span>
                 ),
             )
         }
-<span class="nc bnc" id="L168" title="All 2 branches missed.">        if (graph is UndirectedGraph) {</span>
-<span class="nc bnc" id="L169" title="All 2 branches missed.">            MainScreenForUndirected(</span>
-<span class="nc" id="L170">                    MainScreenViewModelForUndirectedGraph(</span>
-<span class="nc" id="L171">                    graph,</span>
-<span class="nc" id="L172">                    CircularPlacementStrategy(),</span>
+<span class="nc bnc" id="L224" title="All 2 branches missed.">        if (graph is UndirectedGraph) {</span>
+<span class="nc bnc" id="L225" title="All 2 branches missed.">            MainScreenForUndirected(</span>
+<span class="nc" id="L226">                    MainScreenViewModelForUndirectedGraph(</span>
+<span class="nc" id="L227">                    graph,</span>
+<span class="nc" id="L228">                    CircularPlacementStrategy(),</span>
                 ),
             )
-<span class="nc" id="L175">        }</span>
-<span class="nc" id="L176">    }</span>
-<span class="nc bnc" id="L177" title="All 2 branches missed.">}</span>
+<span class="nc" id="L231">        }</span>
+<span class="nc" id="L232">    }</span>
+<span class="nc bnc" id="L233" title="All 2 branches missed.">}</span>
 
 fun main() =
-<span class="nc" id="L180">    application {</span>
-<span class="nc bnc" id="L181" title="All 10 branches missed.">        Window(onCloseRequest = ::exitApplication) {</span>
-<span class="nc bnc" id="L182" title="All 8 branches missed.">            App(star)</span>
-<span class="nc" id="L183">        }</span>
-<span class="nc" id="L184">    }</span>
+<span class="nc" id="L236">    application {</span>
+<span class="nc bnc" id="L237" title="All 10 branches missed.">        Window(onCloseRequest = ::exitApplication) {</span>
+<span class="nc bnc" id="L238" title="All 8 branches missed.">            App(fifthSampleGraph)</span>
+<span class="nc" id="L239">        }</span>
+<span class="nc" id="L240">    }</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

@@ -5,30 +5,30 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.Edge
 
-<span class="nc" id="L8">class EdgeViewModel(</span>
+<span class="fc" id="L8">class EdgeViewModel(</span>
     color: Color,
     width: Float,
-<span class="nc" id="L11">    val firstVertex: VertexViewModel,</span>
-<span class="nc" id="L12">    val secondVertex: VertexViewModel,</span>
-<span class="nc" id="L13">    private val e: Edge,</span>
-<span class="nc" id="L14">    private val _weightVisible: State&lt;Boolean&gt;,</span>
+<span class="pc" id="L11">    val firstVertex: VertexViewModel,</span>
+<span class="pc" id="L12">    val secondVertex: VertexViewModel,</span>
+<span class="fc" id="L13">    private val e: Edge,</span>
+<span class="fc" id="L14">    private val _weightVisible: State&lt;Boolean&gt;,</span>
 ) {
-<span class="nc" id="L16">    private var _color = mutableStateOf(color)</span>
+<span class="fc" id="L16">    private var _color = mutableStateOf(color)</span>
     var color: Color
-<span class="nc" id="L18">        get() = _color.value</span>
+<span class="fc" id="L18">        get() = _color.value</span>
         set(value) {
-<span class="nc" id="L20">            _color.value = value</span>
-<span class="nc" id="L21">        }</span>
+<span class="fc" id="L20">            _color.value = value</span>
+<span class="fc" id="L21">        }</span>
 
-<span class="nc" id="L23">    private var _width = mutableStateOf(width)</span>
+<span class="fc" id="L23">    private var _width = mutableStateOf(width)</span>
     var width: Float
-<span class="nc" id="L25">        get() = _width.value</span>
+<span class="fc" id="L25">        get() = _width.value</span>
         set(value) {
-<span class="nc" id="L27">            _width.value = value</span>
-<span class="nc" id="L28">        }</span>
+<span class="fc" id="L27">            _width.value = value</span>
+<span class="fc" id="L28">        }</span>
 
     val weight
-<span class="nc" id="L31">        get() = e.weight.toString()</span>
+<span class="fc" id="L31">        get() = e.weight.toString()</span>
 
     val weightVisible
 <span class="nc" id="L34">        get() = _weightVisible.value</span>

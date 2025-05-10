@@ -8,103 +8,102 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import model.Graph
 
-<span class="nc" id="L11">class GraphViewModel(</span>
-<span class="nc" id="L12">    private val graph: Graph,</span>
+<span class="fc" id="L11">class GraphViewModel(</span>
+<span class="fc" id="L12">    private val graph: Graph,</span>
     showVerticesElements: State&lt;Boolean&gt;,
     showEdgesWeights: State&lt;Boolean&gt;,
-<span class="nc" id="L15">    val defaultVertexRadius: Dp = 25.dp,</span>
-<span class="nc" id="L16">) {</span>
-<span class="nc" id="L17">    private var _findPathState = mutableStateOf(false)</span>
+<span class="fc" id="L15">    val defaultVertexRadius: Dp,</span>
+<span class="fc" id="L16">    val defaultEdgesWidth: Float,</span>
+) {
+<span class="fc" id="L18">    private var _findPathState = mutableStateOf(false)</span>
     var findPathState: Boolean
-<span class="nc" id="L19">        get() = _findPathState.value</span>
+<span class="nc" id="L20">        get() = _findPathState.value</span>
         set(value) {
-<span class="nc" id="L21">            _findPathState.value = value</span>
-<span class="nc" id="L22">        }</span>
+<span class="nc" id="L22">            _findPathState.value = value</span>
+<span class="nc" id="L23">        }</span>
 
-<span class="nc" id="L24">    private val _verticesToFindPath = mutableStateListOf&lt;Long&gt;()</span>
+<span class="fc" id="L25">    private val _verticesToFindPath = mutableStateListOf&lt;Long&gt;()</span>
     val verticesToFindPath: List&lt;Long&gt;
-<span class="nc" id="L26">        get() = _verticesToFindPath.toList()</span>
+<span class="nc" id="L27">        get() = _verticesToFindPath.toList()</span>
 
-<span class="nc" id="L28">    fun addVertexToFindPath(vertex: Long) = _verticesToFindPath.add(vertex)</span>
+<span class="nc" id="L29">    fun addVertexToFindPath(vertex: Long) = _verticesToFindPath.add(vertex)</span>
 
-<span class="nc" id="L30">    fun clearVerticesToFindPath() = _verticesToFindPath.clear()</span>
+<span class="nc" id="L31">    fun clearVerticesToFindPath() = _verticesToFindPath.clear()</span>
 
     private val _vertices =
-<span class="nc" id="L33">        graph.vertices.associateWith { v -&gt;</span>
-<span class="nc" id="L34">            VertexViewModel(</span>
-<span class="nc" id="L35">                0.dp,</span>
-<span class="nc" id="L36">                0.dp,</span>
-<span class="nc" id="L37">                Color.Gray,</span>
-<span class="nc" id="L38">                this,</span>
-<span class="nc" id="L39">                v,</span>
-<span class="nc" id="L40">                showVerticesElements,</span>
-<span class="nc" id="L41">                defaultVertexRadius,</span>
-<span class="nc" id="L42">            )</span>
+<span class="fc" id="L34">        graph.vertices.associateWith { v -&gt;</span>
+<span class="fc" id="L35">            VertexViewModel(</span>
+<span class="fc" id="L36">                0.dp,</span>
+<span class="fc" id="L37">                0.dp,</span>
+<span class="fc" id="L38">                Color.Gray,</span>
+<span class="fc" id="L39">                this,</span>
+<span class="fc" id="L40">                v,</span>
+<span class="fc" id="L41">                showVerticesElements,</span>
+<span class="fc" id="L42">                defaultVertexRadius,</span>
+<span class="fc" id="L43">            )</span>
         }
+    val vertices: Collection&lt;VertexViewModel&gt;
+<span class="fc" id="L46">        get() = _vertices.values</span>
 
     private val _edges =
-<span class="nc" id="L46">        graph.edges.associateWith { e -&gt;</span>
-<span class="nc" id="L47">            val fst =</span>
-<span class="nc bnc" id="L48" title="All 2 branches missed.">                _vertices[e.vertices.first]</span>
-<span class="nc" id="L49">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.first} not found&quot;)</span>
-<span class="nc" id="L50">            val snd =</span>
-<span class="nc bnc" id="L51" title="All 2 branches missed.">                _vertices[e.vertices.second]</span>
-<span class="nc" id="L52">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.second} not found&quot;)</span>
-<span class="nc" id="L53">            EdgeViewModel(</span>
-<span class="nc" id="L54">                Color.Black,</span>
-<span class="nc" id="L55">                1f,</span>
-<span class="nc" id="L56">                fst,</span>
-<span class="nc" id="L57">                snd,</span>
-<span class="nc" id="L58">                e,</span>
-<span class="nc" id="L59">                showEdgesWeights,</span>
-<span class="nc" id="L60">            )</span>
+<span class="fc" id="L49">        graph.edges.associateWith { e -&gt;</span>
+<span class="fc" id="L50">            val fst =</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">                _vertices[e.vertices.first]</span>
+<span class="nc" id="L52">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.first} not found&quot;)</span>
+<span class="fc" id="L53">            val snd =</span>
+<span class="pc bpc" id="L54" title="1 of 2 branches missed.">                _vertices[e.vertices.second]</span>
+<span class="nc" id="L55">                    ?: throw IllegalStateException(&quot;VertexView for ${e.vertices.second} not found&quot;)</span>
+<span class="fc" id="L56">            EdgeViewModel(</span>
+<span class="fc" id="L57">                Color.Black,</span>
+<span class="fc" id="L58">                defaultEdgesWidth,</span>
+<span class="fc" id="L59">                fst,</span>
+<span class="fc" id="L60">                snd,</span>
+<span class="fc" id="L61">                e,</span>
+<span class="fc" id="L62">                showEdgesWeights,</span>
+<span class="fc" id="L63">            )</span>
         }
-
-    val vertices: Collection&lt;VertexViewModel&gt;
-<span class="nc" id="L64">        get() = _vertices.values</span>
-
     val edges: Collection&lt;EdgeViewModel&gt;
-<span class="nc" id="L67">        get() = _edges.values</span>
+<span class="fc" id="L66">        get() = _edges.values</span>
 
     fun setVertexColor(
         v: Long,
         color: Color,
     )  {
-<span class="nc bnc" id="L73" title="All 2 branches missed.">        _vertices[v]?.color = color</span>
-<span class="nc" id="L74">    }</span>
+<span class="pc bpc" id="L72" title="1 of 2 branches missed.">        _vertices[v]?.color = color</span>
+<span class="fc" id="L73">    }</span>
 
     fun setVertexSize(
         v: Long,
         radius: Dp,
-<span class="nc bnc" id="L79" title="All 2 branches missed.">    ) = _vertices[v]?.radius = radius</span>
+<span class="pc bpc" id="L78" title="1 of 2 branches missed.">    ) = _vertices[v]?.radius = radius</span>
 
     fun setEdgeColor(
         firstVertex: Long,
         secondVertex: Long,
         color: Color,
     )  {
-<span class="nc" id="L86">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
-<span class="nc bnc" id="L87" title="All 2 branches missed.">        _edges[edge]?.color = color</span>
-<span class="nc" id="L88">    }</span>
+<span class="fc" id="L85">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
+<span class="pc bpc" id="L86" title="1 of 2 branches missed.">        _edges[edge]?.color = color</span>
+<span class="fc" id="L87">    }</span>
 
     fun setEdgeWidth(
         firstVertex: Long,
         secondVertex: Long,
         width: Float,
     )  {
-<span class="nc" id="L95">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
-<span class="nc bnc" id="L96" title="All 2 branches missed.">        _edges[edge]?.width = width</span>
-<span class="nc" id="L97">    }</span>
+<span class="fc" id="L94">        val edge = graph.findEdge(firstVertex, secondVertex)</span>
+<span class="pc bpc" id="L95" title="1 of 2 branches missed.">        _edges[edge]?.width = width</span>
+<span class="fc" id="L96">    }</span>
 
     fun reset() {
-<span class="nc" id="L100">        this.vertices.forEach { v -&gt;</span>
-<span class="nc" id="L101">            v.color = Color.Gray</span>
-<span class="nc" id="L102">            v.radius = defaultVertexRadius</span>
-<span class="nc" id="L103">        }</span>
-<span class="nc" id="L104">        this.edges.forEach { e -&gt;</span>
-<span class="nc" id="L105">            e.color = Color.Black</span>
-<span class="nc" id="L106">            e.width = 1f</span>
-<span class="nc" id="L107">        }</span>
-<span class="nc" id="L108">    }</span>
+<span class="fc" id="L99">        this.vertices.forEach { v -&gt;</span>
+<span class="fc" id="L100">            v.color = Color.Gray</span>
+<span class="fc" id="L101">            v.radius = defaultVertexRadius</span>
+<span class="fc" id="L102">        }</span>
+<span class="fc" id="L103">        this.edges.forEach { e -&gt;</span>
+<span class="fc" id="L104">            e.color = Color.Black</span>
+<span class="fc" id="L105">            e.width = defaultEdgesWidth</span>
+<span class="fc" id="L106">        }</span>
+<span class="fc" id="L107">    }</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

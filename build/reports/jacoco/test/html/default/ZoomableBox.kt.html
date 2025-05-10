@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ZoomableBox.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">default</a> &gt; <span class="el_source">ZoomableBox.kt</span></div><h1>ZoomableBox.kt</h1><pre class="source lang-java linenums">import androidx.compose.foundation.gestures.detectTransformGestures
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.runtime.*
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.ExperimentalComposeUiApi
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.ui.layout.onSizeChanged
+
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalFoundationApi::class)
+@Composable
+<span class="nc bnc" id="L15" title="All 10 branches missed.">fun ZoomableBox(content: @Composable BoxScope.() -&gt; Unit) {</span>
+<span class="nc" id="L16">    var scale by remember { mutableStateOf(1f) }</span>
+<span class="nc" id="L17">    var offsetX by remember { mutableStateOf(0f) }</span>
+<span class="nc" id="L18">    var offsetY by remember { mutableStateOf(0f) }</span>
+
+<span class="nc" id="L20">    val minScale = 0.1f</span>
+<span class="nc" id="L21">    val maxScale = 5f</span>
+
+<span class="nc" id="L23">    var boxWidth by remember { mutableStateOf(0f) }</span>
+<span class="nc" id="L24">    var boxHeight by remember { mutableStateOf(0f) }</span>
+
+<span class="nc" id="L26">    Box(</span>
+<span class="nc" id="L27">        modifier = Modifier</span>
+<span class="nc" id="L28">            .fillMaxSize()</span>
+<span class="nc" id="L29">            .onSizeChanged {</span>
+<span class="nc" id="L30">                boxWidth = it.width.toFloat()</span>
+<span class="nc" id="L31">                boxHeight = it.height.toFloat()</span>
+<span class="nc" id="L32">            }</span>
+<span class="nc" id="L33">            .pointerInput(Unit) {</span>
+<span class="nc" id="L34">                detectTransformGestures { _, pan, zoom, _ -&gt;</span>
+<span class="nc" id="L35">                    val newScale = (scale * zoom).coerceIn(minScale, maxScale)</span>
+
+<span class="nc" id="L37">                    val centerX = boxWidth / 2f</span>
+<span class="nc" id="L38">                    val centerY = boxHeight / 2f</span>
+
+<span class="nc" id="L40">                    offsetX = (offsetX - centerX) * (newScale / scale) + centerX + pan.x</span>
+<span class="nc" id="L41">                    offsetY = (offsetY - centerY) * (newScale / scale) + centerY + pan.y</span>
+
+<span class="nc" id="L43">                    scale = newScale</span>
+<span class="nc" id="L44">                }</span>
+<span class="nc" id="L45">            }</span>
+<span class="nc" id="L46">            .pointerInput(Unit) {</span>
+<span class="nc" id="L47">                awaitPointerEventScope {</span>
+<span class="nc" id="L48">                    while (true) {</span>
+<span class="nc" id="L49">                        val event = awaitPointerEvent()</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">                        val scrollDelta = event.changes.firstOrNull()?.scrollDelta?.y ?: 0f</span>
+<span class="nc bnc" id="L51" title="All 4 branches missed.">                        if (scrollDelta != 0f) {</span>
+<span class="nc bnc" id="L52" title="All 2 branches missed.">                            val zoomFactor = if (scrollDelta &lt; 0) 1.1f else 0.9f</span>
+<span class="nc" id="L53">                            val newScale = (scale * zoomFactor).coerceIn(minScale, maxScale)</span>
+
+<span class="nc" id="L55">                            val centerX = boxWidth / 2f</span>
+<span class="nc" id="L56">                            val centerY = boxHeight / 2f</span>
+
+<span class="nc" id="L58">                            offsetX = (offsetX - centerX) * (newScale / scale) + centerX</span>
+<span class="nc" id="L59">                            offsetY = (offsetY - centerY) * (newScale / scale) + centerY</span>
+
+<span class="nc" id="L61">                            scale = newScale</span>
+                        }
+                    }
+                }
+<span class="nc" id="L65">            }</span>
+<span class="nc" id="L66">            .graphicsLayer(</span>
+<span class="nc" id="L67">                scaleX = scale,</span>
+<span class="nc" id="L68">                scaleY = scale,</span>
+<span class="nc" id="L69">                translationX = offsetX,</span>
+<span class="nc" id="L70">                translationY = offsetY</span>
+            )
+    ) {
+<span class="nc" id="L73">        content()</span>
+<span class="nc" id="L74">    }</span>
+<span class="nc bnc" id="L75" title="All 2 branches missed.">}</span>
+
+
+
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

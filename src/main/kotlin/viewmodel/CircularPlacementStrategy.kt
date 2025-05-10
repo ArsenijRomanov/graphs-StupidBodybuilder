@@ -1,13 +1,16 @@
 package viewmodel
 
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import kotlin.math.cos
 import kotlin.math.min
 import kotlin.math.sin
-import kotlin.random.Random
 
-class CircularPlacementStrategy : RepresentationStrategy {
+class CircularPlacementStrategy(
+    override val defaultVertexRadius: Dp = 25.dp,
+    override val defaultEdgesWidth: Float = 1f
+) : RepresentationStrategy {
     override fun place(
         width: Double,
         height: Double,
@@ -37,10 +40,19 @@ class CircularPlacementStrategy : RepresentationStrategy {
             }
     }
 
-    override fun highlight(vertices: Collection<VertexViewModel>) {
+    override fun resetVertices(vertices: Collection<VertexViewModel>) {
         vertices
             .onEach {
-                it.color = if (Random.nextBoolean()) Color.Green else Color.Blue
+                it.color = Color.Gray
+                it.radius = defaultVertexRadius
+            }
+    }
+
+    override fun resetEdges(edges: Collection<EdgeViewModel>) {
+        edges
+            .onEach {
+                it.color = Color.Black
+                it.width = defaultEdgesWidth
             }
     }
 

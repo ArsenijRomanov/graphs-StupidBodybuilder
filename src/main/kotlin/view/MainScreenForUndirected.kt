@@ -1,5 +1,6 @@
 package view
 
+import ZoomableBox
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.Button
@@ -79,7 +80,7 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
             }
 
             Button(
-                onClick = viewModel::setVerticesColor,
+                onClick = viewModel::defaultVertices,
                 enabled = true,
                 modifier = Modifier.padding(top = 8.dp),
                 colors =
@@ -88,11 +89,24 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
                         contentColor = Color.White,
                     ),
             ) {
-                Text("Set colors")
+                Text("Reset vertices")
             }
 
             Button(
-                onClick = viewModel::getLeaders,
+                onClick = viewModel::defaultEdges,
+                enabled = true,
+                modifier = Modifier.padding(top = 8.dp),
+                colors =
+                    ButtonDefaults.buttonColors(
+                        backgroundColor = Color(0xFF1976D2), // тот же цвет, что и обычный для Dijkstra
+                        contentColor = Color.White,
+                    ),
+            ) {
+                Text("Reset edges")
+            }
+
+            Button(
+                onClick = viewModel::highlightKeyVertices,
                 enabled = true,
                 modifier = Modifier.padding(top = 8.dp),
                 colors =
@@ -104,7 +118,7 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
                 Text("get leaders")
             }
 
-            if (viewModel.checkForNegativeWeights()) {
+            if (!viewModel.checkForNegativeWeights()) {
                 Button(
                     onClick = {
                         viewModel.graphViewModel.clearVerticesToFindPath()
@@ -116,11 +130,10 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
                         ButtonDefaults.buttonColors(
                             backgroundColor =
                                 if (viewModel.graphViewModel.findPathState) {
-                                    Color(0xFF1565C0) // активный цвет
+                                    Color(0xFF1565C0)
                                 } else {
                                     Color(0xFF1976D2)
                                 },
-                            // обычный цвет
                             contentColor = Color.White,
                         ),
                 ) {
@@ -130,9 +143,11 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
         }
 
         Surface(
-            modifier = Modifier.weight(1f),
+            modifier = Modifier.weight(1f)
         ) {
-            undirectedGraphView(viewModel.graphViewModel)
+            ZoomableBox {
+                undirectedGraphView(viewModel.graphViewModel)
+            }
         }
     }
 }

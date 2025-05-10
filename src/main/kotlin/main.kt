@@ -153,6 +153,62 @@ val star =
         addEdge(3, 5, 10)
     }
 
+val people =
+    DirectedGraph().apply {
+        //man
+        addEdge(1, 2, 0)
+        addEdge(2, 4, 0)
+        addEdge(2, 6, 0)
+        addEdge(2, 3, 0)
+        addEdge(4, 5, 0)
+        addEdge(6, 7, 0)
+        addEdge(3, 8, 0)
+        addEdge(3, 9, 0)
+        addEdge(8, 10, 0)
+        addEdge(9, 11, 0)
+
+        addEdge(2, 1, 0)
+        addEdge(4, 2, 0)
+        addEdge(6, 2, 0)
+        addEdge(3, 2, 0)
+        addEdge(5, 4, 0)
+        addEdge(7, 6, 0)
+        addEdge(8, 3, 0)
+        addEdge(9, 3, 0)
+        addEdge(10, 8, 0)
+        addEdge(11, 9, 0)
+
+        //woman
+        addEdge(1 + 11, 2 + 11, 0)
+        addEdge(2 + 11, 4 + 11, 0)
+        addEdge(2 + 11, 6 + 11, 0)
+        addEdge(2 + 11, 3 + 11, 0)
+        addEdge(4 + 11, 5 + 11, 0)
+        addEdge(6 + 11, 7 + 11, 0)
+        addEdge(3 + 11, 8 + 11, 0)
+        addEdge(3 + 11, 9 + 11, 0)
+        addEdge(8 + 11, 10 + 11, 0)
+        addEdge(9 + 11, 11 + 11, 0)
+
+        addEdge(2 + 11, 1 + 11, 0)
+        addEdge(4 + 11, 2 + 11, 0)
+        addEdge(6 + 11, 2 + 11, 0)
+        addEdge(3 + 11, 2 + 11, 0)
+        addEdge(5 + 11, 4 + 11, 0)
+        addEdge(7 + 11, 6 + 11, 0)
+        addEdge(8 + 11, 3 + 11, 0)
+        addEdge(9 + 11, 3 + 11, 0)
+        addEdge(10 + 11, 8 + 11, 0)
+        addEdge(11 + 11, 9 + 11, 0)
+
+        //amam
+        addEdge(3, 3 + 11, 0)
+
+        //tits
+        addEdge(30, 40, 0)
+        addEdge(40, 30, 0)
+    }
+
 @Composable
 @Preview
 fun App(graph: Graph) {
@@ -179,6 +235,6 @@ fun App(graph: Graph) {
 fun main() =
     application {
         Window(onCloseRequest = ::exitApplication) {
-            App(star)
+            App(fifthSampleGraph)
         }
     }

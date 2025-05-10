@@ -11,7 +11,7 @@ class VertexViewModel(
     x: Dp = 0.dp,
     y: Dp = 0.dp,
     color: Color,
-    val graphViewModel: GraphViewModel,
+    private val graphViewModel: GraphViewModel,
     private val v: Long,
     private val _valueVisible: State<Boolean>,
     radius: Dp,
