@@ -1,0 +1,64 @@
+{
+  "graph": {
+    "type": "undirected",
+    "vertices": [
+      {
+        "value": 100,
+        "radius": 10,
+        "color": "#FF5733"
+      },
+      {
+        "value": 200,
+        "radius": 15,
+        "color": "#33FF57"
+      },
+      {
+        "value": 150,
+        "radius": 12,
+        "color": "#3357FF"
+      },
+      {
+        "value": 300,
+        "radius": 20,
+        "color": "#FF33A8"
+      }
+    ],
+    "edges": [
+      {
+        "from": 100,
+        "to": 200,
+        "width": 2,
+        "color": "#33FF57",
+        "weight": 5
+      },
+      {
+        "from": 100,
+        "to": 150,
+        "width": 1,
+        "color": "#3357FF",
+        "weight": 2
+      },
+      {
+        "from": 200,
+        "to": 300,
+        "width": 3,
+        "color": "#FF33A8",
+        "weight": 1
+      },
+      {
+        "from": 150,
+        "to": 300,
+        "width": 2,
+        "color": "#FF33A8",
+        "weight": 7
+      },
+      {
+        "from": 300,
+        "to": 100,
+        "width": 4,
+        "color": "#FF5733",
+        "weight": -3
+      }
+    ]
+  }
+}

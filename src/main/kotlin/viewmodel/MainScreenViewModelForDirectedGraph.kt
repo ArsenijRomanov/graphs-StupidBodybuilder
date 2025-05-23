@@ -11,7 +11,7 @@ import model.DirectedGraph
 class MainScreenViewModelForDirectedGraph(
     private val graph: DirectedGraph,
     private val representationStrategy: RepresentationStrategy,
-) {
+) : MainScreenViewModel {
     private var _showVerticesElements = mutableStateOf(false)
     var showVerticesElements: Boolean
         get() = _showVerticesElements.value
@@ -26,7 +26,7 @@ class MainScreenViewModelForDirectedGraph(
             _showEdgesWeights.value = value
         }
 
-    val graphViewModel =
+    override val graphViewModel =
         GraphViewModel(
             graph,
             _showVerticesElements,
@@ -40,6 +40,7 @@ class MainScreenViewModelForDirectedGraph(
             800.0,
             600.0,
             graphViewModel.vertices,
+            graphViewModel.edges
         )
     }
 
@@ -50,6 +51,7 @@ class MainScreenViewModelForDirectedGraph(
             800.0,
             600.0,
             graphViewModel.vertices,
+            graphViewModel.edges
         )
         graphViewModel.reset()
     }
