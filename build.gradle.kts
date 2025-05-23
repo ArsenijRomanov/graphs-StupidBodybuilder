@@ -6,16 +6,21 @@ plugins {
     id("org.jetbrains.compose")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
     id("jacoco") // ✅ Плагин покрытия кода
+    kotlin("plugin.serialization") version "1.9.0"
 }
 
 repositories {
     maven("https://repo.kotlin.link")
+    maven("https://raw.github.com/gephi/gephi/mvn-thirdparty-repo/")
     mavenCentral()
     google()
 }
 
 dependencies {
     implementation(compose.desktop.currentOs)
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.6.0")
+    implementation("cafe.adriel.voyager:voyager-navigator:1.0.0-rc05")
+    implementation("org.gephi", "gephi-toolkit", "0.10.1", classifier = "all")
 
     implementation("org.xerial:sqlite-jdbc:3.45.1.0")
 
