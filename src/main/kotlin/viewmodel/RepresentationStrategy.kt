@@ -10,6 +10,7 @@ interface RepresentationStrategy {
         width: Double,
         height: Double,
         vertices: Collection<VertexViewModel>,
+        edges: Collection<EdgeViewModel>
     )
 
     fun resetVertices(vertices: Collection<VertexViewModel>)

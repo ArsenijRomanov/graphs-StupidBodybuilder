@@ -15,6 +15,7 @@ class CircularPlacementStrategy(
         width: Double,
         height: Double,
         vertices: Collection<VertexViewModel>,
+        edges: Collection<EdgeViewModel>
     ) {
         if (vertices.isEmpty()) {
             println("CircularPlacementStrategy.place: there is nothing to place 👐🏻")

@@ -10,7 +10,7 @@ import model.UndirectedGraph
 class MainScreenViewModelForUndirectedGraph(
     private val graph: UndirectedGraph,
     private val representationStrategy: RepresentationStrategy,
-) {
+) : MainScreenViewModel{
     private var _showVerticesElements = mutableStateOf(false)
     var showVerticesElements: Boolean
         get() = _showVerticesElements.value
@@ -25,7 +25,7 @@ class MainScreenViewModelForUndirectedGraph(
             _showEdgesWeights.value = value
         }
 
-    val graphViewModel = GraphViewModel(
+    override val graphViewModel = GraphViewModel(
         graph,
         _showVerticesElements,
         _showEdgesWeights,
@@ -39,6 +39,7 @@ class MainScreenViewModelForUndirectedGraph(
             800.0,
             600.0,
             graphViewModel.vertices,
+            graphViewModel.edges
         )
     }
 
@@ -49,6 +50,7 @@ class MainScreenViewModelForUndirectedGraph(
             800.0,
             600.0,
             graphViewModel.vertices,
+            graphViewModel.edges
         )
         graphViewModel.reset()
     }
