@@ -11,7 +11,6 @@ import kotlin.test.assertTrue
 
 import java.sql.Connection
 import java.sql.DriverManager
-import kotlin.test.assertEquals
 import kotlin.test.assertFalse
 
 class DBTest {
@@ -210,7 +209,7 @@ class DBTest {
         repository.addGraph(graph, "first")
         repository.addGraph(graph, "second")
         repository.addGraph(graph, "third")
-        val names = repository.listGraphNames()
+        val names = repository.getGraphsNames()
         assertTrue(names.contains("first"))
         assertTrue(names.contains("second"))
         assertTrue(names.contains("third"))

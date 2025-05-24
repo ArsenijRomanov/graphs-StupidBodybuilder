@@ -25,6 +25,7 @@ import cafe.adriel.voyager.navigator.currentOrThrow
 import model.DirectedGraph
 import model.Graph
 import model.UndirectedGraph
+import saving.GraphRepository
 import saving.loadMainScreenViewModelFromJson
 import viewmodel.CircularPlacementStrategy
 import viewmodel.ForceAtlas2Layout
@@ -32,11 +33,14 @@ import viewmodel.MainScreenViewModel
 import viewmodel.MainScreenViewModelForDirectedGraph
 import viewmodel.MainScreenViewModelForUndirectedGraph
 import java.awt.Dimension
+import java.io.File
+import java.sql.DriverManager
 import javax.swing.JFileChooser
+import javax.swing.JOptionPane
 
 @Composable
 fun homeScreen(){
-    var filePath by remember { mutableStateOf("Файл не выбран") }
+    var filePath by remember { mutableStateOf("File not selected") }
     val navigator = LocalNavigator.currentOrThrow
     Box(
         modifier = Modifier.fillMaxSize(),
@@ -55,7 +59,61 @@ fun homeScreen(){
                 horizontalArrangement = Arrangement.spacedBy(8.dp)
             ) {
                 Button(onClick = {
+                    JFileChooser().apply {
+                        preferredSize = Dimension(800, 600)
+                        dialogTitle = "Select file"
+                        fileSelectionMode = JFileChooser.FILES_ONLY
+                        isMultiSelectionEnabled = false
 
+                        val result = showOpenDialog(null)
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            filePath = selectedFile.absolutePath
+                        } else return@Button
+                    }
+
+                    val url = "jdbc:sqlite:$filePath"
+                    val connection = DriverManager.getConnection(url)
+                    val repository = GraphRepository(connection)
+                    val graphs: List<String> = repository.getGraphsNames()
+
+                    if (graphs.isEmpty()) {
+                        repository.close()
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "No graphs found in this database",
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE
+                        )
+                        return@Button
+                    }
+
+                    val graphArray = graphs.toTypedArray()
+                    val selectedGraph = JOptionPane.showInputDialog(
+                        null,
+                        "Select graph:",
+                        "Graph Selection",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        graphArray,
+                        graphArray.first()
+                    ) as? String ?: throw NoSuchElementException()
+
+                    if (repository.isDirected(selectedGraph)) {
+                        val graph = repository.loadDirectedGraph(selectedGraph)
+                        val viewModel = MainScreenViewModelForDirectedGraph(
+                            graph,
+                            ForceAtlas2Layout()
+                        )
+                        navigator.push(GraphScreen(viewModel))
+                    }
+                    else {
+                        val graph = repository.loadUndirectedGraph(selectedGraph)
+                        val viewModel = MainScreenViewModelForUndirectedGraph(
+                            graph,
+                            ForceAtlas2Layout()
+                        )
+                        navigator.push(GraphScreen(viewModel))
+                    }
                 }) {
                     Text("SQLite")
                 }
@@ -70,7 +128,7 @@ fun homeScreen(){
                         JFileChooser().apply {
                             preferredSize = Dimension(800, 600)
 
-                            dialogTitle = "Выберите файл"
+                            dialogTitle = "Select file"
                             fileSelectionMode = JFileChooser.FILES_ONLY
                             isMultiSelectionEnabled = false
 

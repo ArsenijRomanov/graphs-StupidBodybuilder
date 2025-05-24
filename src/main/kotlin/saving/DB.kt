@@ -111,7 +111,7 @@ class GraphRepository(private val connection: Connection) : Closeable {
         addGraph(graph, name)
     }
 
-    fun listGraphNames(): List<String> {
+    fun getGraphsNames(): List<String> {
         val names = mutableListOf<String>()
         val sql = "SELECT Name FROM Graphs"
         connection.createStatement().use { stmt ->
@@ -129,6 +129,19 @@ class GraphRepository(private val connection: Connection) : Closeable {
             pstmt.setString(1, name)
             val resultSet = pstmt.executeQuery()
             return resultSet.next()
+        }
+    }
+
+    fun isDirected(name: String): Boolean {
+        val sql = "SELECT isDirected FROM Graphs WHERE Name = ?"
+        connection.prepareStatement(sql).use { pstmt ->
+            pstmt.setString(1, name)
+            val result = pstmt.executeQuery()
+            if (result.next()) {
+                return result.getBoolean("isDirected")
+            }
+            else
+                throw NoSuchElementException()
         }
     }
 

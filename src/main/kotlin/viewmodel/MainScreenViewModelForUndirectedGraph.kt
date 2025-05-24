@@ -5,6 +5,7 @@ import algos.dijkstra
 import algos.leaderRank
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import model.UndirectedGraph
 
 class MainScreenViewModelForUndirectedGraph(
@@ -84,28 +85,22 @@ class MainScreenViewModelForUndirectedGraph(
     }
 
     fun highlightKeyVertices() {
-        val verticesRanks = leaderRank(graph)
-        val first = maxBelow(verticesRanks, Double.POSITIVE_INFINITY) ?: return
-        graphViewModel.setVertexSize(first.first, graphViewModel.defaultVertexRadius * 2)
+        val verticesRanks: Map<Long, Double> = leaderRank(graph)
+        val defaultRadius: Dp = graphViewModel.defaultVertexRadius
 
-        val second = maxBelow(verticesRanks, first.second) ?: return
-        graphViewModel.setVertexSize(second.first, graphViewModel.defaultVertexRadius * 1.5f)
+        val minRank = verticesRanks.values.minOrNull() ?: return
+        val maxRank = verticesRanks.values.maxOrNull() ?: return
 
-        val third = maxBelow(verticesRanks, second.second) ?: return
-        graphViewModel.setVertexSize(third.first, graphViewModel.defaultVertexRadius * 1.25f)
-    }
+        val range = maxRank - minRank
+        if (range == 0.0) return
 
-    private fun maxBelow(
-        map: Map<Long, Double>,
-        threshold: Double,
-    ): Pair<Long, Double>?  {
-        var vertexToRank: Pair<Long, Double>? = null
-        for ((vertex, rank) in map) {
-            if (rank < threshold && (vertexToRank == null || vertexToRank.second < rank)) {
-                vertexToRank = vertex to rank
-            }
+        for ((vertexId, rank) in verticesRanks) {
+            // t ∈ [0.0, 1.0]
+            val t: Double = (rank - minRank) / range
+            // scale ∈ [1.0, 4.0]
+            val scale: Double = 1.0 + 3.0 * t
+            val newRadius: Dp = defaultRadius * scale.toFloat()
+            graphViewModel.setVertexSize(vertexId, newRadius)
         }
-
-        return vertexToRank
     }
 }

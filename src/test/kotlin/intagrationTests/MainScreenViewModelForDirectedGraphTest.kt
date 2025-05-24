@@ -26,7 +26,7 @@ class MainScreenViewModelForDirectedGraphTest {
             every { defaultVertexRadius } returns 16.dp
             every { defaultEdgesWidth } returns 2f
 
-            every { place(any(), any(), any()) } just Runs
+            every { place(any(), any(), any(), any()) } just Runs
             every { resetVertices(any()) } just Runs
             every { resetEdges(any()) } just Runs
         }
@@ -40,7 +40,8 @@ class MainScreenViewModelForDirectedGraphTest {
             representationStrategy.place(
                 width = 800.0,
                 height = 600.0,
-                vertices = viewModel.graphViewModel.vertices
+                vertices = viewModel.graphViewModel.vertices,
+                edges = viewModel.graphViewModel.edges
             )
         }
     }
@@ -54,7 +55,8 @@ class MainScreenViewModelForDirectedGraphTest {
             representationStrategy.place(
                 width = 800.0,
                 height = 600.0,
-                vertices = viewModel.graphViewModel.vertices
+                vertices = viewModel.graphViewModel.vertices,
+                edges = viewModel.graphViewModel.edges
             )
         }
     }
@@ -214,13 +216,14 @@ class MainScreenViewModelForDirectedGraphTest {
         viewModel.highlightKeyVertices()
         val vertices = viewModel.graphViewModel.vertices.toList().sortedBy { it.value }
 
-        val firstVertex = vertices[0]
-        val secondVertex = vertices[4]
-        val thirdVertex = vertices[7]
-
-        assertEquals(viewModel.graphViewModel.defaultVertexRadius * 2, firstVertex?.radius)
-        assertEquals(viewModel.graphViewModel.defaultVertexRadius * 1.5f, secondVertex?.radius)
-        assertEquals(viewModel.graphViewModel.defaultVertexRadius * 1.25f, thirdVertex?.radius)
+        for (v in vertices){
+            when (v.value){
+                1L -> assertEquals(v.radius, 64.dp)
+                5L -> assertEquals(v.radius, 48.dp)
+                8L -> assertEquals(v.radius, 32.dp)
+                else -> assertEquals(v.radius, 16.dp)
+            }
+        }
     }
 
     @Test
@@ -237,7 +240,7 @@ class MainScreenViewModelForDirectedGraphTest {
         viewModel.highlightKeyVertices()
 
         assertEquals(
-            viewModel.graphViewModel.defaultVertexRadius * 2,
+            viewModel.graphViewModel.defaultVertexRadius,
             viewModel.graphViewModel.vertices.first().radius
         )
     }
@@ -253,13 +256,30 @@ class MainScreenViewModelForDirectedGraphTest {
         val secondVertexRadius = vertices[1].radius
 
         assertEquals(
-            viewModel.graphViewModel.defaultVertexRadius * 2,
+            viewModel.graphViewModel.defaultVertexRadius * 4,
             secondVertexRadius
         )
         assertEquals(
-            viewModel.graphViewModel.defaultVertexRadius * 1.5f,
+            viewModel.graphViewModel.defaultVertexRadius,
             firstVertexRadius
         )
+    }
+
+    @Test
+    fun `highlight key vertices in graph without edges`(){
+        graph = DirectedGraph().apply {
+            addVertex(1)
+            addVertex(2)
+            addVertex(3)
+            addVertex(4)
+            addVertex(5)
+        }
+        viewModel = MainScreenViewModelForDirectedGraph(graph, representationStrategy)
+        viewModel.highlightKeyVertices()
+        val vertices = viewModel.graphViewModel.vertices.toList()
+        for (v in vertices){
+            assertEquals(viewModel.graphViewModel.defaultVertexRadius, v.radius)
+        }
     }
 
     @Test

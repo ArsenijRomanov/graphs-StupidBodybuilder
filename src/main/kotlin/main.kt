@@ -17,8 +17,46 @@ import cafe.adriel.voyager.core.screen.ScreenKey
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.Navigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import saving.GraphRepository
 import saving.saveToJson
 import viewmodel.ForceAtlas2Layout
+import java.sql.DriverManager
+
+class FirstScreen() : Screen {
+    override val key: ScreenKey = "FirstScreen"
+
+    @Composable
+    override fun Content() {
+        homeScreen()
+    }
+}
+
+data class GraphScreen(val mainScreenViewModel: MainScreenViewModel) : Screen {
+    @Composable
+    override fun Content() {
+        if(mainScreenViewModel is MainScreenViewModelForDirectedGraph){
+            MainScreenForDirected(mainScreenViewModel)
+        }
+        if(mainScreenViewModel is MainScreenViewModelForUndirectedGraph){
+            MainScreenForUndirected(mainScreenViewModel)
+        }
+    }
+}
+
+@Composable
+@Preview
+fun App() {
+    MaterialTheme {
+        Navigator(FirstScreen())
+    }
+}
+
+fun main() =
+    application {
+        Window(onCloseRequest = ::exitApplication) {
+            App()
+        }
+    }
 
 val sampleGraph: Graph =
     DirectedGraph().apply {
@@ -53,114 +91,6 @@ val sampleGraph: Graph =
         addEdge(8, 14, 12)
 
         addEdge(1, 8, 0)
-    }
-
-val secondSampleGraph =
-    DirectedGraph().apply {
-        addEdge(1, 2, 5)
-        addEdge(2, 1, 10)
-    }
-
-val thirdSampleGraph =
-    UndirectedGraph().apply {
-        addVertex(1)
-        addVertex(2)
-        addVertex(3)
-        addVertex(4)
-        addVertex(5)
-        addVertex(6)
-        addVertex(7)
-
-        addEdge(1, 2, 1)
-        addEdge(1, 3, 2)
-        addEdge(1, 4, 3)
-        addEdge(1, 5, 4)
-        addEdge(1, 6, 5)
-        addEdge(1, 7, 6)
-
-        addVertex(8)
-        addVertex(9)
-        addVertex(10)
-        addVertex(11)
-        addVertex(12)
-        addVertex(13)
-        addVertex(14)
-
-        addEdge(8, 9, 7)
-        addEdge(8, 10, 8)
-        addEdge(8, 11, 9)
-        addEdge(8, 12, 10)
-        addEdge(8, 13, 11)
-        addEdge(8, 14, 12)
-
-        addEdge(1, 8, 0)
-
-        addEdge(1, 1, 0)
-        addEdge(2, 2, 0)
-        addEdge(3, 3, 0)
-        addEdge(4, 4, 0)
-        addEdge(5, 5, 0)
-        addEdge(6, 6, 0)
-        addEdge(7, 7, 0)
-    }
-
-val fourthSampleGraph =
-    DirectedGraph().apply {
-        addEdge(1, 2, 0)
-        addEdge(2, 3, 0)
-        addEdge(3, 4, 0)
-        addEdge(4, 1, 0)
-
-        addEdge(5, 6, 0)
-        addEdge(6, 7, 0)
-        addEdge(7, 8, 0)
-        addEdge(8, 5, 0)
-
-        addEdge(8, 3, 0)
-    }
-
-val fifthSampleGraph =
-    DirectedGraph().apply {
-        addEdge(2, 1, 0)
-        addEdge(3, 1, 0)
-        addEdge(4, 1, 0)
-        addEdge(5, 1, 0)
-        addEdge(6, 1, 0)
-    }
-
-val sixthSampleGraph =
-    UndirectedGraph().apply {
-        addEdge(1, 2, 1)
-        addEdge(2, 3, 2)
-        addEdge(1, 3, 10)
-    }
-
-val seventhSampleGraph =
-    UndirectedGraph().apply {
-        addEdge(1, 2, 1)
-        addEdge(2, 3, 1)
-        addEdge(2, 4, 1)
-        addEdge(2, 5, 1)
-        addEdge(5, 6, 1)
-        addEdge(5, 7, 1)
-
-        addEdge(8, 9, 1)
-        addEdge(9, 10, 1)
-        addEdge(9, 11, 1)
-        addEdge(9, 12, 1)
-        addEdge(12, 13, 1)
-        addEdge(12, 14, 1)
-
-        addEdge(12, 5, 1)
-    }
-
-val star =
-    UndirectedGraph().apply {
-        addEdge(1, 3, 1)
-        addEdge(1, 4, 1)
-        addEdge(2, 5, 1)
-        addEdge(2, 4, 2)
-        addEdge(3, 5, 10)
     }
 
 val people =
@@ -219,38 +149,23 @@ val people =
         addEdge(40, 30, 0)
     }
 
-class FirstScreen() : Screen {
-    override val key: ScreenKey = "FirstScreen"
-
-    @Composable
-    override fun Content() {
-        homeScreen()
+val star =
+    UndirectedGraph().apply {
+        addEdge(1, 3, 1)
+        addEdge(1, 4, 1)
+        addEdge(2, 5, 1)
+        addEdge(2, 4, 2)
+        addEdge(3, 5, 10)
     }
-}
 
-data class GraphScreen(val mainScreenViewModel: MainScreenViewModel) : Screen {
-    @Composable
-    override fun Content() {
-        if(mainScreenViewModel is MainScreenViewModelForDirectedGraph){
-            MainScreenForDirected(mainScreenViewModel)
-        }
-        if(mainScreenViewModel is MainScreenViewModelForUndirectedGraph){
-            MainScreenForUndirected(mainScreenViewModel)
-        }
-    }
-}
+//fun main(){
+//    val connection = DriverManager.getConnection("jdbc:sqlite:sampleDB.db")
+//    val repo = GraphRepository(connection)
+//    repo.addGraph(sampleGraph, "sampleGraph")
+//    repo.addGraph(people, "people")
+//    repo.addGraph(star, "star")
+//    repo.close()
+//}
 
-@Composable
-@Preview
-fun App() {
-    MaterialTheme {
-        Navigator(FirstScreen())
-    }
-}
 
-fun main() =
-    application {
-        Window(onCloseRequest = ::exitApplication) {
-            App()
-        }
-    }
+
