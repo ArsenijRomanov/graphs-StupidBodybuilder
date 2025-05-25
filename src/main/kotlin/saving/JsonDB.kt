@@ -23,6 +23,8 @@ import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import kotlinx.serialization.encodeToString
+import javax.swing.JFileChooser
+import javax.swing.filechooser.FileNameExtensionFilter
 
 @Serializable
 private data class Vertex(
@@ -156,5 +158,32 @@ fun saveToJson(mainScreenViewModel : MainScreenViewModel, filePath : String){
     }""".trimIndent()
 
     File(filePath).writeText(jsonString)
+}
+
+fun showFileSaveDialog(
+    title: String,
+    initialDirectory: String? = null,
+    defaultFileName: String? = null,
+    fileFilter: FileNameExtensionFilter? = null
+): String? {
+    return JFileChooser().apply {
+        dialogTitle = title
+        fileFilter?.let { addChoosableFileFilter(it) }
+        selectedFile = File(defaultFileName ?: "untitled")
+        initialDirectory?.let { currentDirectory = File(it) }
+
+        if (showSaveDialog(null) == JFileChooser.APPROVE_OPTION) {
+            val selected = selectedFile
+            val ext = (fileFilter?.extensions?.firstOrNull() ?: "").let {
+                if (it.isNotEmpty()) ".$it" else ""
+            }
+
+            return if (!selected.absolutePath.endsWith(ext)) {
+                File("${selected.absolutePath}$ext").absolutePath
+            } else {
+                selected.absolutePath
+            }
+        }
+    }.let { null }
 }
 
