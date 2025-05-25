@@ -20,16 +20,22 @@ fun directedEdgeView(
     modifier: Modifier = Modifier,
 ) {
     Canvas(modifier = modifier.fillMaxSize()) {
-        val start =
-            Offset(
-                viewModel.firstVertex.x.toPx() + viewModel.firstVertex.radius.toPx(),
-                viewModel.firstVertex.y.toPx() + viewModel.firstVertex.radius.toPx(),
-            )
-        val end =
-            Offset(
-                viewModel.secondVertex.x.toPx() + viewModel.secondVertex.radius.toPx(),
-                viewModel.secondVertex.y.toPx() + viewModel.secondVertex.radius.toPx(),
-            )
+        val vertex1Center = Offset(
+            viewModel.firstVertex.x.toPx() + viewModel.firstVertex.radius.toPx(),
+            viewModel.firstVertex.y.toPx() + viewModel.firstVertex.radius.toPx(),
+        )
+        val vertex2Center = Offset(
+            viewModel.secondVertex.x.toPx() + viewModel.secondVertex.radius.toPx(),
+            viewModel.secondVertex.y.toPx() + viewModel.secondVertex.radius.toPx(),
+        )
+
+        val direction = vertex2Center - vertex1Center
+        val distance = sqrt(direction.x * direction.x + direction.y * direction.y)
+
+        val normalizedDirection = if (distance > 0) direction / distance else direction
+
+        val start = vertex1Center + normalizedDirection * viewModel.firstVertex.radius.toPx()
+        val end = vertex2Center - normalizedDirection * viewModel.secondVertex.radius.toPx()
 
         drawLine(
             start = start,

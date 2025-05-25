@@ -15,15 +15,16 @@ fun undirectedGraphView(viewModel: GraphViewModel) {
             Modifier
                 .fillMaxSize(),
     ) {
-        viewModel.vertices.forEach { v ->
-            vertexView(v, Modifier)
-        }
         viewModel.edges.forEach { e ->
             if (e.firstVertex.value != e.secondVertex.value) {
                 undirectedEdgeView(e, Modifier)
             } else {
                 loopEdgeView(e, Modifier)
             }
+        }
+
+        viewModel.vertices.forEach { v ->
+            vertexView(v, Modifier)
         }
     }
 }

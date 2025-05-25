@@ -11,19 +11,18 @@ import viewmodel.GraphViewModel
 @Composable
 fun directedGraphView(viewModel: GraphViewModel) {
     Box(
-        modifier =
-            Modifier
-                .fillMaxSize(),
+        modifier = Modifier.fillMaxSize()
     ) {
-        viewModel.vertices.forEach { v ->
-            vertexView(v, Modifier)
-        }
         viewModel.edges.forEach { e ->
             if (e.firstVertex.value != e.secondVertex.value) {
                 directedEdgeView(e, Modifier)
             } else {
                 loopEdgeView(e, Modifier)
             }
+        }
+
+        viewModel.vertices.forEach { v ->
+            vertexView(v, Modifier)
         }
     }
 }
