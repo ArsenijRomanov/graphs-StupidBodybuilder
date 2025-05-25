@@ -22,18 +22,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import model.DirectedGraph
-import model.Graph
-import model.UndirectedGraph
 import saving.GraphRepository
 import saving.loadMainScreenViewModelFromJson
-import viewmodel.CircularPlacementStrategy
 import viewmodel.ForceAtlas2Layout
-import viewmodel.MainScreenViewModel
 import viewmodel.MainScreenViewModelForDirectedGraph
 import viewmodel.MainScreenViewModelForUndirectedGraph
 import java.awt.Dimension
-import java.io.File
 import java.sql.DriverManager
 import javax.swing.JFileChooser
 import javax.swing.JOptionPane
@@ -98,22 +92,8 @@ fun homeScreen(){
                         graphArray.first()
                     ) as? String ?: throw NoSuchElementException()
 
-                    if (repository.isDirected(selectedGraph)) {
-                        val graph = repository.loadDirectedGraph(selectedGraph)
-                        val viewModel = MainScreenViewModelForDirectedGraph(
-                            graph,
-                            ForceAtlas2Layout()
-                        )
-                        navigator.push(GraphScreen(viewModel))
-                    }
-                    else {
-                        val graph = repository.loadUndirectedGraph(selectedGraph)
-                        val viewModel = MainScreenViewModelForUndirectedGraph(
-                            graph,
-                            ForceAtlas2Layout()
-                        )
-                        navigator.push(GraphScreen(viewModel))
-                    }
+                    val viewModel = repository.loadGraph(selectedGraph)
+                    navigator.push(GraphScreen(viewModel))
                 }) {
                     Text("SQLite")
                 }

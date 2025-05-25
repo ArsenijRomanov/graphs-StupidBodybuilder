@@ -6,123 +6,120 @@ import algos.dijkstra
 import algos.leaderRank
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
 import model.DirectedGraph
 
-<span class="fc" id="L11">class MainScreenViewModelForDirectedGraph(</span>
-<span class="fc" id="L12">    private val graph: DirectedGraph,</span>
-<span class="fc" id="L13">    private val representationStrategy: RepresentationStrategy,</span>
-) {
-<span class="fc" id="L15">    private var _showVerticesElements = mutableStateOf(false)</span>
+<span class="fc" id="L12">class MainScreenViewModelForDirectedGraph(</span>
+<span class="fc" id="L13">    private val graph: DirectedGraph,</span>
+<span class="fc" id="L14">    private val representationStrategy: RepresentationStrategy,</span>
+) : MainScreenViewModel {
+<span class="fc" id="L16">    private var _showVerticesElements = mutableStateOf(false)</span>
     var showVerticesElements: Boolean
-<span class="fc" id="L17">        get() = _showVerticesElements.value</span>
+<span class="nc" id="L18">        get() = _showVerticesElements.value</span>
         set(value) {
-<span class="fc" id="L19">            _showVerticesElements.value = value</span>
-<span class="fc" id="L20">        }</span>
+<span class="nc" id="L20">            _showVerticesElements.value = value</span>
+<span class="nc" id="L21">        }</span>
 
-<span class="fc" id="L22">    private var _showEdgesWeights = mutableStateOf(false)</span>
+<span class="fc" id="L23">    private var _showEdgesWeights = mutableStateOf(false)</span>
     var showEdgesWeights: Boolean
-<span class="fc" id="L24">        get() = _showEdgesWeights.value</span>
+<span class="nc" id="L25">        get() = _showEdgesWeights.value</span>
         set(value) {
-<span class="fc" id="L26">            _showEdgesWeights.value = value</span>
-<span class="fc" id="L27">        }</span>
+<span class="nc" id="L27">            _showEdgesWeights.value = value</span>
+<span class="nc" id="L28">        }</span>
 
-<span class="fc" id="L29">    val graphViewModel =</span>
-<span class="fc" id="L30">        GraphViewModel(</span>
-<span class="fc" id="L31">            graph,</span>
-<span class="fc" id="L32">            _showVerticesElements,</span>
-<span class="fc" id="L33">            _showEdgesWeights,</span>
-<span class="fc" id="L34">            representationStrategy.defaultVertexRadius,</span>
-<span class="fc" id="L35">            representationStrategy.defaultEdgesWidth</span>
+<span class="fc" id="L30">    override val graphViewModel =</span>
+<span class="fc" id="L31">        GraphViewModel(</span>
+<span class="fc" id="L32">            graph,</span>
+<span class="fc" id="L33">            _showVerticesElements,</span>
+<span class="fc" id="L34">            _showEdgesWeights,</span>
+<span class="fc" id="L35">            representationStrategy.defaultVertexRadius,</span>
+<span class="fc" id="L36">            representationStrategy.defaultEdgesWidth</span>
         )
 
-<span class="fc" id="L38">    init {</span>
-<span class="fc" id="L39">        representationStrategy.place(</span>
-<span class="fc" id="L40">            800.0,</span>
-<span class="fc" id="L41">            600.0,</span>
-<span class="fc" id="L42">            graphViewModel.vertices,</span>
+<span class="fc" id="L39">    init {</span>
+<span class="fc" id="L40">        representationStrategy.place(</span>
+<span class="fc" id="L41">            800.0,</span>
+<span class="fc" id="L42">            600.0,</span>
+<span class="fc" id="L43">            graphViewModel.vertices,</span>
+<span class="fc" id="L44">            graphViewModel.edges</span>
         )
-<span class="fc" id="L44">    }</span>
+<span class="fc" id="L46">    }</span>
 
-<span class="fc" id="L46">    fun checkForNegativeWeights(): Boolean = checkGraphForNegativeWeight(graph)</span>
+<span class="nc" id="L48">    fun checkForNegativeWeights(): Boolean = checkGraphForNegativeWeight(graph)</span>
 
     fun resetGraphView() {
-<span class="fc" id="L49">        representationStrategy.place(</span>
-<span class="fc" id="L50">            800.0,</span>
-<span class="fc" id="L51">            600.0,</span>
-<span class="fc" id="L52">            graphViewModel.vertices,</span>
+<span class="nc" id="L51">        representationStrategy.place(</span>
+<span class="nc" id="L52">            800.0,</span>
+<span class="nc" id="L53">            600.0,</span>
+<span class="nc" id="L54">            graphViewModel.vertices,</span>
+<span class="nc" id="L55">            graphViewModel.edges</span>
         )
-<span class="fc" id="L54">        graphViewModel.reset()</span>
-<span class="fc" id="L55">    }</span>
+<span class="nc" id="L57">        graphViewModel.reset()</span>
+<span class="nc" id="L58">    }</span>
 
     fun defaultVertices() {
-<span class="fc" id="L58">        representationStrategy.resetVertices(graphViewModel.vertices)</span>
-<span class="fc" id="L59">    }</span>
+<span class="nc" id="L61">        representationStrategy.resetVertices(graphViewModel.vertices)</span>
+<span class="nc" id="L62">    }</span>
 
     fun defaultEdges(){
-<span class="fc" id="L62">        representationStrategy.resetEdges(graphViewModel.edges)</span>
-<span class="fc" id="L63">    }</span>
+<span class="nc" id="L65">        representationStrategy.resetEdges(graphViewModel.edges)</span>
+<span class="nc" id="L66">    }</span>
 
     fun findPathDijkstra(
         firstVertex: Long,
         secondVertex: Long,
     )  {
-<span class="fc bfc" id="L69" title="All 2 branches covered.">        val path = dijkstra(graph, firstVertex, secondVertex) ?: return</span>
-<span class="fc bfc" id="L70" title="All 4 branches covered.">        for (i in 0..path.size - 2) {</span>
-<span class="fc" id="L71">            graphViewModel.setEdgeColor(</span>
-<span class="fc" id="L72">                path[i],</span>
-<span class="fc" id="L73">                path[i + 1],</span>
-<span class="fc" id="L74">                Color(0xFF1E88E5),</span>
+<span class="nc bnc" id="L72" title="All 2 branches missed.">        val path = dijkstra(graph, firstVertex, secondVertex) ?: return</span>
+<span class="nc bnc" id="L73" title="All 4 branches missed.">        for (i in 0..path.size - 2) {</span>
+<span class="nc" id="L74">            graphViewModel.setEdgeColor(</span>
+<span class="nc" id="L75">                path[i],</span>
+<span class="nc" id="L76">                path[i + 1],</span>
+<span class="nc" id="L77">                Color(0xFF1E88E5),</span>
             )
 
-<span class="fc" id="L77">            graphViewModel.setEdgeWidth(</span>
-<span class="fc" id="L78">                path[i],</span>
-<span class="fc" id="L79">                path[i + 1],</span>
-<span class="fc" id="L80">                graphViewModel.defaultEdgesWidth * 3,</span>
+<span class="nc" id="L80">            graphViewModel.setEdgeWidth(</span>
+<span class="nc" id="L81">                path[i],</span>
+<span class="nc" id="L82">                path[i + 1],</span>
+<span class="nc" id="L83">                graphViewModel.defaultEdgesWidth * 3,</span>
             )
         }
-<span class="fc" id="L83">    }</span>
+<span class="nc" id="L86">    }</span>
 
     fun findStronglyConnectedComponents() {
-<span class="fc" id="L86">        val scc = SCC(graph)</span>
-<span class="fc" id="L87">        val cnt = scc.size</span>
-<span class="fc" id="L88">        val colors = generateDistinctColors(cnt)</span>
-<span class="fc bfc" id="L89" title="All 4 branches covered.">        for (i in 0..cnt - 1) {</span>
-<span class="fc bfc" id="L90" title="All 2 branches covered.">            for (v in scc[i])</span>
-<span class="fc" id="L91">                graphViewModel.setVertexColor(v, colors[i])</span>
+<span class="nc" id="L89">        val scc = SCC(graph)</span>
+<span class="nc" id="L90">        val cnt = scc.size</span>
+<span class="nc" id="L91">        val colors = generateDistinctColors(cnt)</span>
+<span class="nc bnc" id="L92" title="All 4 branches missed.">        for (i in 0..cnt - 1) {</span>
+<span class="nc bnc" id="L93" title="All 2 branches missed.">            for (v in scc[i])</span>
+<span class="nc" id="L94">                graphViewModel.setVertexColor(v, colors[i])</span>
         }
-<span class="fc" id="L93">    }</span>
+<span class="nc" id="L96">    }</span>
 
     fun highlightKeyVertices() {
-<span class="fc" id="L96">        val verticesRanks = leaderRank(graph)</span>
-<span class="fc bfc" id="L97" title="All 2 branches covered.">        val first = maxBelow(verticesRanks, Double.POSITIVE_INFINITY) ?: return</span>
-<span class="fc" id="L98">        graphViewModel.setVertexSize(first.first, graphViewModel.defaultVertexRadius * 2)</span>
+<span class="nc" id="L99">        val verticesRanks: Map&lt;Long, Double&gt; = leaderRank(graph)</span>
+<span class="nc" id="L100">        val defaultRadius: Dp = graphViewModel.defaultVertexRadius</span>
 
-<span class="fc bfc" id="L100" title="All 2 branches covered.">        val second = maxBelow(verticesRanks, first.second) ?: return</span>
-<span class="fc" id="L101">        graphViewModel.setVertexSize(second.first, graphViewModel.defaultVertexRadius * 1.5f)</span>
+<span class="nc bnc" id="L102" title="All 2 branches missed.">        val minRank = verticesRanks.values.minOrNull() ?: return</span>
+<span class="nc bnc" id="L103" title="All 2 branches missed.">        val maxRank = verticesRanks.values.maxOrNull() ?: return</span>
 
-<span class="fc bfc" id="L103" title="All 2 branches covered.">        val third = maxBelow(verticesRanks, second.second) ?: return</span>
-<span class="fc" id="L104">        graphViewModel.setVertexSize(third.first, graphViewModel.defaultVertexRadius * 1.25f)</span>
-<span class="fc" id="L105">    }</span>
+<span class="nc" id="L105">        val range = maxRank - minRank</span>
+<span class="nc bnc" id="L106" title="All 4 branches missed.">        if (range == 0.0) return</span>
 
-    private fun maxBelow(
-        map: Map&lt;Long, Double&gt;,
-        threshold: Double,
-    ): Pair&lt;Long, Double&gt;?  {
-<span class="fc" id="L111">        var vertexToRank: Pair&lt;Long, Double&gt;? = null</span>
-<span class="fc bfc" id="L112" title="All 2 branches covered.">        for ((vertex, rank) in map) {</span>
-<span class="fc bfc" id="L113" title="All 6 branches covered.">            if (rank &lt; threshold &amp;&amp; (vertexToRank == null || vertexToRank.second &lt; rank)) {</span>
-<span class="fc" id="L114">                vertexToRank = vertex to rank</span>
-            }
+<span class="nc bnc" id="L108" title="All 2 branches missed.">        for ((vertexId, rank) in verticesRanks) {</span>
+            // t ∈ [0.0, 1.0]
+<span class="nc" id="L110">            val t: Double = (rank - minRank) / range</span>
+            // scale ∈ [1.0, 4.0]
+<span class="nc" id="L112">            val scale: Double = 1.0 + 3.0 * t</span>
+<span class="nc" id="L113">            val newRadius: Dp = defaultRadius * scale.toFloat()</span>
+<span class="nc" id="L114">            graphViewModel.setVertexSize(vertexId, newRadius)</span>
         }
-
-<span class="fc" id="L118">        return vertexToRank</span>
-    }
+<span class="nc" id="L116">    }</span>
 
     private fun generateDistinctColors(n: Int): List&lt;Color&gt; {
-<span class="fc bfc" id="L122" title="All 2 branches covered.">        return List(n) { i -&gt;</span>
-<span class="fc" id="L123">            val hue = (i * 360f / n) % 360f</span>
-<span class="fc" id="L124">            val color = Color.hsl(hue, 0.6f, 0.5f)</span>
-<span class="fc" id="L125">            color</span>
+<span class="nc bnc" id="L119" title="All 2 branches missed.">        return List(n) { i -&gt;</span>
+<span class="nc" id="L120">            val hue = (i * 360f / n) % 360f</span>
+<span class="nc" id="L121">            val color = Color.hsl(hue, 0.6f, 0.5f)</span>
+<span class="nc" id="L122">            color</span>
         }
     }
 }

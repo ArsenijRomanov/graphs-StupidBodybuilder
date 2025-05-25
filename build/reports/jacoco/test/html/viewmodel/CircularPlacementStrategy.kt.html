@@ -15,61 +15,62 @@ import kotlin.math.sin
         width: Double,
         height: Double,
         vertices: Collection&lt;VertexViewModel&gt;,
+        edges: Collection&lt;EdgeViewModel&gt;
     ) {
-<span class="nc bnc" id="L19" title="All 2 branches missed.">        if (vertices.isEmpty()) {</span>
-<span class="nc" id="L20">            println(&quot;CircularPlacementStrategy.place: there is nothing to place 👐🏻&quot;)</span>
-<span class="nc" id="L21">            return</span>
+<span class="nc bnc" id="L20" title="All 2 branches missed.">        if (vertices.isEmpty()) {</span>
+<span class="nc" id="L21">            println(&quot;CircularPlacementStrategy.place: there is nothing to place 👐🏻&quot;)</span>
+<span class="nc" id="L22">            return</span>
         }
 
-<span class="nc" id="L24">        val center = Pair(width / 2, height / 2)</span>
-<span class="nc" id="L25">        val angle = 2 * Math.PI / vertices.size</span>
+<span class="nc" id="L25">        val center = Pair(width / 2, height / 2)</span>
+<span class="nc" id="L26">        val angle = 2 * Math.PI / vertices.size</span>
 
-<span class="nc" id="L27">        val sorted = vertices.sortedBy { it.value }</span>
-<span class="nc" id="L28">        val first = sorted.first()</span>
-<span class="nc" id="L29">        var point = Pair(center.first, center.second - min(width, height) / 2)</span>
-<span class="nc" id="L30">        first.x = point.first.dp</span>
-<span class="nc" id="L31">        first.y = point.second.dp</span>
-<span class="nc" id="L32">        first.color = Color.Gray</span>
+<span class="nc" id="L28">        val sorted = vertices.sortedBy { it.value }</span>
+<span class="nc" id="L29">        val first = sorted.first()</span>
+<span class="nc" id="L30">        var point = Pair(center.first, center.second - min(width, height) / 2)</span>
+<span class="nc" id="L31">        first.x = point.first.dp</span>
+<span class="nc" id="L32">        first.y = point.second.dp</span>
+<span class="nc" id="L33">        first.color = Color.Gray</span>
 
-<span class="nc" id="L34">        sorted</span>
-<span class="nc" id="L35">            .drop(1)</span>
-<span class="nc" id="L36">            .onEach {</span>
-<span class="nc" id="L37">                point = point.rotate(center, angle)</span>
-<span class="nc" id="L38">                it.x = point.first.dp</span>
-<span class="nc" id="L39">                it.y = point.second.dp</span>
-<span class="nc" id="L40">            }</span>
-<span class="nc" id="L41">    }</span>
+<span class="nc" id="L35">        sorted</span>
+<span class="nc" id="L36">            .drop(1)</span>
+<span class="nc" id="L37">            .onEach {</span>
+<span class="nc" id="L38">                point = point.rotate(center, angle)</span>
+<span class="nc" id="L39">                it.x = point.first.dp</span>
+<span class="nc" id="L40">                it.y = point.second.dp</span>
+<span class="nc" id="L41">            }</span>
+<span class="nc" id="L42">    }</span>
 
     override fun resetVertices(vertices: Collection&lt;VertexViewModel&gt;) {
-<span class="nc" id="L44">        vertices</span>
-<span class="nc" id="L45">            .onEach {</span>
-<span class="nc" id="L46">                it.color = Color.Gray</span>
-<span class="nc" id="L47">                it.radius = defaultVertexRadius</span>
-<span class="nc" id="L48">            }</span>
-<span class="nc" id="L49">    }</span>
+<span class="nc" id="L45">        vertices</span>
+<span class="nc" id="L46">            .onEach {</span>
+<span class="nc" id="L47">                it.color = Color.Gray</span>
+<span class="nc" id="L48">                it.radius = defaultVertexRadius</span>
+<span class="nc" id="L49">            }</span>
+<span class="nc" id="L50">    }</span>
 
     override fun resetEdges(edges: Collection&lt;EdgeViewModel&gt;) {
-<span class="nc" id="L52">        edges</span>
-<span class="nc" id="L53">            .onEach {</span>
-<span class="nc" id="L54">                it.color = Color.Black</span>
-<span class="nc" id="L55">                it.width = defaultEdgesWidth</span>
-<span class="nc" id="L56">            }</span>
-<span class="nc" id="L57">    }</span>
+<span class="nc" id="L53">        edges</span>
+<span class="nc" id="L54">            .onEach {</span>
+<span class="nc" id="L55">                it.color = Color.Black</span>
+<span class="nc" id="L56">                it.width = defaultEdgesWidth</span>
+<span class="nc" id="L57">            }</span>
+<span class="nc" id="L58">    }</span>
 
     private fun Pair&lt;Double, Double&gt;.rotate(
         pivot: Pair&lt;Double, Double&gt;,
         angle: Double,
     ): Pair&lt;Double, Double&gt; {
-<span class="nc" id="L63">        val sin = sin(angle)</span>
-<span class="nc" id="L64">        val cos = cos(angle)</span>
+<span class="nc" id="L64">        val sin = sin(angle)</span>
+<span class="nc" id="L65">        val cos = cos(angle)</span>
 
-<span class="nc" id="L66">        val diff = first - pivot.first to second - pivot.second</span>
-<span class="nc" id="L67">        val rotated =</span>
-<span class="nc" id="L68">            Pair(</span>
-<span class="nc" id="L69">                diff.first * cos - diff.second * sin,</span>
-<span class="nc" id="L70">                diff.first * sin + diff.second * cos,</span>
+<span class="nc" id="L67">        val diff = first - pivot.first to second - pivot.second</span>
+<span class="nc" id="L68">        val rotated =</span>
+<span class="nc" id="L69">            Pair(</span>
+<span class="nc" id="L70">                diff.first * cos - diff.second * sin,</span>
+<span class="nc" id="L71">                diff.first * sin + diff.second * cos,</span>
             )
-<span class="nc" id="L72">        return rotated.first + pivot.first to rotated.second + pivot.second</span>
+<span class="nc" id="L73">        return rotated.first + pivot.first to rotated.second + pivot.second</span>
     }
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

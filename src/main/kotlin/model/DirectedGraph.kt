@@ -18,12 +18,12 @@ class DirectedGraph() : Graph {
     override fun addEdge(
         firstVertex: Long,
         secondVertex: Long,
-        element: Long,
+        weight: Long,
     ) {
         addVertex(firstVertex)
         addVertex(secondVertex)
         if (findEdge(firstVertex, secondVertex) != null) return
-        val newEdge = DirectedEdge(element, firstVertex to secondVertex)
+        val newEdge = DirectedEdge(weight, firstVertex to secondVertex)
         _edges.put(firstVertex to secondVertex, newEdge)
     }
 

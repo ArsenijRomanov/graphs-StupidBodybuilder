@@ -1,57 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>vertexView.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">view</a> &gt; <span class="el_source">vertexView.kt</span></div><h1>vertexView.kt</h1><pre class="source lang-java linenums">package view
 
+import androidx.compose.animation.core.*
+import androidx.compose.animation.animateColorAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.gestures.detectTapGestures
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.offset
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.Text
-import androidx.compose.runtime.Composable
+import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.scale
+import androidx.compose.ui.draw.shadow
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.*
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.util.fastAll
 import androidx.compose.ui.zIndex
+import kotlinx.coroutines.delay
 import viewmodel.VertexViewModel
 
 @Composable
 fun vertexView(
     viewModel: VertexViewModel,
-<span class="nc bnc" id="L20" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
-<span class="nc bnc" id="L21" title="All 18 branches missed.">) {</span>
-<span class="nc" id="L22">    Box(</span>
-        modifier =
-<span class="nc" id="L24">            modifier</span>
-<span class="nc" id="L25">                .size(viewModel.radius * 2, viewModel.radius * 2)</span>
-<span class="nc" id="L26">                .offset(viewModel.x, viewModel.y)</span>
-<span class="nc" id="L27">                .zIndex(-1f)</span>
-<span class="nc" id="L28">                .background(</span>
-<span class="nc" id="L29">                    color = viewModel.color,</span>
-<span class="nc" id="L30">                    shape = CircleShape,</span>
-                )
-<span class="nc" id="L32">                .pointerInput(viewModel) {</span>
-<span class="nc" id="L33">                    detectTapGestures(</span>
-                        onTap = {
-<span class="nc" id="L35">                            viewModel.onClick()</span>
-<span class="nc" id="L36">                        },</span>
-                    )
-<span class="nc" id="L38">                }</span>
-<span class="nc" id="L39">                .pointerInput(viewModel) {</span>
-<span class="nc" id="L40">                    detectDragGestures { change, dragAmount -&gt;</span>
-<span class="nc" id="L41">                        change.consume()</span>
-<span class="nc" id="L42">                        viewModel.onDrag(dragAmount)</span>
-<span class="nc" id="L43">                    }</span>
-<span class="nc" id="L44">                },</span>
+<span class="nc bnc" id="L30" title="All 2 branches missed.">    modifier: Modifier = Modifier,</span>
+<span class="nc bnc" id="L31" title="All 18 branches missed.">) {</span>
+<span class="nc" id="L32">    var isHovered by remember { mutableStateOf(false) }</span>
+<span class="nc" id="L33">    var isTapped by remember { mutableStateOf(false) }</span>
+
+<span class="nc" id="L35">    val glowColor by animateColorAsState(</span>
+<span class="nc bnc" id="L36" title="All 2 branches missed.">        if (isHovered) Color.Black.copy(alpha = 0.4f) else Color.Transparent,</span>
+<span class="nc" id="L37">        label = &quot;glow_animation&quot;</span>
+    )
+
+<span class="nc" id="L40">    val pulseScale by animateFloatAsState(</span>
+<span class="nc bnc" id="L41" title="All 2 branches missed.">        targetValue = if (isTapped) 1.2f else 1f,</span>
+<span class="nc" id="L42">        animationSpec = spring(</span>
+<span class="nc" id="L43">            dampingRatio = 0.5f,</span>
+<span class="nc" id="L44">            stiffness = 300f</span>
+        ),
+<span class="nc" id="L46">        label = &quot;tap_pulse&quot;</span>
+    )
+
+<span class="nc" id="L49">    LaunchedEffect(isTapped) {</span>
+<span class="nc bnc" id="L50" title="All 2 branches missed.">        if (isTapped) {</span>
+<span class="nc" id="L51">            delay(150)</span>
+<span class="nc" id="L52">            isTapped = false</span>
+        }
+<span class="nc" id="L54">    }</span>
+
+<span class="nc" id="L56">    Box(</span>
+<span class="nc" id="L57">        modifier = modifier</span>
+<span class="nc" id="L58">            .size(viewModel.radius * 2, viewModel.radius * 2)</span>
+<span class="nc" id="L59">            .offset(viewModel.x, viewModel.y)</span>
+<span class="nc" id="L60">            .zIndex(-1f)</span>
+<span class="nc" id="L61">            .scale(pulseScale)</span>
+<span class="nc" id="L62">            .clip(CircleShape)</span>
+<span class="nc" id="L63">            .background(</span>
+<span class="nc" id="L64">                color = viewModel.color,</span>
+<span class="nc" id="L65">                shape = CircleShape,</span>
+            )
+<span class="nc" id="L67">            .shadow(</span>
+<span class="nc bnc" id="L68" title="All 2 branches missed.">                elevation = if (isHovered) 20.dp else 0.dp,</span>
+<span class="nc" id="L69">                shape = CircleShape,</span>
+<span class="nc" id="L70">                ambientColor = Color.LightGray,</span>
+<span class="nc" id="L71">                spotColor = Color.DarkGray,</span>
+            )
+<span class="nc" id="L73">            .pointerInput(viewModel) {</span>
+<span class="nc" id="L74">                awaitPointerEventScope {</span>
+<span class="nc" id="L75">                    while (true) {</span>
+<span class="nc" id="L76">                        val event = awaitPointerEvent()</span>
+<span class="nc" id="L77">                        when (event.type) {</span>
+<span class="nc bnc" id="L78" title="All 2 branches missed.">                            PointerEventType.Move -&gt; {</span>
+<span class="nc" id="L79">                                val isInside = event.changes.fastAll { change -&gt;</span>
+<span class="nc" id="L80">                                    val position = change.position</span>
+<span class="nc bnc" id="L81" title="All 2 branches missed.">                                    position.x &gt;= 0f &amp;&amp;</span>
+<span class="nc bnc" id="L82" title="All 2 branches missed.">                                            position.y &gt;= 0f &amp;&amp;</span>
+<span class="nc bnc" id="L83" title="All 2 branches missed.">                                            position.x &lt;= size.width &amp;&amp;</span>
+<span class="nc bnc" id="L84" title="All 2 branches missed.">                                            position.y &lt;= size.height</span>
+                                }
+<span class="nc bnc" id="L86" title="All 2 branches missed.">                                if (isInside != isHovered) {</span>
+<span class="nc bnc" id="L87" title="All 2 branches missed.">                                    isHovered = isInside</span>
+                                }
+                            }
+<span class="nc bnc" id="L90" title="All 2 branches missed.">                            PointerEventType.Exit -&gt; {</span>
+<span class="nc" id="L91">                                isHovered = false</span>
+                            }
+                            else -&gt; {}
+                        }
+                    }
+                }
+<span class="nc" id="L97">            }</span>
+<span class="nc" id="L98">            .pointerInput(viewModel) {</span>
+<span class="nc" id="L99">                detectTapGestures {</span>
+<span class="nc" id="L100">                    viewModel.onClick()</span>
+<span class="nc" id="L101">                    isTapped = true // Запускаем анимацию</span>
+<span class="nc" id="L102">                }</span>
+<span class="nc" id="L103">            }</span>
+<span class="nc" id="L104">            .pointerInput(viewModel) {</span>
+<span class="nc" id="L105">                detectDragGestures { change, dragAmount -&gt;</span>
+<span class="nc" id="L106">                    change.consume()</span>
+<span class="nc" id="L107">                    viewModel.onDrag(dragAmount)</span>
+<span class="nc" id="L108">                    isHovered = false</span>
+<span class="nc" id="L109">                }</span>
+<span class="nc" id="L110">            },</span>
+<span class="nc" id="L111">        contentAlignment = Alignment.Center</span>
     ) {
-<span class="nc bnc" id="L46" title="All 2 branches missed.">        if (viewModel.valueVisible) {</span>
-<span class="nc" id="L47">            Text(</span>
-                modifier =
-<span class="nc" id="L49">                    Modifier</span>
-<span class="nc" id="L50">                        .align(Alignment.Center)</span>
-<span class="nc" id="L51">                        .offset(0.dp, -viewModel.radius - 10.dp),</span>
-<span class="nc" id="L52">                text = viewModel.value.toString(),</span>
+<span class="nc bnc" id="L113" title="All 2 branches missed.">        if (viewModel.valueVisible) {</span>
+<span class="nc" id="L114">            Text(</span>
+<span class="nc" id="L115">                modifier = Modifier</span>
+<span class="nc" id="L116">                    .align(Alignment.Center)</span>
+<span class="nc" id="L117">                    .offset(0.dp, -viewModel.radius - 10.dp),</span>
+<span class="nc" id="L118">                text = viewModel.value.toString(),</span>
             )
         }
-<span class="nc" id="L55">    }</span>
-<span class="nc bnc" id="L56" title="All 2 branches missed.">}</span>
+<span class="nc" id="L121">    }</span>
+<span class="nc bnc" id="L122" title="All 2 branches missed.">}</span>
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>
