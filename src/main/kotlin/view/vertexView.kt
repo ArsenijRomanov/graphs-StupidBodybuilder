@@ -55,67 +55,73 @@ fun vertexView(
 
     Box(
         modifier = modifier
-            .size(viewModel.radius * 2, viewModel.radius * 2)
             .offset(viewModel.x, viewModel.y)
-            .zIndex(-1f)
-            .scale(pulseScale)
-            .clip(CircleShape)
-            .background(
-                color = viewModel.color,
-                shape = CircleShape,
-            )
-            .shadow(
-                elevation = if (isHovered) 20.dp else 0.dp,
-                shape = CircleShape,
-                ambientColor = Color.LightGray,
-                spotColor = Color.DarkGray,
-            )
-            .pointerInput(viewModel) {
-                awaitPointerEventScope {
-                    while (true) {
-                        val event = awaitPointerEvent()
-                        when (event.type) {
-                            PointerEventType.Move -> {
-                                val isInside = event.changes.fastAll { change ->
-                                    val position = change.position
-                                    position.x >= 0f &&
-                                            position.y >= 0f &&
-                                            position.x <= size.width &&
-                                            position.y <= size.height
+    ) {
+        Box(
+            modifier = Modifier
+                .size(viewModel.radius * 2)
+                .scale(pulseScale)
+                .clip(CircleShape)
+                .background(
+                    color = viewModel.color,
+                    shape = CircleShape,
+                )
+                .shadow(
+                    elevation = if (isHovered) 20.dp else 0.dp,
+                    shape = CircleShape,
+                    ambientColor = Color.LightGray,
+                    spotColor = Color.DarkGray,
+                )
+                .pointerInput(viewModel) {
+                    awaitPointerEventScope {
+                        while (true) {
+                            val event = awaitPointerEvent()
+                            when (event.type) {
+                                PointerEventType.Move -> {
+                                    val isInside = event.changes.fastAll { change ->
+                                        val position = change.position
+                                        position.x >= 0f &&
+                                                position.y >= 0f &&
+                                                position.x <= size.width &&
+                                                position.y <= size.height
+                                    }
+                                    if (isInside != isHovered) {
+                                        isHovered = isInside
+                                    }
                                 }
-                                if (isInside != isHovered) {
-                                    isHovered = isInside
+                                PointerEventType.Exit -> {
+                                    isHovered = false
                                 }
+                                else -> {}
                             }
-                            PointerEventType.Exit -> {
-                                isHovered = false
-                            }
-                            else -> {}
                         }
                     }
                 }
-            }
-            .pointerInput(viewModel) {
-                detectTapGestures {
-                    viewModel.onClick()
-                    isTapped = true // Запускаем анимацию
+                .pointerInput(viewModel) {
+                    detectTapGestures {
+                        viewModel.onClick()
+                        isTapped = true
+                    }
                 }
-            }
-            .pointerInput(viewModel) {
-                detectDragGestures { change, dragAmount ->
-                    change.consume()
-                    viewModel.onDrag(dragAmount)
-                    isHovered = false
-                }
-            },
-        contentAlignment = Alignment.Center
-    ) {
+                .pointerInput(viewModel) {
+                    detectDragGestures { change, dragAmount ->
+                        change.consume()
+                        viewModel.onDrag(dragAmount)
+                        isHovered = false
+                    }
+                },
+            contentAlignment = Alignment.Center
+        ){
+
+        }
+
         if (viewModel.valueVisible) {
             Text(
-                modifier = Modifier
-                    .align(Alignment.Center)
-                    .offset(0.dp, -viewModel.radius - 10.dp),
                 text = viewModel.value.toString(),
+                color = Color.Black,
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .zIndex(1f)
             )
         }
     }
