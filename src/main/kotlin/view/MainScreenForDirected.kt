@@ -296,6 +296,18 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                     }
                     Spacer(modifier = Modifier.height(8.dp))
 
+                    Button(onClick = viewModel::findStronglyConnectedComponents,
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFF1976D2),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Find strongly connected components")
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
                     if (!viewModel.checkForNegativeWeights()) {
                         Button(
                             onClick = {
