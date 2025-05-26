@@ -97,6 +97,7 @@ fun homeScreen(){
                 }) {
                     Text("SQLite")
                 }
+
                 Spacer(Modifier.width(4.dp))
                 Button(
                     onClick = {

@@ -60,44 +60,6 @@ fun main() =
 
 
 
-//fun main(){
-//    val viewModel1 = loadMainScreenViewModelFromJson(
-//        "/home/ars/graphs-StupidBodybuilder/examples/bigGraph.json",
-//        ForceAtlas2Layout()
-//    ) ?: return
-//
-//    val viewModel2 = loadMainScreenViewModelFromJson(
-//        "/home/ars/graphs-StupidBodybuilder/examples/graph.json",
-//        ForceAtlas2Layout()
-//    ) ?: return
-//
-//    val viewModel3 = loadMainScreenViewModelFromJson(
-//        "/home/ars/graphs-StupidBodybuilder/examples/people.json",
-//        ForceAtlas2Layout()
-//    ) ?: return
-//    val connection = DriverManager.getConnection("jdbc:sqlite:sampleDB.db")
-//    val repo = GraphRepository(connection)
-//
-//    repo.addGraph(
-//        viewModel1.graphViewModel,
-//        "big graph",
-//        viewModel1 is MainScreenViewModelForDirectedGraph
-//        )
-//
-//    repo.addGraph(
-//        viewModel2.graphViewModel,
-//        "common graph",
-//        viewModel2 is MainScreenViewModelForDirectedGraph
-//    )
-//
-//    repo.addGraph(
-//        viewModel3.graphViewModel,
-//        "people",
-//        viewModel3 is MainScreenViewModelForDirectedGraph
-//    )
-//
-//    repo.close()
-//}
 
 
 

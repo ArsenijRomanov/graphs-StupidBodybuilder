@@ -36,10 +36,17 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.zIndex
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
+import saving.GraphRepository
 import saving.saveToJson
 import saving.showFileSaveDialog
 import viewmodel.MainScreenViewModelForUndirectedGraph
+import java.awt.Dimension
+import java.sql.DriverManager
+import java.sql.SQLException
+import javax.swing.JFileChooser
+import javax.swing.JOptionPane
 import javax.swing.filechooser.FileNameExtensionFilter
+import kotlin.use
 
 @Composable
 fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
@@ -358,7 +365,81 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
                     )
 
                     Button(
-                        onClick = { },
+                        onClick = {
+                            val chooser = JFileChooser().apply {
+                                preferredSize = Dimension(800, 600)
+                                dialogTitle = "Select SQLite file"
+                                fileSelectionMode = JFileChooser.FILES_ONLY
+                                isMultiSelectionEnabled = false
+                            }
+                            if (chooser.showOpenDialog(null) != JFileChooser.APPROVE_OPTION) {
+                                return@Button
+                            }
+
+                            val file = chooser.selectedFile
+                            val url = "jdbc:sqlite:${file.absolutePath}"
+
+                            try {
+                                DriverManager.getConnection(url).use { conn ->
+                                    conn.createStatement().use { stmt ->
+                                        stmt.executeQuery(
+                                            "SELECT name FROM sqlite_master WHERE type='table' LIMIT 1"
+                                        )
+                                    }
+                                }
+                            } catch (e: SQLException) {
+                                JOptionPane.showMessageDialog(
+                                    null,
+                                    "The selected file is not a valid SQLite database.",
+                                    "Invalid Database",
+                                    JOptionPane.WARNING_MESSAGE
+                                )
+                                return@Button
+                            }
+
+                            val graphName = JOptionPane.showInputDialog(
+                                null,
+                                "Enter a name for the graph:",
+                                "Graph Name",
+                                JOptionPane.QUESTION_MESSAGE
+                            )?.trim().takeIf { !it.isNullOrEmpty() }
+
+                            if (graphName == null) {
+                                JOptionPane.showMessageDialog(
+                                    null,
+                                    "Graph name must not be empty.",
+                                    "Invalid Name",
+                                    JOptionPane.WARNING_MESSAGE
+                                )
+                                return@Button
+                            }
+
+                            val connection = DriverManager.getConnection(url)
+                            val repository = GraphRepository(connection)
+
+                            if (repository.graphExists(graphName)) {
+                                val choice = JOptionPane.showConfirmDialog(
+                                    null,
+                                    "A graph named \"$graphName\" already exists.\nDo you want to overwrite it?",
+                                    "Confirm Overwrite",
+                                    JOptionPane.YES_NO_OPTION,
+                                    JOptionPane.QUESTION_MESSAGE
+                                )
+                                if (choice == JOptionPane.YES_OPTION) {
+                                    repository.upsertGraph(viewModel.graphViewModel, graphName, false)
+                                } else {
+                                    repository.close()
+                                    return@Button
+                                }
+                            } else {
+                                repository.addGraph(
+                                    viewModel.graphViewModel,
+                                    graphName,
+                                    false
+                                )
+                                repository.close()
+                            }
+                        },
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(vertical = 8.dp),
@@ -370,7 +451,7 @@ fun MainScreenForUndirected(viewModel: MainScreenViewModelForUndirectedGraph) {
                             defaultElevation = 2.dp,
                             pressedElevation = 4.dp
                         ),
-                        shape = RoundedCornerShape(8.dp)
+                        shape = androidx.compose.foundation.shape.RoundedCornerShape(8.dp)
                     ) {
                         Text("SQLite", style = MaterialTheme.typography.button)
                     }

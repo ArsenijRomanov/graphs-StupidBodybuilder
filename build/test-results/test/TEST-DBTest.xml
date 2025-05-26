@@ -1,17 +1,15 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="DBTest" tests="11" skipped="0" failures="0" errors="0" timestamp="2025-05-09T08:30:43" hostname="ars-MaiBook-M" time="0.204">
+<testsuite name="DBTest" tests="9" skipped="0" failures="0" errors="0" timestamp="2025-05-25T14:53:55" hostname="ars-MaiBook-M" time="7.222">
   <properties/>
-  <testcase name="list graph names()" classname="DBTest" time="0.153"/>
-  <testcase name="load directed graph()" classname="DBTest" time="0.009"/>
-  <testcase name="load undirected graph as directed()" classname="DBTest" time="0.006"/>
-  <testcase name="load undirected graph()" classname="DBTest" time="0.004"/>
-  <testcase name="save directed graph()" classname="DBTest" time="0.003"/>
-  <testcase name="load directed graph as undirected()" classname="DBTest" time="0.003"/>
-  <testcase name="save undirected graph()" classname="DBTest" time="0.003"/>
-  <testcase name="upsert graph()" classname="DBTest" time="0.004"/>
-  <testcase name="should throw exception if graph exists()" classname="DBTest" time="0.004"/>
-  <testcase name="delete graph()" classname="DBTest" time="0.003"/>
-  <testcase name="upsert non-existent graph()" classname="DBTest" time="0.002"/>
+  <testcase name="list graph names()" classname="DBTest" time="3.959"/>
+  <testcase name="load directed graph()" classname="DBTest" time="2.146"/>
+  <testcase name="load undirected graph()" classname="DBTest" time="0.444"/>
+  <testcase name="save directed graph()" classname="DBTest" time="0.014"/>
+  <testcase name="save undirected graph()" classname="DBTest" time="0.01"/>
+  <testcase name="upsert graph()" classname="DBTest" time="0.255"/>
+  <testcase name="should throw exception if graph exists()" classname="DBTest" time="0.012"/>
+  <testcase name="delete graph()" classname="DBTest" time="0.007"/>
+  <testcase name="upsert non-existent graph()" classname="DBTest" time="0.36"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[SLF4J: Failed to load class "org.slf4j.impl.StaticLoggerBinder".
 SLF4J: Defaulting to no-operation (NOP) logger implementation
