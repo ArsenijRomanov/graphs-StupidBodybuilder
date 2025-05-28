@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="ru"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>ForceAtlas2PlacementStrategy.kt</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">graphs-StupidBodybuilder</a> &gt; <a href="index.source.html" class="el_package">viewmodel</a> &gt; <span class="el_source">ForceAtlas2PlacementStrategy.kt</span></div><h1>ForceAtlas2PlacementStrategy.kt</h1><pre class="source lang-java linenums">package viewmodel
+
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
+import org.gephi.graph.api.GraphController
+import org.gephi.layout.plugin.forceAtlas2.ForceAtlas2
+import org.gephi.project.api.ProjectController
+import org.openide.util.Lookup
+import kotlin.math.*
+
+<span class="fc" id="L12">class ForceAtlas2Layout(</span>
+<span class="fc" id="L13">    override val defaultVertexRadius: Dp = 25.dp,</span>
+<span class="fc" id="L14">    override val defaultEdgesWidth: Float = 1f</span>
+<span class="fc" id="L15">) : RepresentationStrategy {</span>
+
+    private companion object {
+        const val PADDING_FACTOR = 1.5
+        const val OVERLAP_PREVENTION = 1.5
+        const val MAX_ITERATIONS = 1000
+        const val MIN_DISTANCE_BETWEEN_NODES = 10.0
+    }
+
+    override fun place(
+        width: Double,
+        height: Double,
+        vertices: Collection&lt;VertexViewModel&gt;,
+        edges: Collection&lt;EdgeViewModel&gt;
+    ) {
+<span class="pc bpc" id="L30" title="1 of 2 branches missed.">        if (vertices.isEmpty()) return</span>
+
+<span class="fc" id="L32">        val pc = Lookup.getDefault().lookup(ProjectController::class.java)</span>
+<span class="fc" id="L33">        pc.newProject()</span>
+<span class="fc" id="L34">        val graphModel = Lookup.getDefault().lookup(GraphController::class.java).graphModel</span>
+<span class="fc" id="L35">        val graph = graphModel.undirectedGraph</span>
+
+<span class="fc" id="L37">        val centerX = 0.0f</span>
+<span class="fc" id="L38">        val centerY = 0.0f</span>
+<span class="fc" id="L39">        val radius = 100.0f</span>
+<span class="fc" id="L40">        val angleStep = 2 * PI / vertices.size</span>
+
+<span class="fc" id="L42">        vertices.forEachIndexed { index, vertex -&gt;</span>
+<span class="fc" id="L43">            val node = graphModel.factory().newNode(vertex.value.toString())</span>
+<span class="fc" id="L44">            val angle = angleStep * index</span>
+<span class="fc" id="L45">            node.setX(centerX + radius * cos(angle).toFloat())</span>
+<span class="fc" id="L46">            node.setY(centerY + radius * sin(angle).toFloat())</span>
+<span class="fc" id="L47">            graph.addNode(node)</span>
+<span class="fc" id="L48">        }</span>
+
+<span class="fc" id="L50">        edges.forEach { edge -&gt;</span>
+<span class="pc bpc" id="L51" title="1 of 2 branches missed.">            val sourceNode = graph.getNode(edge.firstVertex.value.toString()) ?: return@forEach</span>
+<span class="pc bpc" id="L52" title="1 of 2 branches missed.">            val targetNode = graph.getNode(edge.secondVertex.value.toString()) ?: return@forEach</span>
+<span class="fc" id="L53">            graph.addEdge(graphModel.factory().newEdge(sourceNode, targetNode, 1, false))</span>
+<span class="fc" id="L54">        }</span>
+
+<span class="fc" id="L56">        val layout = ForceAtlas2(null).apply {</span>
+<span class="fc" id="L57">            setGraphModel(graphModel)</span>
+<span class="fc" id="L58">            initAlgo()</span>
+<span class="fc" id="L59">            resetPropertiesValues()</span>
+<span class="fc" id="L60">            isAdjustSizes = true</span>
+<span class="fc" id="L61">            isBarnesHutOptimize = true</span>
+<span class="fc" id="L62">            scalingRatio = calculateScalingRatio(vertices.size)</span>
+<span class="fc" id="L63">            gravity = 0.01</span>
+<span class="fc" id="L64">            jitterTolerance = 0.5</span>
+<span class="fc" id="L65">            barnesHutTheta = 1.2</span>
+<span class="fc" id="L66">            edgeWeightInfluence = 0.5</span>
+<span class="fc" id="L67">        }</span>
+
+<span class="fc" id="L69">        var lastImprovement = 0</span>
+<span class="fc" id="L70">        var lastOverlap = Double.MAX_VALUE</span>
+
+<span class="fc bfc" id="L72" title="All 2 branches covered.">        repeat(MAX_ITERATIONS) {</span>
+<span class="pc bpc" id="L73" title="1 of 2 branches missed.">            if (layout.canAlgo()) {</span>
+<span class="fc" id="L74">                layout.goAlgo()</span>
+
+                // Проверка на улучшение (уменьшение наложения)
+<span class="fc" id="L77">                val currentOverlap = calculateOverlap(graph)</span>
+<span class="fc bfc" id="L78" title="All 2 branches covered.">                if (currentOverlap &lt; lastOverlap) {</span>
+<span class="fc" id="L79">                    lastOverlap = currentOverlap</span>
+<span class="fc" id="L80">                    lastImprovement = it</span>
+<span class="fc bfc" id="L81" title="All 2 branches covered.">                } else if (it - lastImprovement &gt; 50) {</span>
+<span class="fc" id="L82">                    return@repeat</span>
+                }
+            }
+<span class="fc" id="L85">        }</span>
+<span class="fc" id="L86">        layout.endAlgo()</span>
+
+<span class="fc" id="L88">        scaleAndCenterGraph(width, height, vertices, graph)</span>
+<span class="fc" id="L89">    }</span>
+
+    private fun calculateOverlap(graph: org.gephi.graph.api.Graph): Double {
+<span class="fc" id="L92">        var overlap = 0.0</span>
+<span class="fc" id="L93">        val nodes = graph.nodes.toList()</span>
+
+<span class="fc bfc" id="L95" title="All 2 branches covered.">        for (i in nodes.indices) {</span>
+<span class="fc bfc" id="L96" title="All 2 branches covered.">            for (j in i+1 until nodes.size) {</span>
+<span class="fc" id="L97">                val node1 = nodes[i]</span>
+<span class="fc" id="L98">                val node2 = nodes[j]</span>
+<span class="fc" id="L99">                val distance = sqrt(</span>
+<span class="fc" id="L100">                    (node1.x() - node2.x()).pow(2) +</span>
+<span class="fc" id="L101">                            (node1.y() - node2.y()).pow(2))</span>
+<span class="fc" id="L102">                            overlap += max(0.0, MIN_DISTANCE_BETWEEN_NODES - distance)</span>
+            }
+        }
+<span class="fc" id="L105">        return overlap</span>
+    }
+
+    private fun calculateScalingRatio(vertexCount: Int): Double {
+<span class="fc" id="L109">        return when {</span>
+<span class="pc bpc" id="L110" title="1 of 2 branches missed.">            vertexCount &lt; 10 -&gt; 10.0</span>
+<span class="nc bnc" id="L111" title="All 2 branches missed.">            vertexCount &lt; 50 -&gt; 5.0</span>
+<span class="nc bnc" id="L112" title="All 2 branches missed.">            vertexCount &lt; 100 -&gt; 2.0</span>
+<span class="nc" id="L113">            else -&gt; 1.0</span>
+        }
+    }
+
+    private fun scaleAndCenterGraph(
+        width: Double,
+        height: Double,
+        vertices: Collection&lt;VertexViewModel&gt;,
+        graph: org.gephi.graph.api.Graph
+    ) {
+<span class="pc bpc" id="L123" title="1 of 2 branches missed.">        if (vertices.isEmpty()) return</span>
+
+        // Вычисляем границы графа
+<span class="fc" id="L126">        val (minX, maxX, minY, maxY) = calculateGraphBounds(graph)</span>
+<span class="fc" id="L127">        val graphWidth = maxX - minX</span>
+<span class="fc" id="L128">        val graphHeight = maxY - minY</span>
+
+<span class="fc" id="L130">        val vertexDiameter = defaultVertexRadius.value * 2 * OVERLAP_PREVENTION</span>
+<span class="fc" id="L131">        val padding = vertexDiameter * PADDING_FACTOR</span>
+
+<span class="fc" id="L133">        val effectiveWidth = maxOf(graphWidth, MIN_DISTANCE_BETWEEN_NODES * vertices.size / 2)</span>
+<span class="fc" id="L134">        val effectiveHeight = maxOf(graphHeight, MIN_DISTANCE_BETWEEN_NODES * vertices.size / 2)</span>
+
+<span class="fc" id="L136">        val scaleX = (width - padding * 2) / effectiveWidth</span>
+<span class="fc" id="L137">        val scaleY = (height - padding * 2) / effectiveHeight</span>
+<span class="fc" id="L138">        val scale = minOf(scaleX, scaleY)</span>
+
+<span class="fc" id="L140">        val centerX = width / 2</span>
+<span class="fc" id="L141">        val centerY = height / 2</span>
+<span class="fc" id="L142">        val graphCenterX = (minX + maxX) / 2</span>
+<span class="fc" id="L143">        val graphCenterY = (minY + maxY) / 2</span>
+
+<span class="fc" id="L145">        vertices.forEach { vertex -&gt;</span>
+<span class="fc" id="L146">            val node = graph.getNode(vertex.value.toString())</span>
+<span class="fc" id="L147">            val scaledX = centerX + (node.x() - graphCenterX) * scale</span>
+<span class="fc" id="L148">            val scaledY = centerY + (node.y() - graphCenterY) * scale</span>
+
+<span class="fc" id="L150">            vertex.x = scaledX.coerceIn(padding, width - padding).dp</span>
+<span class="fc" id="L151">            vertex.y = scaledY.coerceIn(padding, height - padding).dp</span>
+<span class="fc" id="L152">        }</span>
+<span class="fc" id="L153">    }</span>
+
+    private fun calculateGraphBounds(graph: org.gephi.graph.api.Graph): Quadruple&lt;Double, Double, Double, Double&gt; {
+<span class="pc bpc" id="L156" title="1 of 2 branches missed.">        if (graph.nodeCount == 0) return Quadruple(0.0, 0.0, 0.0, 0.0)</span>
+
+<span class="fc" id="L158">        var minX = Double.MAX_VALUE</span>
+<span class="fc" id="L159">        var maxX = -Double.MAX_VALUE</span>
+<span class="fc" id="L160">        var minY = Double.MAX_VALUE</span>
+<span class="fc" id="L161">        var maxY = -Double.MAX_VALUE</span>
+
+<span class="fc" id="L163">        graph.nodes.forEach { node -&gt;</span>
+<span class="fc" id="L164">            minX = min(minX, node.x().toDouble())</span>
+<span class="fc" id="L165">            maxX = max(maxX, node.x().toDouble())</span>
+<span class="fc" id="L166">            minY = min(minY, node.y().toDouble())</span>
+<span class="fc" id="L167">            maxY = max(maxY, node.y().toDouble())</span>
+<span class="fc" id="L168">        }</span>
+
+<span class="fc" id="L170">        return Quadruple(minX, maxX, minY, maxY)</span>
+    }
+
+    override fun resetVertices(vertices: Collection&lt;VertexViewModel&gt;) {
+<span class="nc" id="L174">        vertices.forEach {</span>
+<span class="nc" id="L175">            it.color = Color.Gray</span>
+<span class="nc" id="L176">            it.radius = defaultVertexRadius</span>
+<span class="nc" id="L177">        }</span>
+<span class="nc" id="L178">    }</span>
+
+    override fun resetEdges(edges: Collection&lt;EdgeViewModel&gt;) {
+<span class="nc" id="L181">        edges.forEach {</span>
+<span class="nc" id="L182">            it.color = Color.Black</span>
+<span class="nc" id="L183">            it.width = defaultEdgesWidth</span>
+<span class="nc" id="L184">        }</span>
+<span class="nc" id="L185">    }</span>
+}
+
+<span class="fc" id="L188">private data class Quadruple&lt;out A, out B, out C, out D&gt;(</span>
+<span class="pc" id="L189">    val first: A,</span>
+<span class="pc" id="L190">    val second: B,</span>
+<span class="pc" id="L191">    val third: C,</span>
+<span class="pc" id="L192">    val fourth: D</span>
+)
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

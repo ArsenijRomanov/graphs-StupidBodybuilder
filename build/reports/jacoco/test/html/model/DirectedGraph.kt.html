@@ -18,12 +18,12 @@
     override fun addEdge(
         firstVertex: Long,
         secondVertex: Long,
-        element: Long,
+        weight: Long,
     ) {
 <span class="fc" id="L23">        addVertex(firstVertex)</span>
 <span class="fc" id="L24">        addVertex(secondVertex)</span>
-<span class="fc bfc" id="L25" title="All 2 branches covered.">        if (findEdge(firstVertex, secondVertex) != null) return</span>
-<span class="fc" id="L26">        val newEdge = DirectedEdge(element, firstVertex to secondVertex)</span>
+<span class="pc bpc" id="L25" title="1 of 2 branches missed.">        if (findEdge(firstVertex, secondVertex) != null) return</span>
+<span class="fc" id="L26">        val newEdge = DirectedEdge(weight, firstVertex to secondVertex)</span>
 <span class="fc" id="L27">        _edges.put(firstVertex to secondVertex, newEdge)</span>
 <span class="fc" id="L28">    }</span>
 
@@ -41,10 +41,10 @@
 <span class="nc" id="L41">    override fun size() = _vertices.size</span>
 
     override fun isEmpty(): Boolean{
-<span class="fc" id="L44">        return _vertices.isEmpty()</span>
+<span class="nc" id="L44">        return _vertices.isEmpty()</span>
     }
 
-<span class="fc" id="L47">    class DirectedVertex(override val value: Long) : Vertex</span>
+<span class="pc" id="L47">    class DirectedVertex(override val value: Long) : Vertex</span>
 
 <span class="fc" id="L49">    class DirectedEdge(</span>
 <span class="pc" id="L50">        override var weight: Long,</span>

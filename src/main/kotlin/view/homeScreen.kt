@@ -31,22 +31,20 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import cafe.adriel.voyager.navigator.LocalNavigator
 import cafe.adriel.voyager.navigator.currentOrThrow
-import model.DirectedGraph
-import model.Graph
-import model.UndirectedGraph
+import saving.GraphRepository
 import saving.loadMainScreenViewModelFromJson
-import viewmodel.CircularPlacementStrategy
 import viewmodel.ForceAtlas2Layout
-import viewmodel.MainScreenViewModel
 import viewmodel.MainScreenViewModelForDirectedGraph
 import viewmodel.MainScreenViewModelForUndirectedGraph
 import java.awt.Dimension
+import java.sql.DriverManager
 import javax.swing.JFileChooser
 import androidx.compose.ui.graphics.Color.Companion
+import javax.swing.JOptionPane
 
 @Composable
-fun homeScreen() {
-    var filePath by remember { mutableStateOf("Файл не выбран") }
+fun homeScreen(){
+    var filePath by remember { mutableStateOf("File not selected") }
     val navigator = LocalNavigator.currentOrThrow
 
     Box(
@@ -90,7 +88,47 @@ fun homeScreen() {
                     .padding(vertical = 40.dp)
             ) {
                 Button(
-                    onClick = { /* TODO */ },
+                    onClick = {JFileChooser().apply {
+                        preferredSize = Dimension(800, 600)
+                        dialogTitle = "Select file"
+                        fileSelectionMode = JFileChooser.FILES_ONLY
+                        isMultiSelectionEnabled = false
+
+                        val result = showOpenDialog(null)
+                        if (result == JFileChooser.APPROVE_OPTION) {
+                            filePath = selectedFile.absolutePath
+                        } else return@Button
+                    }
+
+                    val url = "jdbc:sqlite:$filePath"
+                    val connection = DriverManager.getConnection(url)
+                    val repository = GraphRepository(connection)
+                    val graphs: List<String> = repository.getGraphsNames()
+
+                    if (graphs.isEmpty()) {
+                        repository.close()
+                        JOptionPane.showMessageDialog(
+                            null,
+                            "No graphs found in this database",
+                            "Error",
+                            JOptionPane.WARNING_MESSAGE
+                        )
+                        return@Button
+                    }
+
+                    val graphArray = graphs.toTypedArray()
+                    val selectedGraph = JOptionPane.showInputDialog(
+                        null,
+                        "Select graph:",
+                        "Graph Selection",
+                        JOptionPane.QUESTION_MESSAGE,
+                        null,
+                        graphArray,
+                        graphArray.first()
+                    ) as? String ?: throw NoSuchElementException()
+
+                    val viewModel = repository.loadGraph(selectedGraph)
+                    navigator.push(GraphScreen(viewModel))},
                     modifier = Modifier
                         .height(80.dp)
                         .width(200.dp),
@@ -107,7 +145,6 @@ fun homeScreen() {
                     Text("SQLite", fontSize = 22.sp)
                 }
 
-                // Кнопка Neo4j
                 Button(
                     onClick = { /* TODO */ },
                     modifier = Modifier
@@ -130,7 +167,8 @@ fun homeScreen() {
                     onClick = {
                         JFileChooser().apply {
                             preferredSize = Dimension(800, 600)
-                            dialogTitle = "Выберите файл"
+
+                            dialogTitle = "Select file"
                             fileSelectionMode = JFileChooser.FILES_ONLY
                             isMultiSelectionEnabled = false
 

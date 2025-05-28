@@ -4,16 +4,16 @@ import model.Graph
 import model.UndirectedGraph
 
 fun getAdjacencyList(graph: Graph): Map&lt;Long, List&lt;Long&gt;&gt; {
-<span class="fc" id="L7">    val adjacencyList: Map&lt;Long, MutableList&lt;Long&gt;&gt; =</span>
-<span class="fc" id="L8">        graph.vertices.associateWith { mutableListOf() }</span>
-<span class="fc bfc" id="L9" title="All 2 branches covered.">    for (i in graph.edges) {</span>
-<span class="fc" id="L10">        val first = i.vertices.first</span>
-<span class="fc" id="L11">        val second = i.vertices.second</span>
-<span class="pc bpc" id="L12" title="1 of 2 branches missed.">        adjacencyList[first]?.add(second)</span>
-<span class="fc bfc" id="L13" title="All 4 branches covered.">        if (graph is UndirectedGraph &amp;&amp; first != second) {</span>
-<span class="pc bpc" id="L14" title="1 of 2 branches missed.">            adjacencyList[second]?.add(first)</span>
+<span class="nc" id="L7">    val adjacencyList: Map&lt;Long, MutableList&lt;Long&gt;&gt; =</span>
+<span class="nc" id="L8">        graph.vertices.associateWith { mutableListOf() }</span>
+<span class="nc bnc" id="L9" title="All 2 branches missed.">    for (i in graph.edges) {</span>
+<span class="nc" id="L10">        val first = i.vertices.first</span>
+<span class="nc" id="L11">        val second = i.vertices.second</span>
+<span class="nc bnc" id="L12" title="All 2 branches missed.">        adjacencyList[first]?.add(second)</span>
+<span class="nc bnc" id="L13" title="All 4 branches missed.">        if (graph is UndirectedGraph &amp;&amp; first != second) {</span>
+<span class="nc bnc" id="L14" title="All 2 branches missed.">            adjacencyList[second]?.add(first)</span>
         }
     }
-<span class="fc" id="L17">    return adjacencyList</span>
+<span class="nc" id="L17">    return adjacencyList</span>
 }
 </pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.10.202304240956</span></div></body></html>

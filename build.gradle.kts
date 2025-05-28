@@ -5,7 +5,7 @@ plugins {
     id("org.jetbrains.kotlin.plugin.compose")
     id("org.jetbrains.compose")
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
-    id("jacoco") // ✅ Плагин покрытия кода
+    id("jacoco")
     kotlin("plugin.serialization") version "1.9.0"
 }
 
@@ -67,19 +67,17 @@ compose.desktop {
     }
 }
 
-// Используем JUnit 5
 tasks.test {
     useJUnitPlatform()
-    finalizedBy(tasks.jacocoTestReport) // Автоматически генерировать отчёт после тестов
+    finalizedBy(tasks.jacocoTestReport)
 }
 
-// JaCoCo настройка
 jacoco {
     toolVersion = "0.8.10"
 }
 
 tasks.jacocoTestReport {
-    dependsOn(tasks.test) // Сначала прогнать тесты
+    dependsOn(tasks.test)
     reports {
         xml.required.set(true)
         html.required.set(true)
