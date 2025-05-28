@@ -26,7 +26,7 @@ class MainScreenViewModelForDirectedGraphTest {
             every { defaultVertexRadius } returns 16.dp
             every { defaultEdgesWidth } returns 2f
 
-            every { place(any(), any(), any()) } just Runs
+            every { place(any(), any(), any(), any()) } just Runs
             every { resetVertices(any()) } just Runs
             every { resetEdges(any()) } just Runs
         }
@@ -40,7 +40,8 @@ class MainScreenViewModelForDirectedGraphTest {
             representationStrategy.place(
                 width = 800.0,
                 height = 600.0,
-                vertices = viewModel.graphViewModel.vertices
+                vertices = viewModel.graphViewModel.vertices,
+                edges = viewModel.graphViewModel.edges
             )
         }
     }
@@ -54,7 +55,8 @@ class MainScreenViewModelForDirectedGraphTest {
             representationStrategy.place(
                 width = 800.0,
                 height = 600.0,
-                vertices = viewModel.graphViewModel.vertices
+                vertices = viewModel.graphViewModel.vertices,
+                edges = viewModel.graphViewModel.edges
             )
         }
     }

@@ -6,6 +6,7 @@ import algos.leaderRank
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import model.UndirectedGraph
+import model.fordBellman
 
 class MainScreenViewModelForUndirectedGraph(
     private val graph: UndirectedGraph,
@@ -36,8 +37,8 @@ class MainScreenViewModelForUndirectedGraph(
 
     init {
         representationStrategy.place(
-            800.0,
-            600.0,
+            1050.0,
+            1050.0,
             graphViewModel.vertices,
             graphViewModel.edges
         )
@@ -47,8 +48,8 @@ class MainScreenViewModelForUndirectedGraph(
 
     fun resetGraphView() {
         representationStrategy.place(
-            800.0,
-            600.0,
+            1050.0,
+            1050.0,
             graphViewModel.vertices,
             graphViewModel.edges
         )
@@ -68,6 +69,25 @@ class MainScreenViewModelForUndirectedGraph(
         secondVertex: Long,
     )  {
         val path = dijkstra(graph, firstVertex, secondVertex) ?: return
+        for (i in 0..path.size - 2) {
+            graphViewModel.setEdgeColor(
+                path[i],
+                path[i + 1],
+                Color(0xFF1E88E5),
+            )
+
+            graphViewModel.setEdgeWidth(
+                path[i],
+                path[i + 1],
+                graphViewModel.defaultEdgesWidth * 3,
+            )
+        }
+    }
+
+    fun findPathFordBellman(
+        firstVertex: Long,
+        secondVertex: Long) {
+        val path = fordBellman(graph, firstVertex, secondVertex) ?: return
         for (i in 0..path.size - 2) {
             graphViewModel.setEdgeColor(
                 path[i],
