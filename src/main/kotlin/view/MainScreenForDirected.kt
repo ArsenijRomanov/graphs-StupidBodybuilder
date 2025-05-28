@@ -62,13 +62,18 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
     var showAnalyzeMenu by remember { mutableStateOf(false) }
     var showSaveMenu by remember { mutableStateOf(false) }
     var showExitDialog by remember { mutableStateOf(false) }
+    var findPathAlgorithm by remember { mutableStateOf("") }
     val navigator = LocalNavigator.currentOrThrow
 
     LaunchedEffect(Unit) {
         snapshotFlow { viewModel.graphViewModel.verticesToFindPath }
             .collect { pathList ->
                 if (pathList.size == 2) {
-                    viewModel.findPathDijkstra(pathList[0], pathList[1])
+                    if (findPathAlgorithm == "dijkstra") {
+                        viewModel.findPathDijkstra(pathList[0], pathList[1])
+                    } else if (findPathAlgorithm == "fordBellman") {
+                        viewModel.findPathFordBellman(pathList[0], pathList[1])
+                    }
                     viewModel.graphViewModel.clearVerticesToFindPath()
                     viewModel.graphViewModel.findPathState = false
                 }
@@ -97,7 +102,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                     onClick = { showExitDialog = true },
                     modifier = Modifier.fillMaxWidth(),
                     colors = ButtonDefaults.buttonColors(
-                        backgroundColor = Color(0xFF1976D2),
+                        backgroundColor = MaterialTheme.colors.primary,
                         contentColor = Color.White
                     ),
                     elevation = ButtonDefaults.elevation(
@@ -170,7 +175,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (showAnalyzeMenu) Color(0xFF1565C0) else Color(0xFF1976D2),
+                            backgroundColor = MaterialTheme.colors.primary,
                             contentColor = Color.White
                         ),
                         elevation = ButtonDefaults.elevation(
@@ -188,7 +193,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         },
                         modifier = Modifier.weight(1f),
                         colors = ButtonDefaults.buttonColors(
-                            backgroundColor = if (showSaveMenu) Color(0xFF1565C0) else Color(0xFF1976D2),
+                            backgroundColor = MaterialTheme.colors.primary,
                             contentColor = Color.White
                         ),
                         elevation = ButtonDefaults.elevation(
@@ -221,7 +226,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         .padding(16.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
-                    Spacer(modifier = Modifier.height(112.dp))
+                    Spacer(modifier = Modifier.height(128.dp))
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         Checkbox(
                             checked = viewModel.showVerticesElements,
@@ -250,11 +255,10 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(16.dp))
+                    Spacer(modifier = Modifier.height(40.dp))
 
                     Button(
                         onClick = {
-                            viewModel.resetGraphView()
                             showSaveMenu = false
                         },
                         modifier = Modifier.fillMaxWidth(),
@@ -263,7 +267,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                             contentColor = Color.White
                         )
                     ) {
-                        Text("Reset default settings", fontSize = 18.sp)
+                        Text("Reset placement", fontSize = 18.sp)
                     }
 
                     Spacer(modifier = Modifier.height(8.dp))
@@ -297,7 +301,8 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                     ) {
                         Text("Reset edges", fontSize = 18.sp)
                     }
-                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Spacer(modifier = Modifier.height(40.dp))
 
                     Button(onClick = viewModel::findStronglyConnectedComponents,
                         modifier = Modifier.fillMaxWidth(),
@@ -306,8 +311,35 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                             contentColor = Color.White
                         )
                     ) {
-                        Text("Find strongly connected components")
+                        Text("Find strongly connected components", fontSize = 14.sp)
                     }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(onClick = {},
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFF1976D2),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Find communities", fontSize = 18.sp)
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+                    Button(onClick = {},
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = Color(0xFF1976D2),
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text("Find cycles", fontSize = 18.sp)
+                    }
+
+
+
 
                     Spacer(modifier = Modifier.height(8.dp))
 
@@ -315,12 +347,12 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         Button(
                             onClick = {
                                 viewModel.graphViewModel.clearVerticesToFindPath()
+                                findPathAlgorithm = "dijkstra"
                                 viewModel.graphViewModel.findPathState = !viewModel.graphViewModel.findPathState
-                                showAnalyzeMenu = false
                             },
                             modifier = Modifier.fillMaxWidth(),
                             colors = ButtonDefaults.buttonColors(
-                                backgroundColor = if (viewModel.graphViewModel.findPathState) {
+                                backgroundColor = if (viewModel.graphViewModel.findPathState && findPathAlgorithm == "dijkstra") {
                                     Color(0xFF1565C0)
                                 } else {
                                     Color(0xFF1976D2)
@@ -329,7 +361,7 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                             )
                         ) {
                             Text(
-                                text = if (viewModel.graphViewModel.findPathState) {
+                                text = if (viewModel.graphViewModel.findPathState && findPathAlgorithm == "dijkstra") {
                                     "Cancel Dijkstra"
                                 } else {
                                     "Find Path (Dijkstra)"
@@ -340,10 +372,34 @@ fun MainScreenForDirected(viewModel: MainScreenViewModelForDirectedGraph) {
                         Spacer(modifier = Modifier.height(8.dp))
                     }
 
+                    Button(onClick = {
+                        viewModel.graphViewModel.clearVerticesToFindPath()
+                        findPathAlgorithm = "fordBellman"
+                        viewModel.graphViewModel.findPathState = !viewModel.graphViewModel.findPathState
+                    },
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = ButtonDefaults.buttonColors(
+                            backgroundColor = if (viewModel.graphViewModel.findPathState && findPathAlgorithm == "fordBellman") {
+                                Color(0xFF1565C0)
+                            } else {
+                                Color(0xFF1976D2)
+                            },
+                            contentColor = Color.White
+                        )
+                    ) {
+                        Text(text = if (viewModel.graphViewModel.findPathState && findPathAlgorithm == "fordBellman") {
+                            "Cancel Ford-Bellman"
+                        } else {
+                            "Find Path (Ford-Bellman)"
+                        }, fontSize = 18.sp)
+                    }
+
+                    Spacer(modifier = Modifier.height(8.dp))
+
+
                     Button(
                         onClick = {
                             viewModel.highlightKeyVertices()
-                            showAnalyzeMenu = false
                         },
                         modifier = Modifier.fillMaxWidth(),
                         colors = ButtonDefaults.buttonColors(
